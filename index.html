@@ -2668,7 +2668,7 @@ function setupTrainerCard(){
   });
   bc.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); bc.click(); } });
   $('#tcClose').addEventListener('click', closeTC);
-  $('#tcNew').addEventListener('click', () => { Sound.select(); try{ localStorage.removeItem('pj-progress'); localStorage.removeItem('pj-dex-seen'); localStorage.removeItem('pj-dex-caught'); localStorage.removeItem('pj-dex-cache'); }catch(e){} history.scrollRestoration = 'manual'; location.reload(); });
+  $('#tcNew').addEventListener('click', () => { Sound.select(); try{ localStorage.removeItem('pj-progress'); localStorage.removeItem('pj-dex-seen'); localStorage.removeItem('pj-dex-caught'); localStorage.removeItem('pj-dex-cache'); localStorage.removeItem('pj-dex-cache-v2'); localStorage.removeItem('pj-dex-cache-v3'); }catch(e){} history.scrollRestoration = 'manual'; location.reload(); });
   bd.addEventListener('click', (e) => { if (e.target === bd) closeTC(); });
   const link = document.getElementById('openTC');
   if (link) link.addEventListener('click', () => openTC());

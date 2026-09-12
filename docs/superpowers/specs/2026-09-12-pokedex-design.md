@@ -146,11 +146,17 @@ stat bars (scale 255), height/weight (m/kg), evolution chain with trigger condit
 level-up move table (20 shown + total), caught-toggle pokéball button. Seen
 auto-marks on first view.
 
-**Keyboard:** ← → ↑ ↓ walk grid, Enter opens detail, Esc steps back (detail → grid →
-device closed). **A11y:** all controls labeled; grid follows a listbox pattern;
-`aria-live="polite"` counters; sprite alt `"#025 Pikachu sprite"` /
-`"#025 Pikachu official artwork"`. **Loading:** grid instant (Tier 1); detail pane
-shows in-voice "LOADING DATA…" state; sprites load lazily.
+**Keyboard:** ← → ↑ ↓ walk the grid (row width measured from the live layout, not
+a hardcoded column count), Home/End jump within the rendered list, Enter or Space
+opens detail, Esc clears an active search query first, then steps back (detail →
+grid → device closed). Tab uses a roving tabindex so the card list is a single tab
+stop; the focus trap follows roving focus, and focus stays inside the device after
+evo jumps. **Mouse:** cards select on click; clicking the dimmed backdrop closes
+the device (same as the trainer card). **A11y:** all controls labeled (sort button
+announces its current mode); grid follows a listbox pattern with `aria-selected`
+mirroring the detail view; `aria-live="polite"` counters; sprite alt `"#025
+Pikachu sprite"` / `"#025 Pikachu official artwork"`. **Loading:** grid instant
+(Tier 1); detail pane shows in-voice "LOADING DATA…" state; sprites load lazily.
 
 ## 7. Narrative integration
 
