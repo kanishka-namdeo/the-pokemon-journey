@@ -4,6 +4,8 @@ Thirty years of Pokémon, told one route at a time. From a bug collector's dream
 
 ![POKéMON — The Journey, opening hero screen](assets/og-image.png)
 
+**Built by [kanishka-namdeo](https://github.com/kanishka-namdeo)** · [source code](https://github.com/kanishka-namdeo/the-pokemon-journey)
+
 ## Play it
 
 **https://kanishka-namdeo.github.io/the-pokemon-journey/**
@@ -60,7 +62,9 @@ Along the way: a Pokédex moment, the Hall of Fame record still counting, and a 
 
 ## Credits & licenses
 
-- Code: [MIT](LICENSE).
+- Design, code, and curation: [kanishka-namdeo](https://github.com/kanishka-namdeo).
+- This repo's code: [MIT](LICENSE).
+- Motion: [GSAP](https://gsap.com) (vendored in `lib/`; files keep their license headers, [GSAP standard license](https://gsap.com/standard-license)) and [Lenis](https://lenis.darkroom.engineering) (MIT).
 - Audio: CC0 1.0 by Juhani Junkala, detailed in [audio/ATTRIBUTION.md](audio/ATTRIBUTION.md):
   - Sound effects: https://opengameart.org/content/512-sound-effects-8-bit-style
   - Music: https://opengameart.org/content/5-chiptunes-action

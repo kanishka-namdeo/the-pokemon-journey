@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "Thirty years of Pokémon, told one route at a time. Static site; data synced from PokéAPI at build time.",
+  "author": "kanishka-namdeo (https://github.com/kanishka-namdeo)",
+  "homepage": "https://kanishka-namdeo.github.io/the-pokemon-journey/",
+  "license": "MIT",
   "scripts": {
     "sync:dex": "node data/generate-dex-details.mjs"
   },
