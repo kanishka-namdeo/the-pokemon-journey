@@ -259,6 +259,9 @@ canvas{display:block}
 .themebtn:hover{background:#FF4040}
 .themebtn.playing{background:#17171F; color:var(--yellow); box-shadow:0 0 0 3px #17171F, 0 0 0 6px var(--red)}
 .themebtn.playing:hover{background:#26263a}
+.starbtn{display:inline-flex; align-items:center; gap:9px; margin-top:4px; font-family:var(--px); font-size:9px; color:var(--paper); background:var(--ink-2); border:3px solid #17171F; border-radius:8px; box-shadow:0 0 0 3px var(--ink-2), 0 0 0 6px var(--yellow); padding:12px 18px; cursor:pointer; text-decoration:none}
+.starbtn:hover{background:#232840}
+.starbtn svg{width:13px; height:13px; fill:var(--yellow); filter:drop-shadow(1px 1px 0 rgba(0,0,0,.6))}
 
 #fx{position:fixed; inset:0; z-index:60; pointer-events:none}
 #wipe{position:fixed; inset:0; z-index:45; pointer-events:none}
@@ -780,6 +783,8 @@ canvas{display:block}
   <p><button class="themebtn" id="themeBtn">▶ PLAY THE OPENING THEME</button></p>
   <p>GSAP, Lenis, and type from <a href="https://fonts.google.com" rel="noopener">Google Fonts</a> (Press Start 2P, VT323, Nunito, all SIL OFL) keep the whole thing moving. See the README for full license details.</p>
   <p>Made by <a href="https://github.com/kanishka-namdeo" rel="noopener">kanishka-namdeo</a> · <a href="https://github.com/kanishka-namdeo/the-pokemon-journey" rel="noopener">source on GitHub</a>.</p>
+  <p>Enjoyed the journey? Star the source so more trainers can find it.</p>
+  <p><a class="starbtn" href="https://github.com/kanishka-namdeo/the-pokemon-journey" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>STAR THIS REPO ON GITHUB</a></p>
   <p>This is a fan-made tribute, built for the love of the game. POKéMON and all character names are trademarks of Nintendo, Creatures Inc. and GAME FREAK inc.</p>
   <a class="again" href="#top">▼ PRESS START TO PLAY AGAIN</a>
 </footer>
