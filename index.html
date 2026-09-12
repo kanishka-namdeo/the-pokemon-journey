@@ -144,6 +144,7 @@ canvas{display:block}
   .finale .ballwrap{width:106px}
   .finale .ballbtn{width:72px; height:72px}
   .finale .ballbtn .mon img{width:52px; height:52px}
+  .finale .ballwrap.picked .ballbtn .mon{transform:translateY(-88%) scale(1.45)}
   /* radial-art chapters: ring lives in the top half, dialogue docks at the
      bottom (like the games' text boxes); the chip legend is redundant there */
   #ch-types .step, #ch-eevee .step{align-items:flex-end}
@@ -215,8 +216,27 @@ canvas{display:block}
   transition:background .3s;
 }
 .ballbtn:hover .btn{background:var(--yellow)}
-.ballbtn .mon{position:absolute; inset:0; z-index:1; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .4s ease .15s}
-.ballbtn.open .mon{opacity:1}
+.ballbtn .mon{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; transform:translateY(16%) scale(.55);
+  transition:opacity .25s ease, transform .55s cubic-bezier(.34,1.56,.64,1);
+}
+.ballbtn .mon::before{ /* materialize glow while the mon is out of the ball */
+  content:''; position:absolute; inset:-32% -48%; border-radius:50%;
+  background:radial-gradient(closest-side, rgba(255,252,238,.3), rgba(255,252,238,0) 72%);
+  opacity:0; transition:opacity .45s ease .2s;
+}
+.ballbtn.open .mon{opacity:1; transform:translateY(-42%) scale(1.04)}
+.ballbtn.open .mon::before{opacity:.5}
+.ballbtn.open .top{filter:brightness(.55) saturate(.85)}
+.ballwrap.picked .ballbtn .mon{opacity:1; transform:translateY(-92%) scale(1.62)}
+.ballwrap.picked .ballbtn .mon::before{opacity:1}
+@media (prefers-reduced-motion: reduce){
+  .ballbtn .mon{transition:opacity .15s ease; transform:translateY(-42%) scale(1.04)}
+  .ballbtn.open .mon{transform:translateY(-42%) scale(1.04)}
+  .ballwrap.picked .ballbtn .mon{transform:translateY(-92%) scale(1.5)}
+}
 .ballbtn .mon img{width:64px; height:64px; object-fit:contain; image-rendering:auto; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35))}
 .ballwrap .bname{font-family:var(--px); font-size:10px; color:var(--paper); text-shadow:2px 2px 0 rgba(0,0,0,.6)}
 .ballwrap .btype{font-family:var(--px); font-size:7px; padding:5px 7px 4px; border-radius:5px; border:2px solid rgba(0,0,0,.55); text-shadow:1px 1px 0 rgba(255,255,255,.25)}
@@ -261,6 +281,7 @@ canvas{display:block}
 .soundbtn:not(.muted) .slash{display:none}
 .soundbtn:not(.muted){color:var(--yellow); border-color:var(--yellow)}
 .ball-clone{position:fixed; z-index:70; pointer-events:none; margin:0}
+.ball-clone .mon{display:none} /* the real partner stands on its ball; the flying clone is just the ball */
 
 /* ---- toasts (nudges & discoveries) ---- */
 .toasts{position:fixed; right:16px; bottom:16px; z-index:80; display:flex; flex-direction:column; gap:10px; pointer-events:none; max-width:min(320px, calc(100vw - 32px))}
@@ -2546,7 +2567,8 @@ function setupFinale(){
       $('#labIntro').hidden = true;
       msgText.textContent = STARTER_TEXT[id];
       msg.hidden = false;
-      msg.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
+      /* center the whole step so the released mon stays clear of the HUD on small screens */
+      (msg.closest('.step') || msg).scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
       /* tint + celebration: the ball flies to center stage and bursts open */
       const tint = { 1:'#78C850', 4:'#F08030', 7:'#6890F0' }[id];
       document.documentElement.style.setProperty('--yellow', tint);
@@ -2719,6 +2741,13 @@ function boot(){
       if (saved.starter){
         pickedStarter = saved.starter;
         document.documentElement.style.setProperty('--yellow', { 1:'#78C850', 4:'#F08030', 7:'#6890F0' }[saved.starter]);
+        /* the saved partner is out of its ball: mark it picked so it stands on the opened ball */
+        const sw = document.querySelector('.ballwrap[data-starter="'+saved.starter+'"]');
+        if (sw){
+          sw.classList.add('picked');
+          const sb = sw.querySelector('.ballbtn');
+          if (sb) sb.classList.add('open');
+        }
       }
       setTimeout(() => toast('WELCOME BACK, TRAINER!',
         `Your badge case still holds ${saved.badges.length} badge${saved.badges.length > 1 ? 's' : ''}. The journey picks up right where you left it.`), 1400);
