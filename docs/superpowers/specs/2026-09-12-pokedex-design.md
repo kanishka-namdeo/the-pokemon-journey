@@ -54,18 +54,23 @@ in-story "device" opened from a new Chapter 3 dialogue beat and from the HUD.
 
 ## 4. Data strategy — three tiers
 
-### Tier 1: bundled list (`data/dex-list.json`, measured 31.3 KB raw / ~10 KB gzipped)
+### Tier 1: bundled list (`data/dex-list.json`, measured 31.3 KB raw / ~10 KB gzipped) + `data/moves.json` (~80 KB)
 Array-of-arrays, one entry per species, national-dex order:
 `[[1,"bulbasaur",["grass","poison"]], … [1025,"pecharunt",["poison","ghost"]]]`.
 Measured from PokéAPI's CSVs on 2026-09-12 (probe artifact: `_dev/tmp/dex-list-measured.json`,
-throwaway). Generation pipeline (run once, checked in as a `_dev` script):
-`pokemon_species.csv` (names) + `pokemon.csv` filtered to `is_default=1`
-(**8th column** — schema now includes a `weight` column) keyed by `species_id`
-for the default form + `pokemon_types.csv`/`types.csv` for types ordered by slot.
-Loaded lazily via `fetch()` on first dex open — never for visitors who don't open it.
-Powers search, type filter, gen filter (id ranges computed at runtime), sort, and
-the grid with zero network calls. If this fetch fails, the device opens to an
-in-voice "SIGNAL LOST… RECONNECT TO OAK'S NETWORK." state with a retry button.
+throwaway). Generation pipeline (run once, checked in as a committed `data/generate-dex-list.mjs`
+script — committed rather than `_dev/` because `_dev/` is gitignored and the data must
+stay reproducible): `pokemon_species.csv` (names) + `pokemon.csv` filtered to
+`is_default=1` (**8th column** — schema now includes a `weight` column) keyed by
+`species_id` for the default form + `pokemon_types.csv`/`types.csv` for types ordered
+by slot. The same script emits `data/moves.json`: `{ "thunderbolt": { "t": "electric",
+"p": 90, "a": 100, "c": "special" }, … }` for all moves — needed because `/pokemon`
+move entries carry no type/power/accuracy and per-move API calls would add ~20
+requests per species. Loaded lazily via `fetch()` on first dex open — never for
+visitors who don't open it. Powers search, type filter, gen filter (id ranges
+computed at runtime), sort, and the grid with zero network calls. If this fetch
+fails, the device opens to an in-voice "SIGNAL LOST… RECONNECT TO OAK'S NETWORK."
+state with a retry button.
 
 ### Tier 2: lazy detail records
 Opening a species fetches, in parallel: `/pokemon/{id}`, `/pokemon-species/{id}`,
@@ -85,8 +90,9 @@ extra calls). Trimmed to a UI record (~4–10 KB) with exactly these fields:
   `evolution_details` (trigger name, min_level, item, held_item, time_of_day as applicable)
 - `moves`: from `/pokemon/{id}.moves`, filter `version_group_details` to the latest
   version group present (e.g. scarlet-violet) with `move_learn_method.name === "level-up"`,
-  sort by `level_learned_at` ascending, keep first 20 `{level, name, type, power,
-  accuracy, damage_class}` + `total` count of that filtered set
+  sort by `level_learned_at` ascending, keep first 20 `{level, name}` + `total` count
+  of that filtered set; per-move `type, power, accuracy, damage_class` resolved at
+  render time from bundled `data/moves.json` (zero extra API calls)
 - `weak`/`resist`/`immune`: computed from an embedded standard post-Gen-6 18×18
   chart, stored per defending type as `{x2:[], x05:[], x0:[]}` (~1 KB). Dual-type
   aggregation: multiply multipliers per attacking type; display buckets
