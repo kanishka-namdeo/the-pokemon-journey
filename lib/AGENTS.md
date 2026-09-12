@@ -16,6 +16,7 @@
 - Browser globals other code depends on: `window.gsap`, `window.ScrollTrigger`, `window.Lenis`, `window.Dex`. index.html feature-detects (`HAS_GSAP`/`HAS_LENIS`) and degrades to native scroll + IntersectionObserver — keep that degradation working.
 - `pokedex.js` must stay DOM-free at module top level and keep the Node export block at the bottom (`TYPE_ORDER`, `TYPE_CHART`, `typeMatchup`, `buildRecord`, `filterList`, `createCache`, ...). Node tests require the file directly.
 - `Dex.init({ Sound, TYPES, scrollLock })` must run before `Dex.open()`. `TYPES` is an array of type objects (name + color), not a bare array of arrays — see ../data/AGENTS.md.
+- pokedex.js binds the device markup by hook: ids `#dexBackdrop #dexDevice #dexCounts #dexClose #dexDetail #dexGrid #dexSentinel #dexSearch #dexGen #dexSort #dexTypes #dexClear #dexBtnA #dexBtnB`, the `.dex-dpad [data-dpad]` buttons, and the `.dex-loading` / `.dex-noresults` classes toggled on `.dex-left` — keep index.html and the module in sync on any restructure.
 - New GSAP plugin: add its script tag in index.html and register it via `gsap.registerPlugin()` before use.
 
 ## Work Guidance
