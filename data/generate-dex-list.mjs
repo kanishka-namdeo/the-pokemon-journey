@@ -29,7 +29,7 @@ const dexList = [...defaultBySpecies].sort((a, b) => a[0] - b[0]).map(([sid, pid
   (typesByPoke.get(pid) || []).sort((a, b) => a[1] - b[1]).map(x => typeName.get(x[0])),
 ]);
 
-const CLASSES = { 1: 'physical', 2: 'special', 3: 'status' };
+const CLASSES = { 1: 'status', 2: 'physical', 3: 'special' };
 const movesJson = {};
 for (const r of moves) {
   movesJson[r[1]] = {
