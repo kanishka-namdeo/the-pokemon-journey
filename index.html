@@ -315,6 +315,100 @@ canvas{display:block}
 .soundbtn{position:relative}
 
 .noscript-note{margin:90px auto 0; max-width:34rem; text-align:center}
+/* ---------- POKéDEX DEVICE ---------- */
+.dex-backdrop{z-index:90}
+.dex-device{
+  position:relative; width:min(1080px, 96vw); height:min(720px, 92vh);
+  display:flex; flex-direction:column; background:linear-gradient(160deg,#E23636,#B01010);
+  border:4px solid #7C0A0A; border-radius:18px 18px 42px 18px;
+  box-shadow:0 24px 60px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.25);
+  transform:scale(.92); opacity:0; transition:transform .28s, opacity .28s;
+  font-family:var(--term);
+}
+.dex-backdrop.open .dex-device{transform:none; opacity:1}
+.dex-head{display:flex; align-items:center; gap:14px; padding:14px 18px; border-bottom:3px solid #7C0A0A}
+.dex-lights{display:flex; gap:6px}
+.dex-lights i{width:12px; height:12px; border-radius:50%; background:#FFCB05; box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
+.dex-lights i:nth-child(2){background:#FFFDF4}
+.dex-lights i:nth-child(3){background:#3B4CCA}
+.dex-title{font-family:var(--px); font-size:.85rem; color:#FFFDF4; letter-spacing:1px; margin:0}
+.dex-counts{margin-left:auto; color:#FFE9A8; font-size:1.05rem}
+.dex-close{background:#7C0A0A; color:#FFFDF4; border:2px solid #FFFDF4; border-radius:6px;
+  font-family:var(--px); font-size:.6rem; padding:6px 10px; cursor:pointer}
+.dex-screens{flex:1; display:grid; grid-template-columns:minmax(280px,340px) 1fr; gap:14px; padding:14px; min-height:0}
+.dex-left,.dex-right{background:#101425; border:3px solid #2A2F4A; border-radius:10px;
+  box-shadow:inset 0 0 24px rgba(0,0,0,.6); color:#D7E4FF; display:flex; flex-direction:column; min-height:0}
+.dex-crt::after{content:''; position:absolute; inset:0; pointer-events:none; border-radius:8px;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, transparent 1px 3px)}
+.dex-left{padding:12px; gap:10px; position:relative}
+.dex-right{padding:18px; position:relative; overflow:auto}
+#dexSearch{background:#060913; border:2px solid #2A2F4A; color:#D7E4FF; font-family:var(--term);
+  font-size:1.1rem; padding:8px 10px; border-radius:6px; outline:none}
+#dexSearch:focus{border-color:#FFCB05}
+.dex-types{display:flex; flex-wrap:wrap; gap:5px}
+.dex-typechip{font-size:.85rem; padding:2px 7px; border-radius:4px; cursor:pointer; color:#0F1220;
+  border:2px solid transparent; opacity:.55}
+.dex-typechip.on{opacity:1; border-color:#FFFDF4}
+.dex-row{display:flex; gap:8px}
+.dex-row select{flex:1; background:#060913; color:#D7E4FF; border:2px solid #2A2F4A; border-radius:6px;
+  font-family:var(--term); font-size:1rem; padding:6px}
+.dex-row button{background:#060913; color:#FFCB05; border:2px solid #2A2F4A; border-radius:6px;
+  font-family:var(--px); font-size:.55rem; padding:6px 10px; cursor:pointer}
+.dex-grid{list-style:none; margin:0; padding:0; overflow-y:auto; flex:1; display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(84px,1fr)); gap:6px; align-content:start}
+.dex-card{background:#060913; border:2px solid #2A2F4A; border-radius:6px; padding:6px 4px 4px;
+  text-align:center; cursor:pointer; position:relative}
+.dex-card:hover,.dex-card:focus-visible{border-color:#FFCB05; outline:none}
+.dex-card.seen .dex-marks::before{content:'◐'; color:#7FD1FF; position:absolute; top:2px; left:5px; font-size:.8rem}
+.dex-card.caught .dex-marks::before{content:'●'; color:#FFCB05; position:absolute; top:2px; left:5px; font-size:.8rem}
+.dex-card img{image-rendering:pixelated; width:64px; height:64px; object-fit:contain}
+.dex-card .dex-no{display:block; font-size:.85rem; color:#6E7BAE}
+.dex-card .dex-name{display:block; text-transform:uppercase; font-size:1rem; color:#D7E4FF}
+.dex-card img.is-glitch{filter:hue-rotate(40deg) contrast(1.4); opacity:.7}
+#dexSentinel{grid-column:1/-1; height:2px}
+.dex-nolist #dexGrid,.dex-nolist #dexSentinel{display:none}
+.dex-hint,.dex-signal{margin:auto; text-align:center; color:#6E7BAE; font-size:1.15rem; padding:20px}
+.dex-signal{color:#FF9D9D; font-family:var(--px); font-size:.6rem; line-height:2}
+.dex-signal button{display:block; margin:14px auto 0; background:#7C0A0A; color:#FFFDF4;
+  border:2px solid #FFFDF4; border-radius:6px; font-family:var(--px); font-size:.6rem; padding:8px 12px; cursor:pointer}
+.dex-detail-top{display:flex; gap:16px; align-items:flex-start}
+.dex-art{width:180px; height:180px; object-fit:contain; background:#060913; border:2px solid #2A2F4A; border-radius:10px; flex:none}
+.dex-art.is-glitch{image-rendering:pixelated; filter:hue-rotate(40deg) contrast(1.4)}
+.dex-idname h3{font-family:var(--px); color:#FFFDF4; font-size:.95rem; margin:0 0 4px}
+.dex-idname .dex-genus{color:#7FD1FF; font-size:1.05rem}
+.dex-chiprow{display:flex; gap:6px; margin:8px 0; flex-wrap:wrap}
+.dex-effect{font-size:1rem; line-height:1.5}
+.dex-effect b{color:#FF9D9D} .dex-effect i{color:#7FD1FF; font-style:normal} .dex-effect em{color:#9AE6B4; font-style:normal}
+.dex-crybtn{background:#060913; border:2px solid #FFCB05; color:#FFCB05; border-radius:6px;
+  font-family:var(--px); font-size:.55rem; padding:6px 10px; cursor:pointer}
+.dex-caughtbtn{background:#060913; border:2px solid #FFCB05; color:#FFFDF4; border-radius:6px;
+  font-family:var(--px); font-size:.55rem; padding:8px 12px; cursor:pointer; margin-top:10px}
+.dex-caughtbtn.on{background:#FFCB05; color:#0F1220}
+.dex-stats{margin-top:14px; display:grid; gap:4px}
+.dex-stat{display:grid; grid-template-columns:110px 1fr 34px; gap:8px; align-items:center; font-size:1rem}
+.dex-stat .bar{height:8px; background:#060913; border-radius:4px; overflow:hidden}
+.dex-stat .bar i{display:block; height:100%; background:#FFCB05}
+.dex-sub{font-family:var(--px); font-size:.6rem; color:#FFCB05; margin:16px 0 6px; letter-spacing:1px}
+.dex-evo{display:flex; gap:8px; flex-wrap:wrap}
+.dex-evo .ev{background:#060913; border:2px solid #2A2F4A; border-radius:6px; padding:6px 8px;
+  font-size:.95rem; cursor:pointer; text-align:center}
+.dex-evo .ev .cond{display:block; color:#6E7BAE; font-size:.85rem}
+.dex-moves{width:100%; border-collapse:collapse; font-size:.95rem}
+.dex-moves td,.dex-moves th{border-bottom:1px solid #2A2F4A; padding:3px 6px; text-align:left}
+.dex-moves th{color:#6E7BAE; font-weight:normal}
+.hudbtn{background:none; border:none; cursor:pointer; padding:4px; display:inline-flex}
+.hudbtn svg{display:block}
+@media (max-width:760px){
+  .dex-screens{grid-template-columns:1fr; grid-template-rows:minmax(0,1fr) minmax(0,1.2fr); overflow:hidden}
+  .dex-left{overflow:hidden}
+  .dex-grid{grid-template-columns:repeat(auto-fill, minmax(72px,1fr))}
+  .dex-detail-top{flex-direction:column}
+}
+@media (prefers-reduced-motion: reduce){
+  .dex-device,.dex-backdrop{transition:none}
+  .dex-crt::after{background:none}
+}
+/* ---------- /POKéDEX DEVICE ---------- */
 </style>
 <script type="application/ld+json">
 {
@@ -370,6 +464,14 @@ canvas{display:block}
     <svg class="badge" data-badge="6" viewBox="0 0 24 24" role="img" aria-label="Volcano badge"><path d="M12 3l9 18H3z" fill="#E8503A" stroke="#7A1E10" stroke-width="2"/><path d="M9.5 13h5" stroke="#7A1E10" stroke-width="2"/></svg>
     <svg class="badge" data-badge="7" viewBox="0 0 24 24" role="img" aria-label="Earth badge"><circle cx="12" cy="12" r="9" fill="#58A75B" stroke="#1E4E40" stroke-width="2"/><path d="M3.4 10a9 9 0 0 1 17.2 0z" fill="#4F94D4" stroke="#1E4E79" stroke-width="2"/></svg>
   </nav>
+<button class="hudbtn" id="dexBtn" aria-label="Open Pokédex" title="Pokédex">
+  <svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true">
+    <rect x="1" y="1" width="20" height="16" rx="4" fill="#EE1515" stroke="#7C0A0A" stroke-width="1.5"/>
+    <circle cx="8" cy="9" r="4.2" fill="#FFFDF4" stroke="#0F1220" stroke-width="1.2"/>
+    <circle cx="8" cy="9" r="1.6" fill="#0F1220"/>
+    <rect x="14.5" y="5" width="4.5" height="8" rx="1" fill="#FFCB05"/>
+  </svg>
+</button>
   </div>
 </header>
 
@@ -665,6 +767,36 @@ canvas{display:block}
     <div class="tc-actions">
       <button class="tc-close" id="tcClose">CLOSE</button>
       <button class="tc-new" id="tcNew">NEW JOURNEY</button>
+    </div>
+  </div>
+</div>
+
+<div class="tc-backdrop dex-backdrop" id="dexBackdrop" hidden>
+  <div class="dex-device" id="dexDevice" role="dialog" aria-modal="true" aria-label="Pokédex">
+    <header class="dex-head">
+      <span class="dex-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+      <h2 class="dex-title">POKéDEX</h2>
+      <span class="dex-counts" id="dexCounts" aria-live="polite">SEEN 0 · CAUGHT 0</span>
+      <button class="dex-close" id="dexClose" aria-label="Close Pokédex">✕</button>
+    </header>
+    <div class="dex-screens">
+      <section class="dex-left dex-crt" aria-label="Browse">
+        <input id="dexSearch" type="search" placeholder="NAME or №" aria-label="Search by name or number" autocomplete="off">
+        <div class="dex-types" id="dexTypes" role="group" aria-label="Filter by type"></div>
+        <div class="dex-row">
+          <select id="dexGen" aria-label="Filter by generation">
+            <option value="">ALL GENS</option><option value="1">GEN I</option><option value="2">GEN II</option>
+            <option value="3">GEN III</option><option value="4">GEN IV</option><option value="5">GEN V</option>
+            <option value="6">GEN VI</option><option value="7">GEN VII</option><option value="8">GEN VIII</option>
+            <option value="9">GEN IX</option>
+          </select>
+          <button id="dexSort" aria-label="Change sort order">#</button>
+        </div>
+        <ul class="dex-grid" id="dexGrid" role="listbox" aria-label="Pokémon"><li id="dexSentinel" aria-hidden="true"></li></ul>
+      </section>
+      <section class="dex-right" id="dexDetail" aria-label="Pokémon details">
+        <p class="dex-hint">SELECT A POKéMON TO VIEW ITS DATA.</p>
+      </section>
     </div>
   </div>
 </div>
@@ -2654,5 +2786,6 @@ function boot(){
 }
 boot();
 </script>
+<script src="lib/pokedex.js"></script>
 </body>
 </html>
