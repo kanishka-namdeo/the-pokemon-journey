@@ -221,3 +221,27 @@ shows in-voice "LOADING DATA…" state; sprites load lazily.
 - CSV list build: 1025 entries; 31.3 KB minified, 9.6 KB gzipped
   (`_dev/tmp/dex-list-measured.json`, throwaway probe artifact).
 - Bulbapedia Professor Oak/Quotes: RBY dex-handover line captured (§7).
+
+## Addendum — self-hosted data (2026-09-12, same day)
+
+§4's live-detail-fetch design was replaced the day it shipped: all runtime data now
+ships in the repo, and PokéAPI is used only by a manual sync script. Reasons: remove
+the runtime dependency on PokéAPI availability, ship everything from GitHub Pages,
+and make refreshes an explicit maintainer action.
+
+- `data/generate-dex-details.mjs` (also `npm run sync:dex`) fetches
+  `/pokemon/{id}`, `/pokemon-species/{id}`, the evolution chain and ability entries
+  per species, runs them through the same `buildRecord()` as the old runtime path,
+  and writes `data/details/{id}.json`. It also bundles `sprites/dex/front/{id}.png`,
+  `sprites/dex/art/{id}.webp` (official artwork downscaled to 384 px), and
+  `audio/cries/{id}.ogg`; the record's `cry` becomes the local path.
+- `lib/pokedex.js` runtime: `SPRITE`/`ART` point at the bundled files;
+  `openDetail` fetches the bundled record instead of four API endpoints.
+  The localStorage cache is kept (harmless, faster repeat views) and its key was
+  bumped to `pj-dex-cache-v2` so records cached under the API-era design, whose
+  `cry` field still pointed at PokéAPI's CDN, are invalidated.
+- SIGNAL LOST paths remain, now covering failed fetches of the bundled files
+  (e.g. partial deploy). Resume-safe sync: default run fetches only missing
+  files; `--force` refetches; `--ids=` refreshes a subset.
+- IP posture supersedes §8: nothing is hotlinked; sprites, artwork and cries are
+  redistributed in-repo from PokéAPI's data (same sources, attribution unchanged).

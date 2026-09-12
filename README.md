@@ -34,7 +34,7 @@ Scroll to travel eight routes through thirty years of Pokémon. Chapter music cr
 7. **INDIGO PLATEAU** · HALL OF FAME · THE RECORD
 8. **OAK’S LAB** · PALLET TOWN · YOUR TURN
 
-- A national Pokédex device: browse all 1025 species, search/filter/sort, view stats, evolution, moves, type matchups, hear cries, and mark species seen/caught (data via PokéAPI).
+- A national Pokédex device: browse all 1025 species, search/filter/sort, view stats, evolution, moves, type matchups, hear cries, and mark species seen/caught (data bundled from PokéAPI).
 
 Along the way: a Pokédex moment, the Hall of Fame record still counting, and a finale at Oak’s Lab where three Poké Balls wait on the table. Bulbasaur, Charmander, or Squirtle. You may choose only one.
 
@@ -44,16 +44,18 @@ Along the way: a Pokédex moment, the Hall of Fame record still counting, and a 
 - GSAP (ScrollTrigger, SplitText, ScrambleTextPlugin, Physics2DPlugin, MotionPathPlugin) and Lenis, vendored in `lib/`.
 - Web Audio API for the chapter music loops and one-shot SFX.
 - Type set in Press Start 2P, VT323, and Nunito from Google Fonts.
-- No build step, no dependencies to install.
+- No build step and no runtime network calls for Pokémon data: everything the site shows is bundled in the repo.
+- To refresh that data, run `npm run sync:dex` (fetches any missing species from PokéAPI), `node data/generate-dex-details.mjs --force` (refetch all), or `--ids=25,152` for specific species.
 
 ## Repository layout
 
 | Path | Contents |
 | --- | --- |
 | `index.html` | The whole experience |
-| `lib/` | Vendored GSAP + Lenis |
-| `sprites/` | PokéAPI artwork in `art/`, `pix/`, `pix-y/`, `items/`, stored locally with remote fallback |
-| `audio/` | `music/`, `sfx/`, and `ATTRIBUTION.md` |
+| `lib/` | Vendored GSAP + Lenis, plus `pokedex.js` |
+| `data/` | Bundled Pokédex data: `dex-list.json`, `moves.json`, `details/{id}.json`, and the sync scripts |
+| `sprites/` | PokéAPI artwork: `art/`, `pix/`, `pix-y/`, `items/` for the journey, `dex/` for all 1025 species |
+| `audio/` | `music/`, `sfx/`, `cries/`, and `ATTRIBUTION.md` |
 | `assets/` | Social preview image |
 
 ## Credits & licenses
@@ -63,7 +65,7 @@ Along the way: a Pokédex moment, the Hall of Fame record still counting, and a 
   - Sound effects: https://opengameart.org/content/512-sound-effects-8-bit-style
   - Music: https://opengameart.org/content/5-chiptunes-action
   - Theme song: https://opengameart.org/content/theme-song-8-bit
-- Sprites and artwork via [PokéAPI](https://pokeapi.co).
+- Pokémon data, sprites, artwork and cries via [PokéAPI](https://pokeapi.co), synced into this repo.
 - Fonts from [Google Fonts](https://fonts.google.com), under the SIL Open Font License.
 
 This is a fan-made tribute, built for the love of the game. POKéMON and all character names are trademarks of Nintendo, Creatures Inc. and GAME FREAK inc.

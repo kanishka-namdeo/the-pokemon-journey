@@ -1,0 +1,12 @@
+{
+  "name": "the-pokemon-journey",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Thirty years of Pokémon, told one route at a time. Static site; data synced from PokéAPI at build time.",
+  "scripts": {
+    "sync:dex": "node data/generate-dex-details.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.0"
+  }
+}
