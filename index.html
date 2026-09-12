@@ -408,6 +408,10 @@ canvas{display:block}
   .dex-device,.dex-backdrop{transition:none}
   .dex-crt::after{background:none}
 }
+.dex-beat{position:relative; z-index:2; opacity:0; transform:translateY(14px); transition:opacity .6s, transform .6s; pointer-events:none}
+.dex-beat.show{opacity:1; transform:none; pointer-events:auto}
+@media (prefers-reduced-motion: reduce){ .dex-beat{transition:none} }
+.tc-dexcounts{font-family:var(--term); font-size:1.05rem; color:#7C6A4A; margin-top:4px}
 /* ---------- /POKéDEX DEVICE ---------- */
 </style>
 <script type="application/ld+json">
@@ -574,6 +578,11 @@ canvas{display:block}
         <span class="arrow" aria-hidden="true"></span>
       </div>
     </div>
+  </div>
+  <div class="dlg dex-beat" id="dexBeat">
+    <span class="speaker">OAK</span>
+    <p>"On the desk there is my invention, POKéDEX! It automatically records data on Pokémon you've seen or caught!"</p>
+    <button class="btn" id="dexBeatBtn">OPEN THE POKéDEX</button>
   </div>
 </section>
 
@@ -761,6 +770,7 @@ canvas{display:block}
     <div class="tc-row"><span>TRAINER</span><b>YOU</b></div>
     <div class="tc-row"><span>MONEY</span><b>₽ ∞ (IT’S A WEBSITE)</b></div>
     <div class="tc-row"><span>POKéDEX</span><b>1025</b></div>
+    <div class="tc-dexcounts" id="tcDexCounts">SEEN 0 · CAUGHT 0</div>
     <div class="tc-row"><span>PLAY TIME</span><b id="tcTime">0:00</b></div>
     <div class="tc-row"><span>STARTER</span><b id="tcStarter">—</b></div>
     <div class="tc-badges" id="tcBadges" aria-label="Your badges"></div>
@@ -2657,7 +2667,7 @@ function setupTrainerCard(){
   });
   bc.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); bc.click(); } });
   $('#tcClose').addEventListener('click', closeTC);
-  $('#tcNew').addEventListener('click', () => { Sound.select(); try{ localStorage.removeItem('pj-progress'); }catch(e){} history.scrollRestoration = 'manual'; location.reload(); });
+  $('#tcNew').addEventListener('click', () => { Sound.select(); try{ localStorage.removeItem('pj-progress'); localStorage.removeItem('pj-dex-seen'); localStorage.removeItem('pj-dex-caught'); localStorage.removeItem('pj-dex-cache'); }catch(e){} history.scrollRestoration = 'manual'; location.reload(); });
   bd.addEventListener('click', (e) => { if (e.target === bd) closeTC(); });
   const link = document.getElementById('openTC');
   if (link) link.addEventListener('click', () => openTC());
@@ -2787,5 +2797,32 @@ function boot(){
 boot();
 </script>
 <script src="lib/pokedex.js"></script>
+<script>
+  Dex.init({
+    Sound: Sound,
+    TYPES: TYPES,
+    scrollLock: {
+      lock() { if (typeof lenis !== 'undefined' && lenis) lenis.stop(); document.documentElement.style.overflow = 'hidden'; },
+      unlock() { if (typeof lenis !== 'undefined' && lenis) lenis.start(); document.documentElement.style.overflow = ''; }
+    }
+  });
+  document.getElementById('dexBtn').addEventListener('click', () => { Sound.select(); Dex.open(); });
+  document.addEventListener('pj-dex-counts', (e) => {
+    const el = document.getElementById('tcDexCounts');
+    if (el) el.textContent = 'SEEN ' + e.detail.seen + ' · CAUGHT ' + e.detail.caught;
+  });
+  (function () {
+    const beat = document.getElementById('dexBeat');
+    if (!beat) return;
+    const show = () => setTimeout(() => beat.classList.add('show'),
+      matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 2600);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es, ob) => {
+        es.forEach(en => { if (en.isIntersecting) { show(); ob.disconnect(); } });
+      }, { threshold: .5 }).observe(beat);
+    } else show();
+  })();
+  document.getElementById('dexBeatBtn').addEventListener('click', () => { Sound.select(); Dex.open(); });
+</script>
 </body>
 </html>
