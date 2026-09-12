@@ -399,6 +399,7 @@ canvas{display:block}
 .hudbtn{background:none; border:none; cursor:pointer; padding:4px; display:inline-flex}
 .hudbtn svg{display:block}
 @media (max-width:760px){
+  .dex-device{height:min(600px, 85vh)}
   .dex-screens{grid-template-columns:1fr; grid-template-rows:minmax(0,1fr) minmax(0,1.2fr); overflow:hidden}
   .dex-left{overflow:hidden}
   .dex-grid{grid-template-columns:repeat(auto-fill, minmax(72px,1fr))}
@@ -2800,7 +2801,7 @@ boot();
 <script>
   Dex.init({
     Sound: Sound,
-    TYPES: TYPES,
+    TYPES: TYPES.map(t => ({ name: t[0].toLowerCase(), color: t[1] })),
     scrollLock: {
       lock() { if (typeof lenis !== 'undefined' && lenis) lenis.stop(); document.documentElement.style.overflow = 'hidden'; },
       unlock() { if (typeof lenis !== 'undefined' && lenis) lenis.start(); document.documentElement.style.overflow = ''; }
