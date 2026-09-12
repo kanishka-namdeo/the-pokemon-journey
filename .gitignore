@@ -1,0 +1,13 @@
+# Local dev tooling, screenshots, and session config — not part of the published site
+.zcode/
+_dev/
+shots/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and dependencies
+*.log
+node_modules/

@@ -1,0 +1,2658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POKéMON — The Journey · A Scrollytelling Tribute</title>
+<meta name="description" content="Thirty years of Pokémon, told one route at a time. From a bug collector's dream in 1980s Tokyo to 1,025 species and $130 billion. Choose your starter at the end.">
+<meta name="theme-color" content="#17171F">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://kanishka-namdeo.github.io/the-pokemon-journey/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="POKéMON — The Journey">
+<meta property="og:title" content="POKéMON — The Journey · A Scrollytelling Tribute">
+<meta property="og:description" content="Thirty years of Pokémon, told one route at a time. From a bug collector's dream in 1980s Tokyo to 1,025 species and $130 billion. Choose your starter at the end.">
+<meta property="og:url" content="https://kanishka-namdeo.github.io/the-pokemon-journey/">
+<meta property="og:image" content="https://kanishka-namdeo.github.io/the-pokemon-journey/assets/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1440">
+<meta property="og:image:height" content="900">
+<meta property="og:image:alt" content="Pixel-art POKéMON logo over a giant Poké Ball on a starry night sky, with Professor Oak's opening dialogue box.">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="POKéMON — The Journey · A Scrollytelling Tribute">
+<meta name="twitter:description" content="Thirty years of Pokémon, told one route at a time. From a bug collector's dream in 1980s Tokyo to 1,025 species and $130 billion. Choose your starter at the end.">
+<meta name="twitter:image" content="https://kanishka-namdeo.github.io/the-pokemon-journey/assets/og-image.png">
+<meta name="twitter:image:alt" content="Pixel-art POKéMON logo over a giant Poké Ball on a starry night sky, with Professor Oak's opening dialogue box.">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="%23fff" stroke="%2317171F" stroke-width="6"/><path d="M4 50a46 46 0 0 1 92 0z" fill="%23EE1515"/><rect x="4" y="44" width="92" height="12" fill="%2317171F"/><circle cx="50" cy="50" r="14" fill="%23fff" stroke="%2317171F" stroke-width="6"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================= tokens ============================= */
+:root{
+  --ink:#0F1220;            /* deep indigo night — page base */
+  --ink-2:#171B2E;
+  --paper:#FFFDF4;          /* dialogue-box white */
+  --paper-dim:#EFE9D8;
+  --red:#EE1515;            /* Poké Ball */
+  --yellow:#FFCB05;         /* Pikachu */
+  --blue:#3B4CCA;           /* logo blue */
+  --green:#78C850;
+  --dmg0:#9BBC0F; --dmg1:#8BAC0F; --dmg2:#306230; --dmg3:#0F380F;
+  --px:"Press Start 2P", monospace;
+  --body:"Nunito", "Segoe UI", sans-serif;
+  --term:"VT323", monospace;
+  --hud-h:58px;
+}
+*{box-sizing:border-box; margin:0; padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .badge.earned.pop{animation:none}
+  .tc-backdrop,.trainercard{transition:none}
+}
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--body);
+  font-size:17px; line-height:1.65;
+  overflow-x:hidden;
+  transition:background .8s ease;
+}
+/* per-chapter page tint, set via data-theme on <body> */
+body[data-theme="dmg"]{background:#0C2B0C}
+body[data-theme="catch"]{background:#101F2B}
+body[data-theme="types"]{background:#120E22}
+body[data-theme="eevee"]{background:#171009}
+body[data-theme="hof"]{background:#190C13}
+body[data-theme="lab"]{background:#171009}
+
+::selection{background:var(--yellow); color:#17171F}
+:focus-visible{outline:3px dashed var(--yellow); outline-offset:3px; border-radius:4px}
+canvas{display:block}
+
+/* ============================= HUD ============================= */
+.hud{
+  position:fixed; inset:0 0 auto 0; height:var(--hud-h); z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 clamp(12px, 3vw, 28px);
+  background:linear-gradient(rgba(10,12,24,.88), rgba(10,12,24,.55) 80%, transparent);
+  pointer-events:none;
+}
+.hud .brand{display:flex; align-items:center; gap:10px; pointer-events:auto}
+.hud .brand svg{width:22px; height:22px}
+.hud .brand b{font-family:var(--px); font-size:9px; color:var(--yellow); letter-spacing:1px; text-shadow:2px 2px 0 rgba(0,0,0,.6)}
+.badgecase{display:flex; gap:7px; align-items:center; pointer-events:auto}
+.badge{width:24px; height:24px; opacity:.28; filter:grayscale(1) brightness(1.4); transition:all .35s cubic-bezier(.34,1.56,.64,1)}
+.badge.earned{opacity:1; filter:none; transform:scale(1.18)}
+.badge.earned.pop{animation:badgepop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes badgepop{0%{transform:scale(.2) rotate(-40deg)} 70%{transform:scale(1.45) rotate(8deg)} 100%{transform:scale(1.18)}}
+@media (max-width:640px){ .hud .brand b{display:none} .badge{width:19px;height:19px} .soundbtn{width:31px;height:29px} .soundbtn svg{width:17px;height:17px} }
+
+/* ============================= hero ============================= */
+.hero{position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; overflow:hidden}
+.hero canvas{position:absolute; inset:0; width:100%; height:100%}
+.hero-inner{position:relative; z-index:2; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:calc(var(--hud-h) + 24px) 20px 120px; gap:22px; pointer-events:none}
+.hero-inner .dlg{pointer-events:auto}
+.hero .worldof{font-family:var(--px); font-size:clamp(9px, 1.6vw, 13px); color:var(--paper); opacity:.85; letter-spacing:2px}
+.hero h1{
+  font-family:var(--px); font-weight:400;
+  font-size:clamp(38px, 10.5vw, 104px);
+  color:var(--yellow);
+  text-shadow:0.07em 0.07em 0 var(--blue), 0.14em 0.14em 0 rgba(0,0,0,.45);
+  line-height:1.1;
+}
+.hero .sub{font-size:clamp(15px, 2vw, 19px); font-weight:600; color:var(--paper-dim); max-width:34rem; text-shadow:0 2px 12px rgba(8,10,20,.9), 0 0 4px rgba(8,10,20,.7)}
+.hero .sub em{font-style:normal; color:var(--yellow)}
+
+/* dialogue box — the games' text box */
+.dlg{
+  position:relative;
+  background:var(--paper); color:#22222A;
+  border:3px solid #17171F; border-radius:10px;
+  box-shadow:0 0 0 3px var(--paper), 0 0 0 6px #17171F, 0 14px 34px rgba(0,0,0,.5);
+  padding:18px 22px 26px;
+  font-size:clamp(15px, 1.9vw, 17.5px);
+  line-height:1.6;
+  max-width:36rem;
+}
+.dlg .speaker{font-family:var(--px); font-size:9px; color:#8A1A1A; margin-bottom:10px; display:block}
+.dlg .arrow{position:absolute; right:14px; bottom:8px; width:0; height:0; border-left:8px solid transparent; border-right:8px solid transparent; border-top:11px solid #17171F; animation:blink 1.1s steps(2) infinite}
+.dlg .arrow.wait{animation:none; opacity:0}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion: reduce){ .dlg .arrow{animation:none} }
+
+.scrollhint{position:absolute; bottom:26px; left:0; right:0; text-align:center; z-index:2; font-family:var(--px); font-size:8px; color:var(--paper-dim); letter-spacing:2px; animation:blink 1.6s steps(2) infinite}
+@media (prefers-reduced-motion: reduce){ .scrollhint{animation:none} }
+
+/* ============================= chapters ============================= */
+.chapter{position:relative}
+.fig{position:sticky; top:0; height:100vh; height:100svh; z-index:1; overflow:hidden}
+.fig canvas{width:100%; height:100%}
+.steps{position:relative; z-index:2; margin-top:-100vh; margin-top:-100svh; padding:clamp(20px,4vh,40px) clamp(16px,5vw,64px) 10vh; display:flex; flex-direction:column; gap:6vh; pointer-events:none}
+.step{min-height:82svh; display:flex; align-items:center}
+.steps .dlg, .steps .battle, .steps button, .steps a{pointer-events:auto}
+.step > *{max-width:36rem}
+.step:nth-child(odd){justify-content:flex-start}
+.step:nth-child(even){justify-content:flex-end}
+@media (max-width:760px){ .step, .step:nth-child(even){justify-content:center; min-height:74svh} }
+@media (max-width:760px){
+  /* .finale-prefixed to out-rank the base finale rules later in the sheet */
+  .chapter.finale .step{min-height:45svh}
+  .finale .balls{gap:10px}
+  .finale .ballwrap{width:106px}
+  .finale .ballbtn{width:72px; height:72px}
+  .finale .ballbtn .mon img{width:52px; height:52px}
+  /* radial-art chapters: ring lives in the top half, dialogue docks at the
+     bottom (like the games' text boxes); the chip legend is redundant there */
+  #ch-types .step, #ch-eevee .step{align-items:flex-end}
+  #ch-types .step > .dlg, #ch-eevee .step > .dlg{position:sticky; bottom:5svh}
+  #ch-types .typechips{display:none}
+}
+
+.sign{
+  align-self:flex-start;
+  background:#1E6B3A; color:#fff;
+  border:3px solid #0E3A1E; border-radius:8px;
+  box-shadow:inset 0 0 0 2px #2E8B50, 0 8px 18px rgba(0,0,0,.45);
+  padding:12px 18px; margin-bottom:4vh; margin-left:2px;
+  font-family:var(--px); line-height:1.9;
+}
+.sign b{display:block; font-size:clamp(11px,1.8vw,14px); font-weight:400; color:#FFE9A8}
+.sign span{font-size:clamp(7px,1.2vw,8px); opacity:.9; letter-spacing:1px}
+@media (max-width:760px){ .sign{align-self:center} }
+
+/* chapters whose canvas art owns the right side: keep all text left */
+.chapter.side-left .step, .chapter.side-left .step:nth-child(even){justify-content:flex-start}
+.chapter.side-left .step > *{max-width:30rem}
+
+.dlg p + p{margin-top:.7em}
+.dlg .dex-flavor{font-family:var(--term); font-size:1.25em; color:#3A3A46; border-left:3px solid #C9C2AC; padding-left:12px; margin:.6em 0}
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+.chip{font-family:var(--px); font-size:8px; letter-spacing:1px; color:var(--paper-dim); border:2px solid #3A4460; background:rgba(10,12,24,.72); border-radius:6px; padding:7px 9px}
+.chip b{color:var(--yellow); font-weight:400}
+
+.battle{
+  background:var(--paper); color:#22222A;
+  border:3px solid #17171F; border-radius:10px;
+  box-shadow:0 0 0 3px var(--paper), 0 0 0 6px #17171F, 0 14px 34px rgba(0,0,0,.5);
+  padding:20px 22px 24px; max-width:36rem;
+}
+.battle .callout{font-family:var(--px); font-size:clamp(13px,2.4vw,18px); line-height:1.7; color:#17171F; margin-bottom:12px}
+.battle .callout span{color:#C42B2B}
+
+.typechips{display:flex; flex-wrap:wrap; gap:7px; margin-top:16px; justify-content:flex-start}
+.step:nth-child(even) .typechips{justify-content:flex-end}
+@media (max-width:760px){ .typechips{justify-content:center !important} }
+.typechip{font-family:var(--px); font-size:7.5px; padding:6px 8px 5px; border-radius:5px; border:2px solid rgba(0,0,0,.55); text-shadow:1px 1px 0 rgba(255,255,255,.25)}
+
+/* ============================= finale ============================= */
+.finale .steps{padding-bottom:0}
+.finale .step{min-height:50svh}
+.finale .step:nth-child(odd), .finale .step:nth-child(even){justify-content:center}
+.balls{display:flex; gap:clamp(18px,4vw,44px); justify-content:center; align-items:flex-end; margin:1vh auto 4vh; flex-wrap:wrap}
+.ballwrap{display:flex; flex-direction:column; align-items:center; gap:14px; width:150px}
+.ballbtn{
+  position:relative; width:92px; height:92px; border-radius:50%;
+  border:4px solid #17171F; background:linear-gradient(#f2f2f2, #dcdcdc);
+  box-shadow:0 10px 22px rgba(0,0,0,.5), inset -6px -8px 0 rgba(0,0,0,.08);
+  cursor:pointer; transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.ballbtn:hover{transform:translateY(-6px) scale(1.05)}
+.ballbtn .top{
+  position:absolute; inset:-4px -4px 50% -4px; border-radius:96px 96px 0 0;
+  background:linear-gradient(#F35B5B, var(--red));
+  border:4px solid #17171F; border-bottom:none;
+  transform-origin:50% 100%;
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1);
+}
+.ballbtn.open .top{transform:rotateX(180deg) translateY(3px)}
+.ballbtn .band{position:absolute; left:-4px; right:-4px; top:calc(50% - 7px); height:14px; background:#17171F; z-index:2}
+.ballbtn .btn{
+  position:absolute; left:calc(50% - 15px); top:calc(50% - 15px); width:30px; height:30px; border-radius:50%;
+  background:#fff; border:4px solid #17171F; z-index:3;
+  transition:background .3s;
+}
+.ballbtn:hover .btn{background:var(--yellow)}
+.ballbtn .mon{position:absolute; inset:0; z-index:1; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .4s ease .15s}
+.ballbtn.open .mon{opacity:1}
+.ballbtn .mon img{width:64px; height:64px; object-fit:contain; image-rendering:auto; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35))}
+.ballwrap .bname{font-family:var(--px); font-size:10px; color:var(--paper); text-shadow:2px 2px 0 rgba(0,0,0,.6)}
+.ballwrap .btype{font-family:var(--px); font-size:7px; padding:5px 7px 4px; border-radius:5px; border:2px solid rgba(0,0,0,.55); text-shadow:1px 1px 0 rgba(255,255,255,.25)}
+.ballwrap{opacity:.96}
+.ballwrap.faded{opacity:.32; filter:grayscale(.9); pointer-events:none}
+.ballwrap.picked .bname{color:var(--yellow)}
+
+.finale-msg{max-width:36rem; margin:0 auto 4vh}
+.finale-msg[hidden]{display:none}
+
+/* ============================= credits / footer ============================= */
+.credits{position:relative; z-index:2; text-align:center; padding:12vh 20px 9vh; background:rgba(8,9,18,.72); border-top:3px solid #17171F}
+.credits .thanks{font-family:var(--px); font-size:clamp(13px,2.4vw,18px); color:var(--yellow); margin-bottom:26px; text-shadow:3px 3px 0 rgba(0,0,0,.5)}
+.credits p{font-size:14px; color:#B9BDCB; max-width:44rem; margin:0 auto 8px}
+.credits a{color:#8FB6FF}
+.again{display:inline-block; margin-top:26px; font-family:var(--px); font-size:9px; color:var(--ink); background:var(--yellow); border:3px solid #17171F; border-radius:8px; box-shadow:0 0 0 3px var(--yellow), 0 0 0 6px #17171F; padding:12px 18px; cursor:pointer; text-decoration:none}
+.again:hover{background:#FFE066}
+.themebtn{display:inline-block; margin-top:4px; font-family:var(--px); font-size:9px; color:var(--paper); background:var(--red); border:3px solid #17171F; border-radius:8px; box-shadow:0 0 0 3px var(--red), 0 0 0 6px #17171F; padding:12px 18px; cursor:pointer; text-decoration:none}
+.themebtn:hover{background:#FF4040}
+.themebtn.playing{background:#17171F; color:var(--yellow); box-shadow:0 0 0 3px #17171F, 0 0 0 6px var(--red)}
+.themebtn.playing:hover{background:#26263a}
+
+#fx{position:fixed; inset:0; z-index:60; pointer-events:none}
+#wipe{position:fixed; inset:0; z-index:45; pointer-events:none}
+.progressbar{position:fixed; top:0; left:0; right:0; height:3px; background:var(--yellow); transform-origin:0 50%; transform:scaleX(0); transform:scaleX(var(--pg,0)); z-index:55; pointer-events:none}
+@supports (animation-timeline: scroll()){
+  .progressbar{animation: pgrow linear both; animation-timeline: scroll();}
+  @keyframes pgrow{ from{transform:scaleX(0)} to{transform:scaleX(1)} }
+}
+.hud-right{display:flex; align-items:center; gap:14px; pointer-events:auto}
+/* single sound CTA: one switch for all audio — on = SFX + music, off = silent */
+.soundbtn{
+  position:relative;
+  width:36px; height:34px; display:flex; align-items:center; justify-content:center;
+  background:rgba(10,12,24,.72); color:#B9BDCB; border:2px solid #3A4460; border-radius:8px;
+  cursor:pointer; padding:0; transition:color .25s, border-color .25s;
+}
+.soundbtn:hover{color:var(--yellow); border-color:var(--yellow)}
+.soundbtn:focus-visible{outline:2px dashed var(--yellow); outline-offset:2px}
+.soundbtn svg{width:20px; height:20px}
+.soundbtn.muted .wave{display:none}
+.soundbtn:not(.muted) .slash{display:none}
+.soundbtn:not(.muted){color:var(--yellow); border-color:var(--yellow)}
+.ball-clone{position:fixed; z-index:70; pointer-events:none; margin:0}
+
+/* ---- toasts (nudges & discoveries) ---- */
+.toasts{position:fixed; right:16px; bottom:16px; z-index:80; display:flex; flex-direction:column; gap:10px; pointer-events:none; max-width:min(320px, calc(100vw - 32px))}
+.toast{
+  background:var(--paper); color:#22222A;
+  border:3px solid #17171F; border-radius:10px;
+  box-shadow:0 0 0 3px var(--paper), 0 0 0 6px #17171F, 0 12px 28px rgba(0,0,0,.5);
+  padding:12px 15px 13px; font-size:14px; font-weight:600; line-height:1.45;
+  transform:translateY(12px); opacity:0; transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+}
+.toast.show{transform:none; opacity:1}
+.toast b{color:#8A1A1A; display:block; font-family:var(--px); font-size:8.5px; margin-bottom:5px}
+.toast .trow{display:flex; gap:8px; margin-top:9px}
+.toast .tbtn{font-family:var(--px); font-size:8px; background:#17171F; color:var(--yellow); border:0; border-radius:7px; padding:8px 10px; cursor:pointer; pointer-events:auto}
+
+/* ---- trainer card ---- */
+.tc-backdrop{position:fixed; inset:0; z-index:85; background:rgba(8,9,18,.72); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .3s; padding:18px}
+.tc-backdrop.open{opacity:1}
+.tc-backdrop[hidden]{display:none}
+.trainercard{
+  width:min(92vw, 430px); background:linear-gradient(165deg, #FFCB05, #EDA400);
+  border:4px solid #17171F; border-radius:16px;
+  box-shadow:0 0 0 4px #FFCB05, 0 0 0 8px #17171F, 0 26px 60px rgba(0,0,0,.65);
+  padding:20px 22px 18px; color:#17171F;
+  transform:translateY(16px) scale(.95); transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.tc-backdrop.open .trainercard{transform:none}
+.tc-title{font-family:var(--px); font-size:12px; margin-bottom:12px; text-shadow:1px 1px 0 rgba(255,255,255,.4)}
+.tc-row{display:flex; justify-content:space-between; align-items:center; gap:10px; font-weight:800; font-size:14px; padding:7px 0; border-bottom:2px dashed rgba(23,23,31,.28)}
+.tc-row b{font-family:var(--px); font-size:9.5px; text-align:right}
+.tc-badges{display:flex; gap:7px; padding:12px 0 4px; flex-wrap:wrap}
+.tc-badges .badge{width:24px; height:24px}
+.tc-actions{display:flex; gap:10px; margin-top:14px}
+.tc-close,.tc-new{font-family:var(--px); font-size:8.5px; border:0; border-radius:8px; padding:11px 13px; cursor:pointer}
+.tc-close{background:#17171F; color:#FFCB05}
+.tc-new{background:rgba(23,23,31,.12); color:#17171F; border:2px solid #17171F}
+.tc-new:hover{background:#17171F; color:#FFCB05}
+.badgecase{cursor:pointer; transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.badgecase:hover,.badgecase:focus-visible{transform:translateY(-2px)}
+.badgecase:hover .badge:not(.earned){opacity:.5}
+
+/* ---- thunderbolt flash ---- */
+.flash{position:fixed; inset:0; z-index:75; background:#FFFDF4; opacity:0; pointer-events:none}
+
+/* ---- pokéball cursor over interactive canvas art ---- */
+.fig canvas, .hero canvas{
+  cursor:url('data:image/svg+xml;utf8,<svg%20xmlns="http://www.w3.org/2000/svg"%20width="26"%20height="26"><circle%20cx="13"%20cy="13"%20r="11"%20fill="white"%20stroke="%2317171F"%20stroke-width="2"/><path%20d="M2%2013a11%2011%200%200%201%2022%200z"%20fill="%23EE1515"/><rect%20x="2"%20y="11.4"%20width="22"%20height="3.2"%20fill="%2317171F"/><circle%20cx="13"%20cy="13"%20r="3.4"%20fill="white"%20stroke="%2317171F"%20stroke-width="2"/></svg>') 13 13, auto;
+}
+.scrollhint .sub{display:block; font-size:7px; margin-top:7px; opacity:.65; letter-spacing:1.5px}
+.linklike{background:none; border:none; color:#8FB6FF; cursor:pointer; font:inherit; text-decoration:underline; padding:0}
+.soundbtn.dot::after{content:''; position:absolute; top:-3px; right:-3px; width:10px; height:10px; border-radius:50%; background:var(--red); border:2px solid #17171F}
+.soundbtn{position:relative}
+
+.noscript-note{margin:90px auto 0; max-width:34rem; text-align:center}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "POKéMON — The Journey",
+  "url": "https://kanishka-namdeo.github.io/the-pokemon-journey/",
+  "description": "Thirty years of Pokémon, told one route at a time. From a bug collector's dream in 1980s Tokyo to 1,025 species and $130 billion. Choose your starter at the end.",
+  "image": "https://kanishka-namdeo.github.io/the-pokemon-journey/assets/og-image.png",
+  "applicationCategory": "EntertainmentApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "en",
+  "isFamilyFriendly": true,
+  "genre": "Scrollytelling",
+  "author": {
+    "@type": "Person",
+    "name": "kanishka-namdeo",
+    "url": "https://github.com/kanishka-namdeo"
+  }
+}
+</script>
+</head>
+<body data-theme="">
+<div class="progressbar" aria-hidden="true"></div>
+
+<noscript>
+  <p class="noscript-note dlg" style="margin-top:90px">This story is told with animated, scroll-driven scenes, so please enable JavaScript. The text of every chapter still works without it.</p>
+</noscript>
+
+<!-- ================= HUD ================= -->
+<header class="hud">
+  <div class="brand">
+    <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fff" stroke="#17171F" stroke-width="6"/><path d="M4 50a46 46 0 0 1 92 0z" fill="#EE1515"/><rect x="4" y="44" width="92" height="12" fill="#17171F"/><circle cx="50" cy="50" r="14" fill="#fff" stroke="#17171F" stroke-width="6"/></svg>
+    <b>POKéMON · THE JOURNEY</b>
+  </div>
+  <div class="hud-right">
+    <button class="soundbtn muted" id="soundBtn" aria-label="Toggle sound" aria-pressed="false" title="Sound">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/>
+        <path class="wave" d="M16.5 9.5c1.4 1.4 1.4 3.6 0 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path class="wave" d="M19 7.5c2.4 2.4 2.4 6.6 0 9" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path class="slash" d="M16.5 9.5l5 5M21.5 9.5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <nav class="badgecase" id="badgecase" tabindex="0" role="button" aria-label="Badge case — press to view your Trainer Card" title="Your badge case">
+    <svg class="badge" data-badge="0" viewBox="0 0 24 24" role="img" aria-label="Boulder badge"><path d="M7 3h10l4 4v10l-4 4H7l-4-4V7z" fill="#9FA19F" stroke="#3E3F3E" stroke-width="2"/></svg>
+    <svg class="badge" data-badge="1" viewBox="0 0 24 24" role="img" aria-label="Cascade badge"><path d="M12 2c4 5 7 8 7 13a7 7 0 1 1-14 0c0-5 3-8 7-13z" fill="#4F94D4" stroke="#1E4E79" stroke-width="2"/></svg>
+    <svg class="badge" data-badge="2" viewBox="0 0 24 24" role="img" aria-label="Thunder badge"><path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z" fill="#F8D030" stroke="#8A6D00" stroke-width="2"/></svg>
+    <svg class="badge" data-badge="3" viewBox="0 0 24 24" role="img" aria-label="Rainbow badge"><path d="M12 3c4 4.5 7 7.5 7 12a7 7 0 1 1-14 0c0-4.5 3-7.5 7-12z" fill="#7ED6A5" stroke="#1E4E40" stroke-width="2"/><circle cx="12" cy="14" r="3.4" fill="#F8D030" stroke="#8A6D00" stroke-width="1.6"/></svg>
+    <svg class="badge" data-badge="4" viewBox="0 0 24 24" role="img" aria-label="Soul badge"><path d="M12 21C6 16 3 12.5 3 8.8 3 6 5.2 4 7.8 4c1.7 0 3.2.8 4.2 2.2C13 4.8 14.5 4 16.2 4 18.8 4 21 6 21 8.8c0 3.7-3 7.2-9 12.2z" fill="#F07FA5" stroke="#8A2C4E" stroke-width="2"/></svg>
+    <svg class="badge" data-badge="5" viewBox="0 0 24 24" role="img" aria-label="Marsh badge"><path d="M4 4h16v9a8 8 0 0 1-16 0z" fill="#D9A441" stroke="#7A5514" stroke-width="2"/><rect x="8" y="8" width="8" height="3" fill="#7A5514"/></svg>
+    <svg class="badge" data-badge="6" viewBox="0 0 24 24" role="img" aria-label="Volcano badge"><path d="M12 3l9 18H3z" fill="#E8503A" stroke="#7A1E10" stroke-width="2"/><path d="M9.5 13h5" stroke="#7A1E10" stroke-width="2"/></svg>
+    <svg class="badge" data-badge="7" viewBox="0 0 24 24" role="img" aria-label="Earth badge"><circle cx="12" cy="12" r="9" fill="#58A75B" stroke="#1E4E40" stroke-width="2"/><path d="M3.4 10a9 9 0 0 1 17.2 0z" fill="#4F94D4" stroke="#1E4E79" stroke-width="2"/></svg>
+  </nav>
+  </div>
+</header>
+
+<!-- ================= HERO / TITLE SCREEN ================= -->
+<header class="hero" id="top" data-scene="title">
+  <canvas data-scene="title" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <div class="worldof">A SCROLL-DRIVEN STORY</div>
+    <h1>POKéMON</h1>
+    <p class="sub">Thirty years ago, two green-screen cartridges went on sale in Japan.
+      This is the story of how they became <em>the biggest entertainment franchise on Earth</em>.</p>
+    <div class="dlg" style="margin-top:10px">
+      <span class="speaker">OAK</span>
+      <p>Hello there! Welcome to the world of POKéMON! Eight chapters ahead, and at the end, as always, you choose a starter.</p>
+      <span class="arrow" aria-hidden="true"></span>
+    </div>
+  </div>
+  <div class="scrollhint">▼ SCROLL TO START<span class="sub">← → SWITCH ROUTES</span></div>
+</header>
+
+<main>
+
+<!-- ================= CH 1 · ORIGIN (DMG) ================= -->
+<section class="chapter" id="ch-origin" data-scene="dmg" data-theme="dmg" data-badge="0">
+  <div class="fig"><canvas aria-hidden="true"></canvas></div>
+  <div class="steps">
+    <div class="sign"><b>ROUTE 1</b><span>MACHIDA, TOKYO · 1983</span></div>
+    <div class="step">
+      <div class="dlg">
+        <p>Before the games, there was a boy with a net. Machida, 1983. The fields where Satoshi Tajiri had collected beetles so obsessively that his friends called him <strong>Dr. Bug</strong> were being bulldozed into shopping malls.</p>
+        <p>So he began designing a world where nothing gets paved over, and nothing you catch ever has to be given back.</p>
+        <div class="chips"><span class="chip">DR. BUG</span><span class="chip">SATOSHI TAJIRI</span><span class="chip">MACHIDA, TOKYO</span></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>He hand-printed a fanzine called <strong>Game Freak</strong>. Its illustrator, Ken Sugimori, joined him. In 1989 the fanzine became a studio, and in 1990 Tajiri pitched Nintendo a game about <em>trading</em> creatures, the way he’d traded beetles with his friends as a kid.</p>
+        <p>Two Game Boys, one link cable, two versions of the same world. You had to talk to another player to complete your own game.</p>
+        <div class="chips"><span class="chip">GAME FREAK, EST. 1989</span><span class="chip"><b>LINK CABLE</b> = THE BIG IDEA</span></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>Development took six years, with staff sometimes working without pay. On <strong>February 27, 1996</strong>, two Game Boy cartridges went on sale in Japan: <em>Pokémon Red</em> and <em>Pokémon Green</em>.</p>
+        <p>They sold out almost immediately. Nobody, least of all Nintendo, saw what was coming.</p>
+        <div class="chips"><span class="chip"><b>6 YEARS</b> IN DEVELOPMENT</span><span class="chip">FEB 27, 1996</span><span class="chip">2 CARTRIDGES</span></div>
+        <span class="arrow" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 2 · PHENOMENON (CATCH) ================= -->
+<section class="chapter" id="ch-hype" data-scene="catch" data-theme="catch" data-badge="1">
+  <div class="fig"><canvas aria-hidden="true"></canvas></div>
+  <div class="steps">
+    <div class="sign"><b>ROUTE 2</b><span>THE WORLD · 1996–1999</span></div>
+    <div class="step">
+      <div class="battle">
+        <p class="callout">A wild <span>PHENOMENON</span> appeared!</p>
+        <p>Red and Green sold out fast. In April 1997 came the anime, starring Ash Ketchum and a stubborn yellow mouse designed by Atsuko Nishida. <strong>Pikachu</strong> became the franchise’s face: a yellow silhouette a child can draw from memory.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>The trading card game hit Japan in October 1996 and America in January 1999. Schoolyards turned into trading floors. And for the English dub, a producer named Norman J. Grossfeld wrote four words that outlived the cartoon and became a global catchphrase: <strong>“Gotta catch ’em all!”</strong></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>On <strong>September 28, 1998</strong>, Red and Blue finally launched in North America, two and a half years after Japan. Red, Green and Blue would go on to sell more than 31 million copies worldwide. Schoolyards from Shibuya to San Jose were running on the same rules.</p>
+        <div class="chips"><span class="chip"><b>31M+</b> COPIES</span><span class="chip">ANIME · 1997</span><span class="chip">TCG IN THE WEST · 1999</span></div>
+        <span class="arrow" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 3 · POKéDEX GROWS ================= -->
+<section class="chapter" id="ch-dex" data-scene="dex" data-theme="dex" data-badge="2">
+  <div class="fig"><canvas aria-hidden="true"></canvas></div>
+  <div class="steps">
+    <div class="sign"><b>ROUTE 3</b><span>NINE REGIONS · 1996–2022</span></div>
+    <div class="step">
+      <div class="dlg">
+        <p>Every new generation opened a new region: Kanto, Johto, Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea. Each stocked with new creatures to find, trade and battle.</p>
+        <p>The <strong>Pokédex</strong>, the in-game encyclopedia, became the franchise’s heartbeat. The number only ever goes up.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p><strong>151</strong> species in 1996. <strong>251</strong> by 1999. Then 386. 493. 649. 721. 809. 898.</p>
+        <p>Keep scrolling. Watch the ball fill.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>Today the Pokédex holds <strong>1,025 Pokémon</strong>, from Bulbasaur (#0001) to Pecharunt (#1025). The count has held steady since 2023.</p>
+        <p>Somewhere in there is your favorite. <span style="font-family:var(--term); font-size:1.15em">(It’s Gengar. It’s always Gengar.)</span></p>
+        <span class="arrow" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 4 · TYPES ================= -->
+<section class="chapter side-left" id="ch-types" data-scene="types" data-theme="types" data-badge="3">
+  <div class="fig"><canvas aria-hidden="true"></canvas></div>
+  <div class="steps">
+    <div class="sign"><b>ROUTE 4</b><span>18 TYPES · SUPER EFFECTIVE</span></div>
+    <div class="step">
+      <div class="dlg">
+        <p>Every Pokémon has a <strong>type</strong>, and types decide everything. Fire burns Grass. Water douses Fire. Grass drinks Water. What began as rock-paper-scissors is now an eighteen-way matrix, balanced and patched for thirty years.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>Trainers don’t memorize stats. They memorize <em>relationships</em>. One super-effective hit doubles your damage. One careless switch-in ends a run.</p>
+        <p>The wheel turns as you scroll. Watch the triangle in the middle: every edge is a lesson every ten-year-old learned the hard way.</p>
+        <div class="typechips" aria-label="The 18 Pokémon types">
+          <span class="typechip" style="background:#A8A878">NORMAL</span><span class="typechip" style="background:#F08030">FIRE</span><span class="typechip" style="background:#6890F0">WATER</span><span class="typechip" style="background:#F8D030">ELECTRIC</span><span class="typechip" style="background:#78C850">GRASS</span><span class="typechip" style="background:#98D8D8">ICE</span><span class="typechip" style="background:#C03028">FIGHTING</span><span class="typechip" style="background:#A040A0">POISON</span><span class="typechip" style="background:#E0C068">GROUND</span><span class="typechip" style="background:#A890F0">FLYING</span><span class="typechip" style="background:#F85888">PSYCHIC</span><span class="typechip" style="background:#A8B820">BUG</span><span class="typechip" style="background:#B8A038">ROCK</span><span class="typechip" style="background:#705898">GHOST</span><span class="typechip" style="background:#7038F8">DRAGON</span><span class="typechip" style="background:#705848">DARK</span><span class="typechip" style="background:#B8B8D0">STEEL</span><span class="typechip" style="background:#EE99AC">FAIRY</span>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>The matrix still evolves. <strong>Steel</strong> arrived in 1999 to check the Psychic types that ruled the first games. <strong>Fairy</strong> followed in 2013 to finally tame the dragons. Balance patches — trading-card edition.</p>
+        <span class="arrow" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 5 · EVOLUTION (EEVEE) ================= -->
+<section class="chapter side-left" id="ch-eevee" data-scene="eevee" data-theme="eevee" data-badge="4">
+  <div class="fig"><canvas aria-hidden="true"></canvas></div>
+  <div class="steps">
+    <div class="sign"><b>ROUTE 5</b><span>EEVEE · 8 DESTINIES</span></div>
+    <div class="step">
+      <div class="dlg">
+        <span class="dex-flavor">“Its genetic code is irregular. It may mutate if it is exposed to radiation from element Stones.”</span>
+        <p style="margin-top:.8em">— the original Red and Blue Pokédex, on <strong>Eevee</strong>. Eevee is the franchise’s idea of pure potential: one Pokémon, eight possible destinies.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>Three destinies come from <strong>stones</strong>: Water, Thunder, Fire. Two from <strong>friendship</strong>: Espeon walks beside you by day, Umbreon by night. Leafeon and Glaceon evolved beside mossy and frozen rocks, though Stones took over that job later.</p>
+        <p>And Sylveon needed nothing but affection and a Fairy-type move.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>The franchise evolved the same way. Games, cards, anime, movies, apps: branches off the same trunk, each one a different answer to the same question. <em>What could this creature become next?</em></p>
+        <span class="arrow" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 6 · GO ================= -->
+<section class="chapter" id="ch-go" data-scene="go" data-theme="go" data-badge="5">
+  <div class="fig"><canvas aria-hidden="true"></canvas></div>
+  <div class="steps">
+    <div class="sign"><b>ROUTE 6</b><span>THE REAL WORLD · JULY 6, 2016</span></div>
+    <div class="step">
+      <div class="dlg">
+        <p>On <strong>July 6, 2016</strong>, the game left the screen. Pokémon GO put the Pokédex in your pocket and the wild in your neighborhood. <strong>75 million people</strong> downloaded it in the first week alone.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>Parks filled at midnight. At the July 2016 peak, <strong>45 million people played every day</strong>. Strangers compared catches outside PokéStops, and a Snorlax nap could block a city street. For one summer, the biggest crowd in gaming wasn’t in a stadium. It was outside. The link cable was gone. The whole street was the cable now.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>Nearly a <strong>billion downloads</strong> and <strong>nine billion dollars</strong> later, people are still out there walking, catching whatever they find. The game crossed $9B in revenue by its tenth anniversary in July 2026.</p>
+        <div class="chips"><span class="chip"><b>75M</b> FIRST WEEK</span><span class="chip"><b>45M</b> DAILY PEAK</span><span class="chip"><b>$9B</b> REVENUE</span></div>
+        <span class="arrow" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 7 · HALL OF FAME ================= -->
+<section class="chapter side-left" id="ch-hof" data-scene="hof" data-theme="hof" data-badge="6">
+  <div class="fig"><canvas aria-hidden="true"></canvas></div>
+  <div class="steps">
+    <div class="sign"><b>INDIGO PLATEAU</b><span>HALL OF FAME · THE RECORD</span></div>
+    <div class="step">
+      <div class="dlg">
+        <p>In the games, the <strong>Hall of Fame</strong> is where your journey is recorded forever.</p>
+        <p>Here is the record, thirty years in. Keep scrolling. The numbers are still counting.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>More than <strong>515 million games</strong> shipped. More than <strong>85 billion trading cards</strong> printed. That’s about ten for every person alive.</p>
+        <p>And in February 2026, a single Pikachu Illustrator card sold at auction for <strong>$16.5 million</strong>. The most expensive trading card ever sold.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="dlg">
+        <p>Add it up and you get roughly <strong>$130 billion</strong>: the highest-grossing media franchise of all time, ahead of Mickey Mouse and Star Wars.</p>
+        <p>All of it started with a boy who ran out of fields to search. He never stopped collecting.</p>
+        <span class="arrow" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 8 · OAK'S LAB (FINALE) ================= -->
+<section class="chapter finale" id="ch-lab" data-scene="lab" data-theme="lab" data-badge="7">
+  <div class="fig"><canvas aria-hidden="true"></canvas></div>
+  <div class="steps">
+    <div class="sign"><b>OAK’S LAB</b><span>PALLET TOWN · YOUR TURN</span></div>
+    <div class="step">
+      <div class="dlg" id="labIntro" style="max-width:40rem">
+        <span class="speaker">OAK</span>
+        <p>“Your very own POKéMON legend is about to unfold! A world of dreams and adventures with POKéMON awaits! Let’s go!”</p>
+        <p style="margin-top:.8em">Three Poké Balls are waiting on the table. You may choose only one. Choose well.</p>
+      </div>
+    </div>
+    <div class="step" style="flex-direction:column; justify-content:center; gap:10px; min-height:62svh">
+      <div class="balls" role="group" aria-label="Choose your starter Pokémon">
+        <div class="ballwrap" data-starter="1">
+          <button class="ballbtn" aria-label="Choose Bulbasaur, the Grass type">
+            <span class="top" aria-hidden="true"></span>
+            <span class="band" aria-hidden="true"></span>
+            <span class="mon" aria-hidden="true"><img data-art="1" alt=""></span>
+            <span class="btn" aria-hidden="true"></span>
+          </button>
+          <span class="bname">BULBASAUR</span>
+          <span class="btype" style="background:#78C850">GRASS</span>
+        </div>
+        <div class="ballwrap" data-starter="4">
+          <button class="ballbtn" aria-label="Choose Charmander, the Fire type">
+            <span class="top" aria-hidden="true"></span>
+            <span class="band" aria-hidden="true"></span>
+            <span class="mon" aria-hidden="true"><img data-art="4" alt=""></span>
+            <span class="btn" aria-hidden="true"></span>
+          </button>
+          <span class="bname">CHARMANDER</span>
+          <span class="btype" style="background:#F08030">FIRE</span>
+        </div>
+        <div class="ballwrap" data-starter="7">
+          <button class="ballbtn" aria-label="Choose Squirtle, the Water type">
+            <span class="top" aria-hidden="true"></span>
+            <span class="band" aria-hidden="true"></span>
+            <span class="mon" aria-hidden="true"><img data-art="7" alt=""></span>
+            <span class="btn" aria-hidden="true"></span>
+          </button>
+          <span class="bname">SQUIRTLE</span>
+          <span class="btype" style="background:#6890F0">WATER</span>
+        </div>
+      </div>
+      <div class="dlg finale-msg" id="finaleMsg" hidden>
+        <span class="speaker">OAK</span>
+        <p id="finaleText"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= CREDITS ================= -->
+<footer class="credits">
+  <p class="thanks">THANKS FOR PLAYING!</p>
+  <p>Eight routes. Eight badges. Your case is full. <button class="linklike" id="openTC">Check your Trainer Card.</button></p>
+  <p>Sprites and artwork come from <a href="https://pokeapi.co" rel="noopener">PokéAPI</a>. If the sprites didn’t load, you met MissingNo., a legendary glitch in its own right.</p>
+  <p>Sound effects and chiptune loops come from the CC0 packs by <a href="https://opengameart.org/content/512-sound-effects-8-bit-style" rel="noopener">Juhani Junkala</a>. Flip the speaker (top right) for the full Game Boy feel.</p>
+  <p>Like any good adaptation, the journey has a TV opening. It plays when your Trainer Card appears — or on demand:</p>
+  <p><button class="themebtn" id="themeBtn">▶ PLAY THE OPENING THEME</button></p>
+  <p>This is a fan-made tribute, built for the love of the game. POKéMON and all character names are trademarks of Nintendo, Creatures Inc. and GAME FREAK inc.</p>
+  <a class="again" href="#top">▼ PRESS START TO PLAY AGAIN</a>
+</footer>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<canvas id="wipe" aria-hidden="true"></canvas>
+<div class="flash" id="flash" aria-hidden="true"></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<div class="tc-backdrop" id="tcBackdrop" hidden>
+  <div class="trainercard" role="dialog" aria-modal="true" aria-label="Trainer Card">
+    <div class="tc-title">TRAINER CARD</div>
+    <div class="tc-row"><span>TRAINER</span><b>YOU</b></div>
+    <div class="tc-row"><span>MONEY</span><b>₽ ∞ (IT’S A WEBSITE)</b></div>
+    <div class="tc-row"><span>POKéDEX</span><b>1025</b></div>
+    <div class="tc-row"><span>PLAY TIME</span><b id="tcTime">0:00</b></div>
+    <div class="tc-row"><span>STARTER</span><b id="tcStarter">—</b></div>
+    <div class="tc-badges" id="tcBadges" aria-label="Your badges"></div>
+    <div class="tc-actions">
+      <button class="tc-close" id="tcClose">CLOSE</button>
+      <button class="tc-new" id="tcNew">NEW JOURNEY</button>
+    </div>
+  </div>
+</div>
+
+<script src="lib/gsap.min.js"></script>
+<script src="lib/ScrollTrigger.min.js"></script>
+<script src="lib/SplitText.min.js"></script>
+<script src="lib/ScrambleTextPlugin.min.js"></script>
+<script src="lib/Physics2DPlugin.min.js"></script>
+<script src="lib/MotionPathPlugin.min.js"></script>
+<script src="lib/lenis.min.js"></script>
+<script>
+'use strict';
+/* ============================================================
+   POKéMON — THE JOURNEY
+   Sticky-canvas scrollytelling. One draw(t, time) per scene.
+   ============================================================ */
+const $  = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+const clamp = (v,a=0,b=1) => Math.min(b, Math.max(a,v));
+const lerp  = (a,b,t) => a + (b-a)*t;
+const ease  = t => t*t*(3-2*t);
+const easeOut = t => 1 - Math.pow(1-t, 3);
+const easeOutBack = t => { const c=1.70158; const u=t-1; return 1 + (c+1)*u*u*u + c*u*u; };
+const phase = (t,a,b) => clamp((t-a)/(b-a));
+const TAU = Math.PI*2;
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============================================================
+   MOTION STACK — GSAP + Lenis, vendored in lib/.
+   Everything here is an enhancement; the site degrades to the
+   hand-rolled engine below if any library fails to load.
+   ============================================================ */
+const HAS_GSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+const G = HAS_GSAP ? window.gsap : null;
+if (HAS_GSAP) G.registerPlugin(window.ScrollTrigger, window.SplitText, window.ScrambleTextPlugin, window.Physics2DPlugin, window.MotionPathPlugin);
+const HAS_LENIS = HAS_GSAP && typeof window.Lenis !== 'undefined';
+let lenis = null;
+
+/* 8-bit sound — synthesized chiptune core + CC0 sampled cues (audio/, Juhani
+   Junkala — see audio/ATTRIBUTION.md). Muted by default, persisted.
+   Sampled cues play through <audio> elements so they also work when the site
+   is opened from file://; if a file is missing they fall back to the synth. */
+const Sound = (() => {
+  let actx = null, on = false, warmed = false;
+  try { on = localStorage.getItem('pj-sound') === 'on'; } catch(e){}
+  function ensure(){
+    if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+  }
+  function blip(freq, dur=0.08, type='square', vol=0.11, when=0){
+    if (!on) return; ensure();
+    const t0 = actx.currentTime + when;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t0);
+    g.gain.setValueAtTime(vol, t0);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g).connect(actx.destination);
+    o.start(t0); o.stop(t0 + dur + 0.03);
+  }
+  function sweep(f0, f1, dur=0.14, type='square', vol=0.12, when=0){
+    if (!on) return; ensure();
+    const t0 = actx.currentTime + when;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t0);
+    o.frequency.exponentialRampToValueAtTime(Math.max(40, f1), t0 + dur);
+    g.gain.setValueAtTime(vol, t0);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g).connect(actx.destination);
+    o.start(t0); o.stop(t0 + dur + 0.03);
+  }
+  const seq = (notes, type='square', vol=0.11) => notes.forEach(([f, dt, d]) => blip(f, d || 0.09, type, vol, dt));
+
+  const SFX_SRC = {
+    badge:'audio/sfx/badge.wav',   gotcha:'audio/sfx/gotcha.wav', pick:'audio/sfx/pick.wav',
+    wipe:'audio/sfx/wipe.wav',     zap:'audio/sfx/zap.wav',       pet:'audio/sfx/pet.wav',
+    select:'audio/sfx/select.wav', coin:'audio/sfx/coin.wav',     error:'audio/sfx/error.wav',
+    poke:'audio/sfx/poke.wav',
+  };
+  /* sampled cue with synth fallback; slight pitch jitter keeps repeats organic.
+     vol is element volume (0..1); jitter detunes via playbackRate. */
+  function cue(name, fallback, vol=0.5, jitter=0){
+    if (!on) return;
+    const src = SFX_SRC[name];
+    if (!src){ fallback(); return; }
+    const a = new Audio(src);
+    a.setAttribute('aria-hidden', 'true');
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.volume = Math.min(1, Math.max(0, vol));
+    if (jitter){
+      a.preservesPitch = false;
+      try{ a.webkitPreservesPitch = false; }catch(e){}
+      a.playbackRate = 1 + (Math.random()*2 - 1)*jitter;
+    }
+    const p = a.play();
+    if (p && p.catch) p.catch(() => { a.remove(); try{ fallback(); }catch(e){} });
+    a.addEventListener('ended', () => a.remove());
+  }
+  function preload(){
+    if (warmed) return;
+    warmed = true;
+    Object.values(SFX_SRC).forEach(src => { const a = new Audio(src); a.preload = 'auto'; a.load(); });
+    ['title','route','dex','finale','theme-open','theme-full'].forEach(n => { const a = new Audio('audio/music/'+n+'.wav'); a.preload = 'auto'; a.load(); });
+  }
+  return {
+    get on(){ return on; },
+    toggle(){
+      on = !on;
+      if (on){ ensure(); preload(); }
+      try{ localStorage.setItem('pj-sound', on ? 'on' : 'off'); }catch(e){}
+      return on;
+    },
+    ensure, preload,
+    get context(){ return actx; },
+    badge(vol=0.55){ cue('badge', () => seq([[523,0],[659,0.09],[784,0.18,0.16]]), vol, 0.03); },
+    pop(){ blip(880,0.06); blip(1174,0.05,'square',0.08,0.06); },
+    gotcha(vol=0.6){ cue('gotcha', () => seq([[784,0],[784,0.1],[880,0.2],[1046,0.3,0.18],[1318,0.45,0.3]]), vol, 0.02); },
+    pick(vol=0.65){ cue('pick', () => seq([[392,0],[523,0.1],[659,0.2],[784,0.3,0.2],[1046,0.42,0.3]]), vol); },
+    hover(){ blip(1250,0.03,'square',0.05); },
+    wipe(vol=0.5){ cue('wipe', () => { blip(196,0.16,'triangle',0.09); blip(294,0.12,'triangle',0.07,0.12); }, vol, 0.05); },
+    cry(vol=0.5){ cue('pet', () => { sweep(1500,650,0.12); sweep(1500,650,0.1,'square',0.08,0.15); }, vol, 0.08); },
+    thunder(vol=0.6){ cue('zap', () => { sweep(2400,120,0.4,'sawtooth',0.14); blip(90,0.35,'square',0.12); }, vol, 0.04); },
+    flute(){ seq([[659,0,.3],[784,.32,.3],[988,.64,.3],[1046,.96,.44],[988,1.44,.3],[784,1.76,.3],[659,2.08,.55]],'triangle',0.13); },
+    glitch(){ seq([[311,0,.09],[233,.09,.09],[175,.18,.09],[117,.27,.14]]); },
+    select(vol=0.45){ cue('select', () => { blip(880,0.05); blip(1320,0.06,'square',0.09,0.05); }, vol, 0.04); },
+    coin(vol=0.4){ cue('coin', () => { blip(988,0.07,'square',0.09); blip(1319,0.18,'square',0.09,0.07); }, vol, 0.03); },
+    error(vol=0.45){ cue('error', () => seq([[220,0,.09],[196,.1,.14]]), vol, 0.03); },
+    poke(vol=0.5){ cue('poke', () => blip(660,0.08), vol, 0.05); },
+  };
+})();
+
+/* Route music — CC0 chiptune loops by Juhani Junkala (audio/music/), one track
+   per chapter mood, ~1.2s crossfade on theme change. Plays only while the
+   HUD's single sound switch is on (Music.on follows it via Music.set). */
+const Music = (() => {
+  let on = true;
+  try { on = localStorage.getItem('pj-music') !== 'off'; } catch(e){}
+  const FOR_THEME = { '':'title', title:'title',
+                      dmg:'route', catch:'route', go:'route',
+                      dex:'dex', types:'dex', eevee:'dex',
+                      hof:'finale', lab:'finale' };
+  const BASE = 0.3, FEAT = 0.38;
+  let current = null;   // { el, name, raf } — chapter loop
+  let feature = null;   // { el, raf } — one-shot theme song over the loop
+  function trackFor(theme){ return FOR_THEME[theme] || 'title'; }
+  function fadeTo(track, vol, dur, then){
+    cancelAnimationFrame(track.raf);
+    const el = track.el, from = el.volume, t0 = performance.now();
+    const step = t => {
+      const k = dur ? Math.min(1, (t - t0)/(dur*1000)) : 1;
+      el.volume = Math.max(0, Math.min(1, from + (vol - from)*k));
+      if (k < 1) track.raf = requestAnimationFrame(step);
+      else if (then) then();
+    };
+    track.raf = requestAnimationFrame(step);
+  }
+  function retire(track, fade){
+    fadeTo(track, 0, fade, () => { track.el.pause(); track.el.remove(); });
+  }
+  function play(name){
+    if (current && current.name === name) return;
+    const old = current; current = null;
+    if (old) retire(old, 1.1);
+    const el = new Audio('audio/music/' + name + '.wav');
+    el.setAttribute('aria-hidden', 'true');
+    el.style.display = 'none';
+    document.body.appendChild(el);
+    el.loop = true; el.volume = 0;
+    const track = { el, name, raf: 0 };
+    current = track;
+    const p = el.play();
+    if (p && p.catch) p.catch(() => {});
+    fadeTo(track, BASE, 1.2);
+  }
+  function halt(fast){
+    const old = current; current = null;
+    if (old) retire(old, fast ? 0.35 : 0.8);
+  }
+  /* one-shot feature song (the opening theme): ducks the chapter loop,
+     hands back to it when it ends or is stopped */
+  function _stopFeature(fade, resume){
+    if (!feature) return;
+    const f = feature; feature = null;
+    fadeTo(f, 0, fade, () => { f.el.pause(); f.el.remove(); });
+    if (resume) sync();
+  }
+  function playFeature(name, onEnd){
+    if (!Sound.on) return;
+    _stopFeature(0.4, false);
+    const old = current;
+    if (old) fadeTo(old, 0, 0.5, () => old.el.pause());
+    const el = new Audio('audio/music/' + name + '.wav');
+    el.setAttribute('aria-hidden', 'true');
+    el.style.display = 'none';
+    document.body.appendChild(el);
+    el.volume = 0;
+    const track = { el, name, raf: 0 };
+    feature = track;
+    const p = el.play();
+    if (p && p.catch) p.catch(() => {});
+    fadeTo(track, FEAT, 0.8);
+    el.addEventListener('ended', () => {
+      if (feature === track) feature = null;
+      el.remove();
+      if (onEnd) onEnd();
+      sync();
+    });
+  }
+  function stopFeature(fade = 0.4){ _stopFeature(fade, true); }
+  function sync(){
+    if (feature){
+      if (!(on && Sound.on)) _stopFeature(0.3, false);
+      return;
+    }
+    if (!(on && Sound.on)){ halt(); return; }
+    const name = trackFor(document.body.dataset.theme || '');
+    if (current && current.name === name){
+      if (current.el.paused){
+        const p = current.el.play();
+        if (p && p.catch) p.catch(() => {});
+      }
+      fadeTo(current, BASE, 0.8);
+      return;
+    }
+    play(name);
+  }
+  function set(v){
+    on = !!v;
+    if (!on) _stopFeature(0.3, false);
+    try{ localStorage.setItem('pj-music', on ? 'on' : 'off'); }catch(e){}
+    sync();
+  }
+  return { get on(){ return on; }, get featuring(){ return !!feature; }, toggle(){ set(!on); return on; }, set, sync, playFeature, stopFeature };
+})();
+
+/* one place where chapter themes change — keeps body tint + route music in step */
+function setTheme(t){
+  document.body.dataset.theme = t;
+  Music.sync();
+}
+
+/* ---- toasts (nudges & discoveries) ---- */
+const BADGE_NAMES = ['Boulder','Cascade','Thunder','Rainbow','Soul','Marsh','Volcano','Earth'];
+let nowSec = 0;
+function toast(title, body, opts={}){
+  const box = document.getElementById('toasts');
+  if (!box) return null;
+  if (opts.sound !== false) Sound.coin();
+  const t = document.createElement('div');
+  t.className = 'toast';
+  const b = document.createElement('b'); b.textContent = title; t.appendChild(b);
+  const s = document.createElement('span'); s.textContent = body; t.appendChild(s);
+  if (opts.actions){
+    const row = document.createElement('div'); row.className = 'trow';
+    opts.actions.forEach(a => {
+      const btn = document.createElement('button'); btn.className = 'tbtn'; btn.textContent = a.label;
+      btn.addEventListener('click', () => { Sound.select(); a.fn(); dismiss(); });
+      row.appendChild(btn);
+    });
+    t.appendChild(row);
+  }
+  box.appendChild(t);
+  while (box.children.length > 3) box.firstElementChild.remove();
+  requestAnimationFrame(() => t.classList.add('show'));
+  const dismiss = () => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); };
+  setTimeout(dismiss, opts.ttl || 4800);
+  return { el: t, dismiss };
+}
+
+/* shiny hunt: one pixel sprite per page load may spawn shiny (1 in 16) */
+let SHINY_KEY = null, shinyToasted = false;
+if (Math.random() < 1/16){
+  const keys = ['pixPikachu','pixRattata','pixCaterpie','pixGengar','pixLapras','pixSnorlax'];
+  SHINY_KEY = keys[(Math.random()*keys.length)|0];
+}
+
+/* Pokéball iris wipe — the transition between chapters */
+const Iris = (() => {
+  let cvs = null, c = null, p = 0, active = false;
+  function size(){
+    if (!cvs) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    cvs.width = innerWidth * dpr; cvs.height = innerHeight * dpr;
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+  }
+  function draw(){
+    if (!c) return;
+    const w = innerWidth, h = innerHeight;
+    c.clearRect(0, 0, w, h);
+    if (p <= 0.002) return;
+    const half = h/2 * ease(p);
+    c.fillStyle = '#EE1515'; c.fillRect(0, 0, w, half);
+    c.fillStyle = '#F4F4F4'; c.fillRect(0, h - half, w, half);
+    const hb = 22 * p;
+    if (hb > 0.5){ c.fillStyle = '#17171F'; c.fillRect(0, half - hb/2, w, hb); }
+    const r = 30 * clamp((p - 0.45)/0.55);
+    if (r > 1){
+      c.fillStyle = '#17171F'; c.beginPath(); c.arc(w/2, h/2, r, 0, TAU); c.fill();
+      c.fillStyle = '#F4F4F4'; c.beginPath(); c.arc(w/2, h/2, r*0.72, 0, TAU); c.fill();
+      c.fillStyle = '#EE1515'; c.beginPath(); c.arc(w/2, h/2, r*0.3, 0, TAU); c.fill();
+    }
+  }
+  function fire(onClosed){
+    if (active || REDUCED || !HAS_GSAP) return;
+    active = true; Sound.wipe();
+    const obj = { v: 0 };
+    G.timeline({ onComplete(){ active = false; p = 0; draw(); } })
+      .to(obj, { v: 1, duration: 0.34, ease: 'power3.in', onUpdate(){ p = obj.v; draw(); } })
+      .add(() => { if (onClosed) onClosed(); Sound.pop(); })
+      .to(obj, { v: 0, duration: 0.42, ease: 'power3.out', onUpdate(){ p = obj.v; draw(); } }, '+=0.08');
+  }
+  function init(){ cvs = document.getElementById('wipe'); if (cvs) c = cvs.getContext('2d'); size(); }
+  return { fire, size, init };
+})();
+
+function scrollToY(y, immediate){
+  if (lenis) lenis.scrollTo(y, { immediate: !!immediate });
+  else window.scrollTo({ top: y, behavior: immediate ? 'auto' : (REDUCED ? 'auto' : 'smooth') });
+}
+
+/* text helpers that need GSAP */
+function scrambleTo(el, chars, dur){
+  if (!el || !HAS_GSAP || REDUCED) return;
+  const txt = el.textContent;
+  if (!txt) return;
+  G.to(el, { duration: dur || (0.6 + txt.length*0.012), scrambleText: { text: txt, chars: chars || 'POKeMONROUTE0123456789★·', speed: 0.7 } });
+}
+
+/* physics2D confetti on the fixed fx overlay */
+const fx2 = { list: [] };
+function burst2D(x, y, colors, n=60, power=1){
+  if (REDUCED) return;
+  if (!HAS_GSAP){ burstParticles(fxParts, x, y, colors, Math.min(n, 60), power); return; }
+  for (let i=0; i<n; i++){
+    const q = { x, y, c: colors[i % colors.length], s: 2.5 + Math.random()*4, rot: Math.random()*360 };
+    fx2.list.push(q);
+    G.to(q, {
+      rotation: Math.random()*720, duration: 1.0 + Math.random()*0.8, ease: 'none',
+      physics2D: { velocity: 240*power + Math.random()*340, angle: -90 + (Math.random()-0.5)*120, gravity: 950 },
+      onComplete(){ const ix = fx2.list.indexOf(q); if (ix >= 0) fx2.list.splice(ix, 1); }
+    });
+  }
+}
+
+/* dialogue card presentation: slide-in + typewriter + chips + delayed ▼ */
+function presentCard(card){
+  if (card.__presented) return;
+  card.__presented = true;
+  if (REDUCED || !HAS_GSAP) return;
+  card.__entering = true;
+  G.fromTo(card, { y: 34, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: 'power3.out', onComplete(){ card.__entering = false; } });
+  const flavor = card.querySelector('.dex-flavor');
+  if (flavor) scrambleTo(flavor, 'POKeMON„“0123456789', 1.3);
+  const ps = [...card.querySelectorAll(':scope > p')];
+  let totalChars = 0;
+  ps.forEach((p2, i) => {
+    totalChars += p2.textContent.length;
+    try {
+      const split = SplitText.create(p2, { type: 'chars,words' });
+      G.from(split.chars, { opacity: 0, duration: 0.02, stagger: i === 0 ? 0.007 : 0.0055, ease: 'none', delay: 0.18 + i*0.25 });
+    } catch(e) { /* splitting failed: leave text as-is */ }
+  });
+  const chips = card.querySelectorAll('.chip, .typechip');
+  if (chips.length) G.from(chips, { opacity: 0, y: 10, duration: 0.4, stagger: 0.045, ease: 'power2.out', delay: 0.55 });
+  const arrow = card.querySelector('.arrow');
+  if (arrow){
+    arrow.classList.add('wait');
+    G.delayedCall(0.7 + totalChars*0.007, () => arrow.classList.remove('wait'));
+  }
+}
+
+/* hero entrance timeline */
+function heroEntrance(){
+  if (REDUCED || !HAS_GSAP) return;
+  const hero = SCENES.title.hero;
+  const tl = G.timeline({ delay: 0.15 });
+  tl.fromTo(hero, { ballScale: 0, ballRot: -0.95, pxIn: -320 },
+    { ballScale: 1, ballRot: -0.12, pxIn: 0, duration: 1.0, ease: 'elastic.out(1, 0.6)', immediateRender: true });
+  const split = SplitText.create('.hero h1', { type: 'chars' });
+  tl.from(split.chars, { yPercent: 130, opacity: 0, duration: 0.65, stagger: 0.055, ease: 'back.out(1.6)' }, 0.15);
+  const wo = document.querySelector('.hero .worldof');
+  if (wo) G.to(wo, { duration: 0.9, scrambleText: { text: wo.textContent, chars: 'POKeMON!★0123456789' } }, 0.05);
+  tl.from('.hero .sub', { opacity: 0, y: 14, duration: 0.55, ease: 'power2.out' }, 0.55);
+  const dlg = document.querySelector('.hero .dlg');
+  if (dlg){
+    G.from(dlg, { opacity: 0, y: 18, duration: 0.55, ease: 'power3.out', delay: 0.75, onStart(){ dlg.__entering = true; }, onComplete(){ dlg.__entering = false; } });
+    const p2 = dlg.querySelector('p');
+    if (p2){
+      try {
+        const sp = SplitText.create(p2, { type: 'chars,words' });
+        G.from(sp.chars, { opacity: 0, duration: 0.02, stagger: 0.012, ease: 'none', delay: 0.9 });
+      } catch(e){}
+    }
+  }
+}
+
+function mulberry32(seed){ return function(){ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+
+/* ---------- data ---------- */
+const GEN = [
+  {n:1, year:1996, region:'KANTO',   count:151, color:'#EE1515', mon:25 },
+  {n:2, year:1999, region:'JOHTO',   count:100, color:'#E8A21B', mon:249 },
+  {n:3, year:2002, region:'HOENN',   count:135, color:'#3BAF5C', mon:384 },
+  {n:4, year:2006, region:'SINNOH',  count:107, color:'#45C0DC', mon:483 },
+  {n:5, year:2010, region:'UNOVA',   count:156, color:'#6E6EE0', mon:644 },
+  {n:6, year:2013, region:'KALOS',   count:72,  color:'#E0609E', mon:716 },
+  {n:7, year:2016, region:'ALOLA',   count:88,  color:'#F2A13B', mon:791 },
+  {n:8, year:2019, region:'GALAR',   count:89,  color:'#4CA64C', mon:888 },
+  {n:9, year:2022, region:'PALDEA',  count:127, color:'#9D5CE0', mon:1008},
+];
+GEN.forEach((g,i)=>{ g.cumStart = GEN.slice(0,i).reduce((s,x)=>s+x.count,0); });
+const TOTAL = 1025;
+
+const TYPES = [
+  ['NORMAL','#A8A878'],['FIRE','#F08030'],['WATER','#6890F0'],['ELECTRIC','#F8D030'],
+  ['GRASS','#78C850'],['ICE','#98D8D8'],['FIGHTING','#C03028'],['POISON','#A040A0'],
+  ['GROUND','#E0C068'],['FLYING','#A890F0'],['PSYCHIC','#F85888'],['BUG','#A8B820'],
+  ['ROCK','#B8A038'],['GHOST','#705898'],['DRAGON','#7038F8'],['DARK','#705848'],
+  ['STEEL','#B8B8D0'],['FAIRY','#EE99AC']
+];
+const LIGHT_TYPES = new Set(['NORMAL','ELECTRIC','ICE','GROUND','BUG','STEEL','FAIRY']);
+
+const EEVEES = [
+  {id:134, name:'VAPOREON', type:'WATER',   color:'#6890F0', how:'Water Stone'},
+  {id:135, name:'JOLTEON',  type:'ELECTRIC',color:'#F8D030', how:'Thunder Stone'},
+  {id:136, name:'FLAREON',  type:'FIRE',    color:'#F08030', how:'Fire Stone'},
+  {id:196, name:'ESPEON',   type:'PSYCHIC', color:'#F85888', how:'Friendship · day'},
+  {id:197, name:'UMBREON',  type:'DARK',    color:'#705848', how:'Friendship · night'},
+  {id:470, name:'LEAFEON',  type:'GRASS',   color:'#78C850', how:'Leaf Stone'},
+  {id:471, name:'GLACEON',  type:'ICE',     color:'#98D8D8', how:'Ice Stone'},
+  {id:700, name:'SYLVEON',  type:'FAIRY',   color:'#EE99AC', how:'Affection · Fairy move'},
+];
+
+const ART = 'sprites/art/';
+const PIX = 'sprites/pix/';
+const ITEM = 'sprites/items/';
+/* remote fallbacks in case the local copies go missing */
+const ART_R = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
+const PIX_R = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/';
+const ITEM_R = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/';
+
+const PIX_RY = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/yellow/';
+const PIXY = 'sprites/pix-y/';
+
+/* ---------- sprite loader (with MissingNo fallback) ---------- */
+const SPRITES = {};
+let anySpriteArrived = false;
+function sprite(key, url, remote, keyWhite){
+  const s = { img:new Image(), ok:false, loaded:false, keyWhite:!!keyWhite, keyed:null, remote };
+  s.img.decoding = 'async';
+  s.img.onload = () => {
+    s.ok = true; s.loaded = true; anySpriteArrived = true;
+    if (s.keyWhite) keyWhiteMatte(s);
+  };
+  s.img.onerror = () => {
+    if (remote && !s.retried){ s.retried = true; s.img.src = remote; return; }
+    s.loaded = true;
+  };
+  s.img.src = url;
+  SPRITES[key] = s;
+}
+/* Gen-1 cartridge sprites ship on an opaque white matte. Remove only the
+   white region connected to the border so white INSIDE the sprite survives. */
+function keyWhiteMatte(s){
+  try{
+    const w = s.img.naturalWidth, h = s.img.naturalHeight;
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    const cx2 = c.getContext('2d', { willReadFrequently:true });
+    cx2.drawImage(s.img, 0, 0);
+    const d = cx2.getImageData(0, 0, w, h), px = d.data;
+    const nearWhite = i => px[i] > 235 && px[i+1] > 235 && px[i+2] > 235;
+    const stack = [];
+    for (let x=0; x<w; x++){ stack.push(x, (h-1)*w + x); }
+    for (let y=0; y<h; y++){ stack.push(y*w, y*w + w - 1); }
+    while (stack.length){
+      const i = stack.pop();
+      if (i < 0 || i >= px.length/4) continue;
+      if (px[i*4+3] === 0 || !nearWhite(i*4)) continue;
+      px[i*4+3] = 0;
+      const x = i % w, y = (i / w) | 0;
+      if (x > 0) stack.push(i-1);
+      if (x < w-1) stack.push(i+1);
+      if (y > 0) stack.push(i-w);
+      if (y < h-1) stack.push(i+w);
+    }
+    cx2.putImageData(d, 0, 0);
+    s.keyed = c;
+  }catch(e){ /* cross-origin or memory issue: keep the raw sprite */ }
+}
+function preload(){
+  sprite('pixPikachu', PIX+'25.png', PIX_R+'25.png', true);
+  sprite('pixCaterpie', PIX+'10.png', PIX_R+'10.png', true);
+  sprite('pixRattata', PIX+'19.png', PIX_R+'19.png', true);
+  sprite('pixGengar', PIX+'94.png', PIX_R+'94.png', true);
+  sprite('pixLapras', PIX+'131.png', PIX_R+'131.png', true);
+  sprite('pixSnorlax', PIX+'143.png', PIX_R+'143.png', true);
+  sprite('pixPikachuY', PIXY+'25.png', PIX_RY+'25.png', true);
+  sprite('pixRattataY', PIXY+'19.png', PIX_RY+'19.png', true);
+  sprite('pixSnorlaxY', PIXY+'143.png', PIX_RY+'143.png', true);
+  sprite('ball', ITEM+'poke-ball.png', ITEM_R+'poke-ball.png');
+  [1,4,7,133,134,135,136,196,197,470,471,700].forEach(id => sprite('art'+id, ART+id+'.png', ART_R+id+'.png'));
+  GEN.forEach(g => sprite('art'+g.mon, ART+g.mon+'.png', ART_R+g.mon+'.png'));
+}
+/* draw sprite centered at (cx,cy); pixel sprites render chunky at integer scale */
+function drawSprite(ctx, key, cx, cy, heightPx, opts={}){
+  const s = SPRITES[key];
+  if (s && s.ok && s.img.complete && s.img.naturalWidth){
+    const src = s.keyed || s.img;
+    const iw = s.img.naturalWidth, ih = s.img.naturalHeight;
+    let scale = heightPx / ih;
+    if (opts.pixel) scale = Math.max(1, Math.round(scale));
+    const w = iw * scale, h = ih * scale;
+    const shiny = key === SHINY_KEY;
+    ctx.save();
+    if (opts.pixel) ctx.imageSmoothingEnabled = false;
+    if (shiny) ctx.filter = 'hue-rotate(155deg) saturate(1.7) brightness(1.12)';
+    if (opts.alpha != null) ctx.globalAlpha = opts.alpha;
+    if (opts.flip){ ctx.translate(cx, cy); ctx.scale(-1,1); ctx.drawImage(src, -w/2, -h/2, w, h); }
+    else ctx.drawImage(src, cx - w/2, cy - h/2, w, h);
+    if (shiny){
+      ctx.filter = 'none';
+      ctx.fillStyle = '#FFFDF4';
+      for (let i=0; i<3; i++){
+        const a = Math.random()*TAU, rr = (Math.max(w,h)/2) + 6 + Math.random()*10;
+        star(ctx, cx + Math.cos(a)*rr, cy + Math.sin(a)*rr, 2.5 + Math.random()*2.5);
+      }
+      if (!shinyToasted && window.scrollY > 150){
+        shinyToasted = true;
+        Sound.pop();
+        toast('✨ SHINY!', 'A wild shiny appeared. Odds this run: 1 in 16. Most trainers go a whole career without one.', { sound:false });
+      }
+    }
+    ctx.restore();
+    return true;
+  }
+  /* MissingNo — deterministic glitch block */
+  const rnd = mulberry32([...key].reduce((a,c)=>a+c.charCodeAt(0),0) * 7919);
+  const size = Math.max(18, heightPx*0.8);
+  ctx.save(); ctx.translate(cx, cy);
+  ctx.globalAlpha = opts.alpha != null ? opts.alpha : 1;
+  for (let i=0;i<6;i++){
+    const w = size*(0.5+rnd()*0.8), h2 = size*0.09*(1+rnd()*2);
+    ctx.fillStyle = 'rgba(255,255,255,'+(0.10+rnd()*0.16)+')';
+    ctx.fillRect(-w/2 + (rnd()-0.5)*size*0.3, -size/2 + i*(size/6), w, h2);
+  }
+  ctx.strokeStyle='rgba(255,255,255,.30)'; ctx.lineWidth=2;
+  ctx.strokeRect(-size/2, -size/2, size, size);
+  ctx.restore();
+  return false;
+}
+
+/* ---------- text helpers ---------- */
+function px(ctx, text, x, y, size, color, align='center', alpha=1){
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.font = size + 'px "Press Start 2P", monospace';
+  ctx.textAlign = align; ctx.textBaseline = 'middle';
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+function term(ctx, text, x, y, size, color, align='center', alpha=1){
+  ctx.save(); ctx.globalAlpha = alpha;
+  ctx.font = size + 'px "VT323", monospace';
+  ctx.textAlign = align; ctx.textBaseline='middle';
+  ctx.fillStyle = color; ctx.fillText(text, x, y);
+  ctx.restore();
+}
+function rrect(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.arcTo(x+w, y, x+w, y+h, r);
+  ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r);
+  ctx.arcTo(x, y, x+w, y, r);
+  ctx.closePath();
+}
+function star(ctx, x, y, r, points=4, inner=0.38){
+  ctx.save(); ctx.beginPath();
+  for (let i=0;i<points*2;i++){
+    const rad = i%2===0 ? r : r*inner;
+    const a = (i/(points*2))*TAU - Math.PI/2;
+    const px2 = x + Math.cos(a)*rad, py2 = y + Math.sin(a)*rad;
+    i===0 ? ctx.moveTo(px2,py2) : ctx.lineTo(px2,py2);
+  }
+  ctx.closePath(); ctx.fill(); ctx.restore();
+}
+function pokeballShape(ctx, cx, cy, R, opts={}){
+  const { red='#EE1515', white='#F4F4F4', dark='#17171F', alpha=1 } = opts;
+  ctx.save(); ctx.globalAlpha = alpha;
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.fillStyle = white; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx, cy, R, Math.PI, TAU); ctx.fillStyle = red; ctx.fill();
+  ctx.save();
+  ctx.beginPath(); ctx.rect(cx-R, cy-R*0.055, R*2, R*0.11); ctx.clip();
+  ctx.fillStyle = dark; ctx.fillRect(cx-R, cy-R*0.06, R*2, R*0.12);
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(cx, cy, R*0.20, 0, TAU); ctx.fillStyle = dark; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx, cy, R*0.13, 0, TAU); ctx.fillStyle = white; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.lineWidth = Math.max(2, R*0.06); ctx.strokeStyle = dark; ctx.stroke();
+  ctx.restore();
+}
+
+/* ---------- particle kit (stateful, advanced inside draw by dt) ---------- */
+function makeParticles(){
+  return { list:[], last:0 };
+}
+function burstParticles(p, x, y, colors, n=42, speed=1){
+  const rnd = mulberry32((x*13+y*7)|0);
+  for (let i=0;i<n;i++){
+    const a = rnd()*TAU, v = (60+rnd()*260)*speed;
+    p.list.push({ x, y, vx:Math.cos(a)*v, vy:Math.sin(a)*v - 120, g:420,
+      s:2+rnd()*4, c:colors[(rnd()*colors.length)|0], life:0.9+rnd()*0.9, t:0 });
+  }
+}
+function stepParticles(p, ctx, dt){
+  p.list = p.list.filter(q => q.t < q.life);
+  for (const q of p.list){
+    q.t += dt; q.x += q.vx*dt; q.y += q.vy*dt; q.vy += q.g*dt;
+    const a = 1 - q.t/q.life;
+    ctx.globalAlpha = a;
+    ctx.fillStyle = q.c;
+    ctx.fillRect(q.x - q.s/2, q.y - q.s/2, q.s, q.s);
+  }
+  ctx.globalAlpha = 1;
+}
+
+/* ============================================================
+   SCENES — each returns a draw(ctx, w, h, t, time, dt)
+   ============================================================ */
+const SCENES = {};
+
+/* ---- title screen ---- */
+SCENES.title = (() => {
+  let stars = [];
+  /* entrance-tweenable state (driven by heroEntrance) */
+  const hero = { ballScale: REDUCED || !HAS_GSAP ? 1 : 0, ballRot: -0.12, pxIn: REDUCED || !HAS_GSAP ? 0 : -320, jump: 0 };
+  function resize(w,h){
+    const rnd = mulberry32(96);
+    stars = Array.from({length:110}, () => ({ x:rnd()*w, y:rnd()*h*0.9, r:0.6+rnd()*1.7, sp:0.4+rnd()*1.4, ph:rnd()*TAU, big:rnd()<0.08 }));
+  }
+  function draw(ctx, w, h, t, time){
+    const g = ctx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,'#0B0E1C'); g.addColorStop(0.65,'#101430'); g.addColorStop(1,'#1A2142');
+    ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+    for (const s of stars){
+      const tw = REDUCED ? 0.7 : 0.45 + 0.55*Math.pow(Math.sin(time*s.sp + s.ph), 2);
+      ctx.globalAlpha = tw;
+      ctx.fillStyle = '#DCE4FF';
+      if (s.big) star(ctx, s.x, s.y, s.r*3.2);
+      else { ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, TAU); ctx.fill(); }
+    }
+    ctx.globalAlpha = 1;
+    /* giant pokéball, bobbing */
+    const R = Math.min(w,h)*0.24*hero.ballScale;
+    const cx = w*0.5, cy = h*0.52 + (REDUCED?0:Math.sin(time*0.9)*7);
+    const glow = ctx.createRadialGradient(cx,cy,R*0.3, cx,cy,R*2.1);
+    glow.addColorStop(0,'rgba(255,203,5,.10)'); glow.addColorStop(1,'rgba(255,203,5,0)');
+    ctx.fillStyle = glow; ctx.fillRect(0,0,w,h);
+    ctx.save(); ctx.translate(cx,cy); ctx.rotate(hero.ballRot); ctx.translate(-cx,-cy);
+    pokeballShape(ctx, cx, cy, R);
+    ctx.restore();
+    /* ground strip + walking pikachu (2-frame idle cycle, red-blue/yellow frames) */
+    const gy = h*0.90;
+    ctx.fillStyle = '#131A33'; ctx.fillRect(0, gy, w, h-gy);
+    ctx.fillStyle = '#1B2547';
+    for (let x=8; x<w; x+=26){
+      ctx.beginPath(); ctx.moveTo(x, gy); ctx.lineTo(x+9, gy-9); ctx.lineTo(x+18, gy); ctx.fill();
+    }
+    const walk = REDUCED ? 0 : Math.sin(time*0.45);
+    const pxX = w*0.16 + walk * w*0.035 + hero.pxIn;
+    const pkKey = (!REDUCED && Math.floor(time*2.2)%2 && SPRITES.pixPikachuY && SPRITES.pixPikachuY.ok) ? 'pixPikachuY' : 'pixPikachu';
+    drawSprite(ctx, pkKey, pxX, gy-4+hero.jump, Math.min(h*0.14, 92), {pixel:true, flip: walk<0});
+  }
+  /* hit-test for easter eggs: the giant Pokéball and the walking Pikachu */
+  function hit(x, y, w, h){
+    const R = Math.min(w,h)*0.24*hero.ballScale;
+    const cx = w*0.5, cy = h*0.52 + (REDUCED?0:Math.sin(nowSec*0.9)*7);
+    if (Math.hypot(x-cx, y-cy) <= R*1.02) return 'ball';
+    const walk = REDUCED ? 0 : Math.sin(nowSec*0.45);
+    const pxX = w*0.16 + walk*w*0.035 + hero.pxIn;
+    const size = Math.min(h*0.14, 92);
+    if (Math.abs(x-pxX) <= size*0.6 && Math.abs(y-(h*0.90-4+hero.jump-size*0.45)) <= size*0.62) return 'pikachu';
+    return null;
+  }
+  return { resize, draw, hero, hit, t:() => 0 };
+})();
+
+/* ---- ch1: DMG origin ---- */
+SCENES.dmg = (() => {
+  function drawGameBoy(ctx, x, y, s, flipScreen){
+    ctx.save(); ctx.translate(x,y); ctx.rotate(flipScreen?0.06:-0.06);
+    const bw = s*1.0, bh = s*1.55;
+    rrect(ctx, -bw/2, -bh/2, bw, bh, s*0.12);
+    ctx.fillStyle = '#8BAC0F'; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = '#0F380F'; ctx.stroke();
+    rrect(ctx, -bw*0.40, -bh*0.44, bw*0.80, bh*0.42, s*0.04);
+    ctx.fillStyle = '#306230'; ctx.fill();
+    rrect(ctx, -bw*0.36, -bh*0.40, bw*0.72, bh*0.34, s*0.02);
+    ctx.fillStyle = '#9BBC0F'; ctx.fill();
+    /* screen content: tiny pixel creature block */
+    ctx.fillStyle = '#306230';
+    const rnd = mulberry32(flipScreen?11:29);
+    for (let i=0;i<26;i++) ctx.fillRect(-bw*0.36 + rnd()*bw*0.68, -bh*0.38 + rnd()*bh*0.30, s*0.05, s*0.05);
+    /* d-pad */
+    ctx.fillStyle = '#0F380F';
+    ctx.fillRect(-bw*0.34, bh*0.16, bw*0.22, s*0.07);
+    ctx.fillRect(-bw*0.34 + bw*0.075, bh*0.09, s*0.07, s*0.21);
+    /* a/b */
+    ctx.beginPath(); ctx.arc(bw*0.22, bh*0.22, s*0.06, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.arc(bw*0.34, bh*0.18, s*0.06, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  function draw(ctx, w, h, t, time){
+    ctx.fillStyle = '#0F380F'; ctx.fillRect(0,0,w,h);
+    /* faint DMG grid */
+    ctx.strokeStyle = 'rgba(155,188,15,0.05)'; ctx.lineWidth = 1;
+    for (let x=0;x<w;x+=32){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
+    for (let y=0;y<h;y+=32){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+    const s = Math.min(w,h)*0.13;
+    /* two game boys + link cable (left-of-center so the right-side card keeps clear) */
+    const gy = h*0.40;
+    const lx = w*0.43 - s*1.15, rx = w*0.43 + s*1.15;
+    drawGameBoy(ctx, lx, gy, s, false);
+    drawGameBoy(ctx, rx, gy, s, true);
+    /* cable */
+    const y0 = gy - s*0.62, x0 = lx + s*0.28, x1 = rx - s*0.28;
+    ctx.beginPath(); ctx.moveTo(x0, y0);
+    ctx.bezierCurveTo(x0 - s*0.3, y0 + s*0.55, x1 + s*0.3, y0 + s*0.55, x1, y0);
+    ctx.lineWidth = Math.max(5, s*0.075); ctx.strokeStyle = '#306230'; ctx.stroke();
+    ctx.fillStyle = '#306230';
+    ctx.fillRect(x0-s*0.06, y0-s*0.06, s*0.12, s*0.12);
+    ctx.fillRect(x1-s*0.06, y0-s*0.06, s*0.12, s*0.12);
+    /* data packets along the cable */
+    if (!REDUCED){
+      for (let i=0;i<3;i++){
+        const p = ((time*0.22 + i/3) % 1);
+        const q = p;
+        const bx = (1-q)*(1-q)*x0 + 2*(1-q)*q*((x0+x1)/2) + q*q*x1;
+        const by = (1-q)*(1-q)*y0 + 2*(1-q)*q*(y0 + s*0.41) + q*q*y0;
+        ctx.fillStyle = '#9BBC0F';
+        ctx.fillRect(bx-s*0.035, by-s*0.035, s*0.07, s*0.07);
+      }
+    }
+    /* GAME FREAK flicker */
+    const gfA = phase(t, 0.02, 0.10) * (1 - phase(t, 0.32, 0.46));
+    if (gfA > 0){
+      const flick = REDUCED ? 1 : (0.75 + 0.25*Math.sin(time*18));
+      px(ctx, 'GAME FREAK', w*0.5, h*0.16, Math.min(w*0.026, 15), '#9BBC0F', 'center', gfA*flick);
+      term(ctx, 'presents a bug collector’s dream', w*0.5, h*0.16 + Math.min(w*0.026,15)*2.2, Math.min(w*0.02, 17), '#8BAC0F', 'center', gfA);
+    }
+    /* ground: grass turning to pavement */
+    const gyy = h*0.86;
+    ctx.fillStyle = '#0F380F'; ctx.fillRect(0, gyy, w, h-gyy);
+    const paved = ease(phase(t, 0.45, 0.75));
+    const grassW = w * (1-paved);
+    ctx.fillStyle = '#306230';
+    for (let x=6; x<grassW; x+=22){
+      ctx.beginPath(); ctx.moveTo(x, gyy+4); ctx.lineTo(x+7, gyy-8); ctx.lineTo(x+14, gyy+4); ctx.fill();
+    }
+    if (paved > 0){
+      ctx.save(); ctx.globalAlpha = paved;
+      ctx.fillStyle = '#0F380F'; ctx.fillRect(grassW, gyy, w-grassW, h-gyy);
+      ctx.strokeStyle = '#8BAC0F'; ctx.lineWidth = 2;
+      for (let x=grassW; x<w; x+=44){ ctx.beginPath(); ctx.moveTo(x, gyy+2); ctx.lineTo(x-8, h); ctx.stroke(); }
+      ctx.beginPath(); ctx.moveTo(grassW, gyy+2); ctx.lineTo(w, gyy+2); ctx.stroke();
+      ctx.restore();
+    }
+    /* bug morphing into a pixel creature (Caterpie) */
+    const walkT = ease(phase(t, 0.03, 0.85));
+    const bugX = lerp(w*0.12, w*0.88, walkT);
+    const bugY = gyy - Math.min(h*0.085, 60);
+    const morph = phase(t, 0.55, 0.68);
+    if (morph < 1){
+      const bs = Math.min(w*0.042, 40);
+      ctx.save(); ctx.globalAlpha = 1-morph;
+      ctx.fillStyle = '#9BBC0F';
+      ctx.beginPath(); ctx.ellipse(bugX, bugY, bs*0.95, bs*0.55, 0, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.arc(bugX - bs*0.95, bugY - bs*0.15, bs*0.30, 0, TAU); ctx.fill();
+      ctx.strokeStyle = '#9BBC0F'; ctx.lineWidth = 3;
+      for (const l of [-1,1]) for (let i=0;i<3;i++){
+        ctx.beginPath(); ctx.moveTo(bugX-bs*0.6+i*bs*0.6, bugY+bs*0.2); ctx.lineTo(bugX-bs*0.6+i*bs*0.6+5*l, bugY+bs*0.75); ctx.stroke();
+      }
+      ctx.beginPath(); ctx.moveTo(bugX-bs*1.1, bugY-bs*0.3); ctx.lineTo(bugX-bs*1.4, bugY-bs*0.7); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(bugX-bs*0.95, bugY-bs*0.4); ctx.lineTo(bugX-bs*1.1, bugY-bs*0.85); ctx.stroke();
+      ctx.restore();
+    }
+    if (morph > 0){
+      drawSprite(ctx, 'pixCaterpie', bugX, bugY, Math.min(h*0.16, 110)*(0.4+0.6*morph), {pixel:true, alpha:morph});
+    }
+    /* year reveal (left column, clear of the dialogue boxes) */
+    const yA = phase(t, 0.78, 0.88);
+    if (yA > 0){
+      const sc = easeOutBack(yA);
+      const size = Math.min(w*0.085, 58);
+      ctx.save(); ctx.translate(w*0.28, h*0.30); ctx.scale(sc, sc);
+      px(ctx, '1996', 0, 0, size, '#9BBC0F');
+      ctx.restore();
+      px(ctx, 'FEB 27', w*0.28, h*0.30 - size*0.9, Math.min(w*0.018,12), '#8BAC0F', 'center', yA);
+    }
+  }
+  return { draw };
+})();
+
+/* ---- ch2: the capture ---- */
+SCENES.catch = (() => {
+  const parts = makeParticles();
+  const fx = { list: [], shake: 0, gotcha: false };
+  const BURST_COLORS = ['#FFCB05','#FFFDF4','#EE1515','#45C0DC','#17171F'];
+  function catchBurst(x, y){
+    if (REDUCED) return;
+    if (HAS_GSAP){
+      for (let i=0; i<54; i++){
+        const q = { x, y, c: BURST_COLORS[i % BURST_COLORS.length], s: 2.5 + Math.random()*4, rot: Math.random()*360 };
+        fx.list.push(q);
+        G.to(q, {
+          rotation: Math.random()*600, duration: 0.9 + Math.random()*0.7, ease: 'none',
+          physics2D: { velocity: 260 + Math.random()*330, angle: -90 + (Math.random()-0.5)*130, gravity: 900 },
+          onComplete(){ const ix = fx.list.indexOf(q); if (ix >= 0) fx.list.splice(ix, 1); }
+        });
+      }
+    } else burstParticles(parts, x, y, BURST_COLORS, 54, 1.2);
+  }
+  let lastTime = 0;
+  function groundY(w,h){ return h*0.82; }
+  function target(w,h){ return { x:w*0.62, y:groundY(w,h)-Math.min(h*0.05,34) }; }
+  function draw(ctx, w, h, t, time, dt){
+    lastTime = time;
+    ctx.save();
+    if (fx.shake > 0.3){ ctx.translate((Math.random()-0.5)*fx.shake, (Math.random()-0.5)*fx.shake); fx.shake *= 0.86; }
+    if (t < 0.7) fx.gotcha = false;
+    /* dusk field */
+    const g = ctx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,'#0C1622'); g.addColorStop(0.6,'#12283A'); g.addColorStop(1,'#0E1F2C');
+    ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+    /* moon + glow + stars */
+    const mR = Math.min(w,h)*0.055, mx = w*0.82, my2 = h*0.16;
+    const mglow = ctx.createRadialGradient(mx, my2, mR*0.4, mx, my2, mR*2.6);
+    mglow.addColorStop(0,'rgba(232,237,247,.32)'); mglow.addColorStop(1,'rgba(232,237,247,0)');
+    ctx.fillStyle = mglow; ctx.beginPath(); ctx.arc(mx, my2, mR*2.6, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#E8EDF7'; ctx.globalAlpha = 0.95;
+    ctx.beginPath(); ctx.arc(mx, my2, mR, 0, TAU); ctx.fill();
+    ctx.globalAlpha = 1;
+    const rnd = mulberry32(7);
+    for (let i=0;i<40;i++){
+      const sx = rnd()*w, sy = rnd()*h*0.5, sr = 0.5+rnd()*1.2;
+      const tw = REDUCED ? 0.6 : 0.35 + 0.5*Math.pow(Math.sin(time*(0.4+rnd()*0.8) + i*1.7), 2);
+      ctx.globalAlpha = tw;
+      ctx.fillStyle = '#DCE4FF'; ctx.fillRect(sx, sy, sr, sr);
+    }
+    ctx.globalAlpha = 1;
+    const gy = groundY(w,h);
+    ctx.fillStyle = '#0A2540'; ctx.fillRect(0, gy, w, h-gy);
+    /* tall grass silhouette rows */
+    function grassRow(baseY, height, color, seed){
+      const r2 = mulberry32(seed);
+      ctx.fillStyle = color;
+      for (let x=-10; x<w+10; x+=13){
+        const hh = height*(0.6 + r2()*0.8);
+        ctx.beginPath();
+        ctx.moveTo(x, baseY);
+        ctx.quadraticCurveTo(x+5, baseY-hh, x+7, baseY-hh);
+        ctx.quadraticCurveTo(x+9, baseY-hh, x+14, baseY);
+        ctx.fill();
+      }
+    }
+    grassRow(gy+26, Math.min(h*0.11,74), '#0E3350', 3);
+    grassRow(gy+8,  Math.min(h*0.14,96), '#0A2540', 11);
+    const tgt = target(w,h);
+    /* wild rattata */
+    const suck = phase(t, 0.44, 0.52);
+    if (suck < 1){
+      let bob = REDUCED ? 0 : Math.sin(time*2.2)*3;
+      let alpha = 1, scale = 1;
+      if (suck > 0){ alpha = 1-suck; scale = 1-suck*0.85; }
+      drawSprite(ctx, 'pixRattata', tgt.x, tgt.y + bob + (1-scale)*30, Math.min(h*0.15, 100)*scale, {pixel:true, alpha, flip:true});
+      /* "!" alert */
+      const alertA = phase(t, 0.05, 0.09) * (1 - phase(t, 0.17, 0.23));
+      if (alertA > 0){
+        const ay = tgt.y - Math.min(h*0.16,110) - (REDUCED?0:(1-easeOutBack(alertA))*8);
+        px(ctx, '!', tgt.x, ay, Math.min(w*0.03, 26), '#FFCB05', 'center', alertA);
+      }
+    }
+    /* ball throw arc */
+    const throwP = phase(t, 0.18, 0.44);
+    const from = { x:w*0.30, y:h*0.96 };
+    const wobbleP = phase(t, 0.52, 0.80);
+    const clickP = phase(t, 0.80, 0.88);
+    if (throwP > 0){
+      const p = Math.min(1, ease(throwP));
+      const cx2 = (from.x + tgt.x)/2, cy2 = Math.min(h*0.16, tgt.y - h*0.42);
+      const bx = (1-p)*(1-p)*from.x + 2*(1-p)*p*cx2 + p*p*tgt.x;
+      const by = (1-p)*(1-p)*from.y + 2*(1-p)*p*cy2 + p*p*tgt.y;
+      if (throwP < 1){
+        ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.lineWidth = 2; ctx.setLineDash([4,8]);
+        ctx.beginPath(); ctx.moveTo(from.x, from.y);
+        ctx.quadraticCurveTo(cx2, cy2, tgt.x, tgt.y); ctx.stroke();
+        ctx.setLineDash([]);
+        /* motion trail */
+        if (!REDUCED) for (let k=1; k<=3; k++){
+          const q = Math.max(0, p - k*0.035);
+          const tx = (1-q)*(1-q)*from.x + 2*(1-q)*q*cx2 + q*q*tgt.x;
+          const ty = (1-q)*(1-q)*from.y + 2*(1-q)*q*cy2 + q*q*tgt.y;
+          drawSprite(ctx, 'ball', tx, ty, Math.min(h*0.06,40)*(1-k*0.18), {pixel:true, alpha:0.28*(1-k*0.22)});
+        }
+      }
+      const bs = Math.min(h*0.062, 44);
+      if (throwP < 1){
+        /* squash & stretch along the velocity vector, plus spin */
+        const p2 = Math.min(1, p + 0.02);
+        const bx2 = (1-p2)*(1-p2)*from.x + 2*(1-p2)*p2*cx2 + p2*p2*tgt.x;
+        const by2 = (1-p2)*(1-p2)*from.y + 2*(1-p2)*p2*cy2 + p2*p2*tgt.y;
+        const ang = Math.atan2(by2 - by, bx2 - bx);
+        const stretch = Math.sin(p*Math.PI);
+        ctx.save();
+        ctx.translate(bx, by); ctx.rotate(ang + time*9);
+        ctx.scale(1 + 0.3*stretch, 1 - 0.2*stretch);
+        drawSprite(ctx, 'ball', 0, 0, bs, {pixel:true});
+        ctx.restore();
+      } else {
+        /* ball at rest / wobbling / caught */
+        const restY = tgt.y + Math.min(h*0.02, 14);
+        let rot = 0;
+        if (wobbleP > 0 && clickP <= 0){
+          const wob = wobbleP*3;
+          const seg = wob % 1;
+          const env = Math.sin(seg*Math.PI);
+          rot = Math.sin(seg*Math.PI*3)*0.45*env;
+          if (seg < 0.02 && !REDUCED){
+            fx.shake = 5;
+            burstParticles(parts, tgt.x, restY, ['#E8EDF7','#9BB0C9'], 3, 0.3);
+          }
+        }
+        ctx.save();
+        ctx.translate(tgt.x, restY); ctx.rotate(rot);
+        drawSprite(ctx, 'ball', 0, 0, bs, {pixel:true});
+        ctx.restore();
+      }
+    }
+    if (throwP >= 1){
+      const restY = tgt.y + Math.min(h*0.02, 14);
+      /* hit flash */
+      const flash = phase(t, 0.44, 0.52);
+      if (flash < 1){
+        ctx.globalAlpha = 1-flash;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath(); ctx.arc(tgt.x, tgt.y, Math.min(w,h)*(0.05+0.13*(1-flash)), 0, TAU); ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+      /* click! stars */
+      if (clickP > 0){
+        const sp = easeOut(clickP);
+        ctx.globalAlpha = 1 - phase(t, 0.94, 1);
+        ctx.fillStyle = '#FFCB05';
+        for (let i=0;i<6;i++){
+          const a = i/6*TAU;
+          star(ctx, tgt.x + Math.cos(a)*40*sp, restY + Math.sin(a)*40*sp, 9*(1-sp*0.4));
+        }
+        ctx.globalAlpha = 1;
+        const gotchaA = phase(t, 0.82, 0.90);
+        if (gotchaA > 0){
+          if (!fx.gotcha){ fx.gotcha = true; fx.shake = 9; catchBurst(w*0.5, h*0.30); Sound.gotcha(); }
+          const sc = easeOutBack(gotchaA);
+          ctx.save(); ctx.translate(w*0.5, h*0.30); ctx.scale(sc, sc);
+          px(ctx, 'GOTCHA!', 5, 5, Math.min(w*0.055, 40), '#3B4CCA');
+          px(ctx, 'GOTCHA!', 0, 0, Math.min(w*0.055, 40), '#FFCB05');
+          ctx.restore();
+        }
+      }
+    }
+    stepParticles(parts, ctx, dt);
+    for (const q of fx.list){
+      ctx.save(); ctx.translate(q.x, q.y); ctx.rotate((q.rotation||0)*Math.PI/180);
+      ctx.fillStyle = q.c; ctx.fillRect(-q.s/2, -q.s/2, q.s, q.s); ctx.restore();
+    }
+    ctx.restore(); /* shake transform */
+  }
+  return { draw };
+})();
+
+/* ---- ch3: the pokédex fills the ball ---- */
+SCENES.dex = (() => {
+  let stars = [];
+  function resize(w,h){
+    const rnd = mulberry32(51);
+    stars = Array.from({length:70}, () => ({x:rnd()*w, y:rnd()*h, r:0.5+rnd()*1.3, ph:rnd()*TAU}));
+  }
+  function draw(ctx, w, h, t, time){
+    ctx.fillStyle = '#0F1220'; ctx.fillRect(0,0,w,h);
+    ctx.globalAlpha = 0.5;
+    for (const s of stars){
+      ctx.globalAlpha = 0.25 + 0.3*Math.pow(Math.sin(time*0.8+s.ph),2);
+      ctx.fillStyle = '#DCE4FF'; ctx.fillRect(s.x, s.y, s.r, s.r);
+    }
+    ctx.globalAlpha = 1;
+    const narrow = w < 760;
+    const R = narrow ? Math.min(w,h)*0.21 : Math.min(w,h)*0.30;
+    const cx = narrow ? w*0.5 : w*0.27;
+    const cy = narrow ? h*0.30 : h*0.48;
+    const fillT = ease(phase(t, 0.05, 0.92));
+    /* ghost ball anatomy + fill */
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU);
+    ctx.fillStyle = 'rgba(244,244,244,0.10)'; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx, cy, R, Math.PI, TAU);
+    ctx.fillStyle = 'rgba(238,21,21,0.16)'; ctx.fill();
+    /* fill bands clipped to ball and fill height */
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.clip();
+    ctx.beginPath(); ctx.rect(cx-R, cy+R-fillT*2*R, R*2, fillT*2*R + 2); ctx.clip();
+    let yBottom = cy + R;
+    for (let i=GEN.length-1; i>=0; i--){
+      const g = GEN[i];
+      const bandH = (g.count/TOTAL)*2*R;
+      ctx.fillStyle = g.color; ctx.globalAlpha = 0.92;
+      ctx.fillRect(cx-R, yBottom-bandH, R*2, bandH+0.5);
+      ctx.globalAlpha = 0.35; ctx.strokeStyle = '#0F1220'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(cx-R, yBottom-bandH); ctx.lineTo(cx+R, yBottom-bandH); ctx.stroke();
+      yBottom -= bandH;
+    }
+    ctx.restore();
+    ctx.globalAlpha = 1;
+    /* band + button + rim */
+    ctx.fillStyle = '#17171F';
+    ctx.fillRect(cx-R, cy-R*0.055, R*2, R*0.11);
+    ctx.beginPath(); ctx.arc(cx, cy, R*0.20, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx, cy, R*0.125, 0, TAU); ctx.fillStyle = '#F4F4F4'; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU);
+    ctx.lineWidth = Math.max(3, R*0.05); ctx.strokeStyle = '#0A0C16'; ctx.stroke();
+    /* fill marker: the band edge itself reads as the fill line — no extra rule */
+    /* counter — labels stacked ABOVE the number so no dialogue box ever
+       covers them (boxes pass through the band just below the number) */
+    const val = Math.round(TOTAL*fillT);
+    const numStr = val.toLocaleString('en-US');
+    const numX = narrow ? w*0.5 : w*0.68;
+    const numY = narrow ? h*0.60 : h*0.28;
+    const numSize = narrow ? Math.min(w*0.085, 44) : Math.min(w*0.062, 52);
+    px(ctx, numStr, numX+4, numY+4, numSize, '#3B4CCA');
+    px(ctx, numStr, numX, numY, numSize, '#FFCB05');
+    if (fillT > 0.01){
+      const gi = Math.max(0, GEN.findIndex(g => val <= g.cumStart + g.count));
+      const g = GEN[gi === -1 ? GEN.length-1 : gi];
+      term(ctx, 'GEN '+g.n+' · '+g.region+' · '+g.year, numX, numY - numSize*1.42, Math.min(w*0.03, 26), g.color);
+      term(ctx, 'SPECIES REGISTERED', numX, numY - numSize*0.78, Math.min(w*0.028, 24), '#B9BDCB');
+    }
+    /* mascots row */
+    const mY = narrow ? h*0.86 : h*0.74;
+    const mSize = narrow ? Math.min(w*0.09, 44) : Math.min(w*0.052, 52);
+    const startX = narrow ? w*0.18 : w*0.50;
+    const gapX = narrow ? w*0.16 : Math.min(w*0.058, 62);
+    GEN.forEach((g, i) => {
+      const appeared = fillT >= (g.cumStart + 1)/TOTAL;
+      if (!appeared) return;
+      let gx = startX + i*gapX;
+      let gy2 = mY;
+      if (narrow && i >= 5){ gx = startX + (i-5)*gapX; gy2 = mY + mSize*1.5; }
+      const since = clamp((fillT - (g.cumStart+1)/TOTAL)*22, 0, 1);
+      const pop = REDUCED ? 1 : easeOutBack(since);
+      ctx.globalAlpha = Math.min(1, since*1.6);
+      drawSprite(ctx, 'art'+g.mon, gx, gy2 - (pop-1)*mSize*0.5, mSize*pop);
+      term(ctx, String(g.year), gx, gy2 + mSize*0.85, Math.min(w*0.022, 18), '#B9BDCB');
+      ctx.globalAlpha = 1;
+    });
+  }
+  return { draw, resize };
+})();
+
+/* ---- ch4: type wheel ---- */
+SCENES.types = (() => {
+  function chip(ctx, x, y, wd, ht, label, color, light){
+    rrect(ctx, x-wd/2, y-ht/2, wd, ht, ht*0.3);
+    ctx.fillStyle = color; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.stroke();
+    px(ctx, label, x, y+0.5, Math.max(7, ht*0.34), light ? '#1D232E' : '#F4F6FA');
+  }
+  function draw(ctx, w, h, t, time){
+    ctx.fillStyle = '#120E22'; ctx.fillRect(0,0,w,h);
+    const vign = ctx.createRadialGradient(w/2, h*0.46, Math.min(w,h)*0.1, w/2, h*0.46, Math.max(w,h)*0.75);
+    vign.addColorStop(0,'rgba(90,70,180,.12)'); vign.addColorStop(1,'rgba(0,0,0,.28)');
+    ctx.fillStyle = vign; ctx.fillRect(0,0,w,h);
+    const narrow = w < 700;
+    const cx = narrow ? w*0.5 : w*0.62, cy = narrow ? h*0.26 : h*0.46;
+    const m = Math.min(w,h);
+    const Rx = m*0.385, Ry = m*(narrow?0.26:0.315);
+    const rot = REDUCED ? 0 : (time*0.04 + t*TAU*0.7);
+    /* 18 chips equally spaced BY ARC LENGTH along the ellipse, so chips never
+       crowd together at the curved ends the way uniform-angle spacing does */
+    const N = TYPES.length, S = 360;
+    const cum = new Float64Array(S+1);
+    let pxx = Math.cos(0)*Rx, pyy = Math.sin(0)*Ry, total = 0;
+    const sxs = new Float64Array(S+1), sys = new Float64Array(S+1);
+    for (let i=0; i<=S; i++){
+      const a = i/S*TAU;
+      const x = Math.cos(a)*Rx, y = Math.sin(a)*Ry;
+      sxs[i]=x; sys[i]=y;
+      if (i>0) total += Math.hypot(x-pxx, y-pyy);
+      cum[i]=total; pxx=x; pyy=y;
+    }
+    const pointAt = s => {
+      s = ((s % total) + total) % total;
+      let lo=0, hi=S;
+      while (lo < hi){ const mid=(lo+hi)>>1; if (cum[mid] < s) lo=mid+1; else hi=mid; }
+      const i1 = Math.max(1, lo), t2 = (s - cum[i1-1]) / (cum[i1] - cum[i1-1] || 1);
+      return { x: lerp(sxs[i1-1], sxs[i1], t2), y: lerp(sys[i1-1], sys[i1], t2) };
+    };
+    const spacing = total/N;
+    const cw = Math.min(clamp(m*0.115, 56, 92), spacing*0.92);
+    const ch2 = clamp(cw*0.36, 16, 28);
+    TYPES.forEach(([name, color], i) => {
+      const pt = pointAt((i/N + rot/TAU) * total);
+      const x = cx + pt.x, y = cy + pt.y;
+      ctx.globalAlpha = 0.88;
+      chip(ctx, x, y, cw, ch2, narrow ? '' : name, color, LIGHT_TYPES.has(name));
+      ctx.globalAlpha = 1;
+    });
+    /* centre triangle: fire / grass / water cycle */
+    const tri = m*0.155;
+    const nodes = [
+      { name:'FIRE',  color:'#F08030', x:cx,        y:cy - tri*0.9 },
+      { name:'GRASS', color:'#78C850', x:cx - tri,  y:cy + tri*0.62 },
+      { name:'WATER', color:'#6890F0', x:cx + tri,  y:cy + tri*0.62 },
+    ];
+    /* arrows: fire→grass, grass→water, water→fire */
+    const step3 = phase(t, 0.52, 0.90);
+    const activeEdge = Math.floor(step3*3) % 3;
+    nodes.forEach((n, i) => {
+      const nxt = nodes[(i+1)%3];
+      const mx = (n.x+nxt.x)/2, my = (n.y+nxt.y)/2;
+      const ang = Math.atan2(nxt.y-n.y, nxt.x-n.x);
+      const hot = (i === activeEdge && step3 > 0.01);
+      ctx.strokeStyle = hot ? '#FFCB05' : 'rgba(255,255,255,.28)';
+      ctx.lineWidth = hot ? 4 : 2.5;
+      ctx.beginPath(); ctx.moveTo(n.x + Math.cos(ang)*m*0.055, n.y + Math.sin(ang)*m*0.055);
+      ctx.lineTo(nxt.x - Math.cos(ang)*m*0.055, nxt.y - Math.sin(ang)*m*0.055); ctx.stroke();
+      /* arrowhead */
+      ctx.save(); ctx.translate(nxt.x - Math.cos(ang)*m*0.055, nxt.y - Math.sin(ang)*m*0.055); ctx.rotate(ang);
+      ctx.fillStyle = hot ? '#FFCB05' : 'rgba(255,255,255,.5)';
+      ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-m*0.02, -m*0.012); ctx.lineTo(-m*0.02, m*0.012); ctx.fill();
+      ctx.restore();
+    });
+    nodes.forEach(n => {
+      const bw = clamp(m*0.10, 48, 76), bh = clamp(m*0.04, 18, 26);
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,.45)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
+      chip(ctx, n.x, n.y, bw, bh, n.name, n.color, LIGHT_TYPES.has(n.name));
+      ctx.restore();
+    });
+    /* super effective flash — shown only while the left-hand card is up,
+       so the text is never hidden behind the card that follows */
+    const showBottom = t > 0.30 && t < 0.64;
+    const flashA = showBottom && step3 > 0.01 && step3 < 0.99
+      ? (0.55 + 0.45*Math.sin((step3*3 % 1)*Math.PI))
+      : 0;
+    const fy2 = narrow ? h*0.44 : h*0.905;
+    if (flashA > 0.02){
+      const fsize = clamp(m*0.030, 13, 22);
+      px(ctx, "IT'S SUPER EFFECTIVE!", cx+3, fy2+3, fsize, '#3B4CCA', 'center', flashA);
+      px(ctx, "IT'S SUPER EFFECTIVE!", cx, fy2, fsize, '#FFCB05', 'center', flashA);
+    } else if (showBottom){
+      term(ctx, 'fire → grass → water → fire', cx, fy2, clamp(m*0.032, 18, 26), '#8B90A8');
+    }
+  }
+  return { draw };
+})();
+
+/* ---- ch5: eevee's branches ---- */
+SCENES.eevee = (() => {
+  function draw(ctx, w, h, t, time){
+    ctx.fillStyle = '#171009'; ctx.fillRect(0,0,w,h);
+    const narrow = w < 700;
+    const ccx = narrow ? w*0.5 : w*0.63;
+    const glow = ctx.createRadialGradient(ccx, h*0.48, 10, ccx, h*0.48, Math.min(w,h)*0.55);
+    glow.addColorStop(0,'rgba(222,164,86,.10)'); glow.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = glow; ctx.fillRect(0,0,w,h);
+    const cx = ccx, cy = narrow ? h*0.32 : h*0.50, m = Math.min(w,h);
+    /* eevee centre */
+    const eSize = m*(narrow?0.20:0.24);
+    const bob = REDUCED ? 0 : Math.sin(time*1.4)*5;
+    ctx.save();
+    ctx.shadowColor='rgba(0,0,0,.5)'; ctx.shadowBlur=24; ctx.shadowOffsetY=8;
+    drawSprite(ctx, 'art133', cx, cy+bob, eSize);
+    ctx.restore();
+    /* 8 branches, revealed sequentially; labels sit below each node
+       (above for top nodes) so they never cross the artwork rings */
+    const R1 = eSize*0.52, R2 = m*(narrow?0.30:0.34);
+    const Ry = narrow ? R2*0.82 : R2;
+    EEVEES.forEach((e, i) => {
+      const a = -Math.PI/2 + (i/EEVEES.length)*TAU + 0.22;
+      const p = phase(t, 0.10 + i*0.085, 0.18 + i*0.085);
+      if (p <= 0) return;
+      const x2 = cx + Math.cos(a)*R2, y2 = cy + Math.sin(a)*Ry;
+      const x1 = cx + Math.cos(a)*R1, y1 = cy + Math.sin(a)*R1;
+      const cur = ease(p);
+      ctx.strokeStyle = e.color; ctx.lineWidth = 3; ctx.globalAlpha = 0.9;
+      ctx.beginPath(); ctx.moveTo(x1, y1);
+      ctx.lineTo(lerp(x1, x2, cur), lerp(y1, y2, cur)); ctx.stroke();
+      ctx.globalAlpha = 1;
+      if (p >= 1){
+        const pop = REDUCED ? 1 : easeOutBack(phase(t, 0.18+i*0.085, 0.26+i*0.085));
+        const ringR = m*0.052*pop;
+        ctx.beginPath(); ctx.arc(x2, y2, ringR, 0, TAU);
+        ctx.fillStyle = e.color+'33'; ctx.fill();
+        ctx.lineWidth = 2.5; ctx.strokeStyle = e.color; ctx.stroke();
+        drawSprite(ctx, 'art'+e.id, x2, y2 - ringR*0.15, ringR*1.9*pop);
+        const top = Math.sin(a) < -0.55;
+        const nameSize = clamp(m*(narrow?0.017:0.015), 8, 12);
+        const nameY = top ? y2 - ringR - nameSize*1.4 : y2 + ringR + nameSize*1.5;
+        px(ctx, e.name, x2, nameY, nameSize, '#FFFDF4');
+        if (!narrow){
+          term(ctx, e.how, x2, top ? nameY - nameSize*1.7 : nameY + nameSize*1.9, clamp(m*0.026, 15, 21), e.color);
+        }
+      }
+    });
+  }
+  return { draw };
+})();
+
+/* ---- ch6: pokemon go map ---- */
+SCENES.go = (() => {
+  const go = { next: 3.5, ball: null, pops: [], wake: -9, geom: null };
+  function draw(ctx, w, h, t, time){
+    ctx.fillStyle = '#0F1220'; ctx.fillRect(0,0,w,h);
+    const m = Math.min(w,h);
+    const ph2 = Math.min(h*0.78, m*(w<700?1.1:0.88)), pw = ph2*0.52;
+    const cx = w*0.5, cy = h*0.47;
+    const zoom = lerp(1.06, 0.97, ease(phase(t, 0.1, 0.9)));
+    /* glow */
+    const glow = ctx.createRadialGradient(cx, cy, pw*0.3, cx, cy, pw*1.6);
+    glow.addColorStop(0,'rgba(74,144,217,.16)'); glow.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = glow; ctx.fillRect(0,0,w,h);
+    /* phone body */
+    const scale = zoom;
+    ctx.save(); ctx.translate(cx, cy); ctx.scale(scale, scale); ctx.translate(-cx, -cy);
+    rrect(ctx, cx-pw/2-8, cy-ph2/2-8, pw+16, ph2+16, 38);
+    ctx.fillStyle = '#0B0E16'; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = '#2A3350'; ctx.stroke();
+    /* map inside clip */
+    ctx.save();
+    rrect(ctx, cx-pw/2, cy-ph2/2, pw, ph2, 26); ctx.clip();
+    ctx.fillStyle = '#E9F2DC'; ctx.fillRect(cx-pw/2, cy-ph2/2, pw, ph2);
+    const mx = cx-pw/2, my = cy-ph2/2;
+    go.geom = { mx, my, pw, ph2 };
+    /* park blocks */
+    ctx.fillStyle = '#B9E4A5';
+    ctx.fillRect(mx+pw*0.06, my+ph2*0.10, pw*0.34, ph2*0.22);
+    ctx.fillRect(mx+pw*0.58, my+ph2*0.60, pw*0.34, ph2*0.26);
+    /* water */
+    ctx.fillStyle = '#9CD1EE';
+    ctx.beginPath();
+    ctx.moveTo(mx+pw*0.55, my);
+    ctx.bezierCurveTo(mx+pw*0.45, my+ph2*0.3, mx+pw*0.75, my+ph2*0.45, mx+pw*0.62, my+ph2*0.52);
+    ctx.lineTo(mx+pw, my+ph2*0.46); ctx.lineTo(mx+pw, my); ctx.fill();
+    /* roads */
+    ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = pw*0.055;
+    ctx.beginPath(); ctx.moveTo(mx, my+ph2*0.42); ctx.lineTo(mx+pw, my+ph2*0.42); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mx+pw*0.45, my); ctx.lineTo(mx+pw*0.45, my+ph2); ctx.stroke();
+    ctx.lineWidth = pw*0.028;
+    ctx.beginPath(); ctx.moveTo(mx, my+ph2*0.72); ctx.lineTo(mx+pw*0.58, my+ph2*0.72); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mx+pw*0.78, my+ph2*0.3); ctx.lineTo(mx+pw*0.78, my+ph2); ctx.stroke();
+    /* buildings */
+    ctx.fillStyle = '#D8D9CE';
+    ctx.fillRect(mx+pw*0.52, my+ph2*0.48, pw*0.14, ph2*0.09);
+    ctx.fillRect(mx+pw*0.12, my+ph2*0.78, pw*0.18, ph2*0.12);
+    /* pokestops: pulsing */
+    const stops = [[0.24,0.30],[0.66,0.68],[0.80,0.22]];
+    stops.forEach(([sx2, sy2], i) => {
+      const x = mx+pw*sx2, y = my+ph2*sy2;
+      const pu = REDUCED ? 0.5 : (Math.sin(time*2+i*2)+1)/2;
+      ctx.strokeStyle = 'rgba(74,144,217,'+(0.55-pu*0.35)+')'; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.arc(x, y, pw*(0.05+pu*0.05), 0, TAU); ctx.stroke();
+      ctx.save(); ctx.translate(x,y); ctx.rotate(Math.PI/4);
+      ctx.fillStyle = '#4A90D9'; ctx.fillRect(-pw*0.024, -pw*0.024, pw*0.048, pw*0.048);
+      ctx.restore();
+    });
+    /* snorlax blocking the road + Zzz (unless just woken by the Poké Flute) */
+    drawSprite(ctx, 'pixSnorlax', mx+pw*0.45, my+ph2*0.42, pw*0.13, {pixel:true});
+    if (time - go.wake < 2.2){
+      px(ctx, '!', mx+pw*0.45, my+ph2*0.42 - pw*0.11, pw*0.055, '#FFCB05');
+    } else if (!REDUCED){
+      for (let i=0;i<3;i++){
+        const zp = ((time*0.5 + i*0.33)%1);
+        term(ctx, 'z', mx+pw*0.45 + pw*0.05 + zp*pw*0.05, my+ph2*0.42 - pw*0.10 - zp*pw*0.07, pw*0.04*(1-zp*0.4), '#5E718A', 'left', 1-zp);
+      }
+    }
+    /* wanderers */
+    const wanderers = [
+      {key:'pixPikachu', ax:pw*0.30, ay:ph2*0.18, sx:0.7, sy:1.1, ph:0},
+      {key:'pixGengar',  ax:pw*0.22, ay:ph2*0.14, sx:1.1, sy:0.8, ph:2.1},
+      {key:'pixLapras',  ax:pw*0.16, ay:ph2*0.10, sx:0.5, sy:1.4, ph:4.2},
+    ];
+    wanderers.forEach(wf => {
+      const x = mx+pw*0.5 + Math.sin(time*wf.sx*0.5 + wf.ph)*wf.ax;
+      const y = my+ph2*0.55 + Math.sin(time*wf.sy*0.5 + wf.ph*1.7)*wf.ay;
+      drawSprite(ctx, wf.key, x, y, pw*0.085, {pixel:true});
+    });
+    /* a throw + catch on scroll */
+    const throwP = phase(t, 0.55, 0.80);
+    if (throwP > 0){
+      const from = { x:mx+pw*0.5, y:my+ph2*0.94 };
+      const to = { x:mx+pw*0.66, y:my+ph2*0.68 };
+      const p = ease(throwP);
+      const bx = lerp(from.x, to.x, p);
+      const by = lerp(from.y, to.y, p) - Math.sin(p*Math.PI)*ph2*0.16;
+      drawSprite(ctx, 'ball', bx, by, pw*0.05, {pixel:true});
+      if (throwP >= 1){
+        const popA = phase(t, 0.80, 0.92);
+        ctx.globalAlpha = 1-phase(t, 0.90, 1);
+        px(ctx, 'NICE!', to.x, to.y - pw*0.09 - (REDUCED?0:(1-easeOutBack(popA))*10), pw*0.045, '#FFCB05');
+        ctx.globalAlpha = 1;
+      }
+    }
+    /* ambient auto-throws (MotionPath) keep the map alive while you pause */
+    if (!REDUCED && HAS_GSAP && time > go.next){
+      go.next = time + 5 + Math.random()*3;
+      const sx2 = mx + pw*0.5, sy2 = my + ph2*0.92;
+      const tx2 = mx + pw*(0.25 + Math.random()*0.5), ty2 = my + ph2*(0.30 + Math.random()*0.30);
+      go.ball = { x: sx2, y: sy2 };
+      G.to(go.ball, {
+        motionPath: [{ x: sx2, y: sy2 }, { x: (sx2+tx2)/2, y: Math.min(sy2, ty2) - ph2*0.18 }, { x: tx2, y: ty2 }],
+        duration: 1.05, ease: 'power1.out',
+        onComplete(){ go.ball = null; go.pops.push({ x: tx2, y: ty2, t0: time }); }
+      });
+    }
+    if (go.ball) drawSprite(ctx, 'ball', go.ball.x, go.ball.y, pw*0.05, {pixel:true});
+    go.pops = go.pops.filter(pp => time - pp.t0 < 0.9);
+    for (const pp of go.pops){
+      px(ctx, '+100', pp.x, pp.y - (time - pp.t0)*34, pw*0.042, '#FFCB05', 'center', 1 - (time - pp.t0)/0.9);
+    }
+    ctx.restore(); /* map clip */
+    ctx.restore(); /* phone scale */
+    /* floating labels outside phone */
+    px(ctx, 'JULY 6, 2016', cx, h*0.955, clamp(m*0.017, 9, 13), '#8FB6FF');
+  }
+  function hit(x, y){
+    if (!go.geom) return null;
+    const { mx, my, pw, ph2 } = go.geom;
+    const sx = mx + pw*0.45, sy = my + ph2*0.42, s2 = pw*0.16;
+    return (Math.abs(x-sx) < s2 && Math.abs(y-sy) < s2) ? 'snorlax' : null;
+  }
+  function poke(){
+    go.wake = nowSec;
+    Sound.flute();
+    toast('POKé FLUTE', 'SNORLAX woke up! …glared at you… and went back to sleep. (It blocks the road to this day.)', { sound:false });
+  }
+  return { draw, hit, poke };
+})();
+
+/* ---- ch7: hall of fame ---- */
+SCENES.hof = (() => {
+  const stats = [
+    { label:'GAMES SHIPPED',    to:515,   suffix:'M+',  color:'#FFCB05' },
+    { label:'CARDS PRINTED',    to:85,    suffix:'B+',  color:'#45C0DC' },
+    { label:'FRANCHISE REVENUE',to:130,   prefix:'$', suffix:'B+', color:'#F85888' },
+    { label:'RECORD CARD SALE', to:16.5,  prefix:'$', suffix:'M',  color:'#78C850', decimals:1 },
+  ];
+  function draw(ctx, w, h, t, time){
+    const g = ctx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,'#190C13'); g.addColorStop(1,'#0F1220');
+    ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+    /* rainbow staircase */
+    const colors = ['#EE1515','#F08030','#FFCB05','#78C850','#6890F0','#9D5CE0'];
+    colors.forEach((c, i) => {
+      ctx.globalAlpha = 0.10 + 0.02*Math.sin(time+i);
+      ctx.fillStyle = c;
+      const yBase = h*0.16 + i*(h*0.052);
+      ctx.beginPath();
+      ctx.moveTo(w*0.06, yBase + h*0.052);
+      ctx.lineTo(w*0.94 - i*w*0.02, yBase + h*0.052);
+      ctx.lineTo(w*0.94 - i*w*0.02, yBase);
+      ctx.lineTo(w*0.06 + i*w*0.035, yBase);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    /* sparkle dust */
+    if (!REDUCED){
+      const rnd = mulberry32(88);
+      for (let i=0;i<26;i++){
+        const x = rnd()*w, y = rnd()*h*0.5, tw = Math.pow(Math.sin(time*(0.6+rnd())+i*2.4), 2);
+        ctx.globalAlpha = tw*0.7; ctx.fillStyle = '#FFE9A8';
+        star(ctx, x, y, 2.2+rnd()*2.4);
+      }
+      ctx.globalAlpha = 1;
+    }
+    /* 4 counters */
+    const narrow = w < 760;
+    const pos = narrow
+      ? [[w*0.5, h*0.20],[w*0.5, h*0.40],[w*0.5, h*0.60],[w*0.5, h*0.80]]
+      : [[w*0.52, h*0.32],[w*0.80, h*0.32],[w*0.52, h*0.70],[w*0.80, h*0.70]];
+    const numSize = narrow ? Math.min(w*0.11, 54) : Math.min(w*0.055, 48);
+    const SCRCH = '0123456789MB$+';
+    stats.forEach((s, i) => {
+      const p = easeOut(phase(t, 0.06 + i*0.16, 0.24 + i*0.16));
+      if (p <= 0) return;
+      /* one-shot landing: value locks at target and the digits scramble-resolve */
+      s.done = (p > 0.985) ? (s.done || true) : (p < 0.05 ? false : s.done);
+      let txt;
+      const finalTxt = (s.prefix||'') + (s.decimals ? s.to.toFixed(1) : Math.round(s.to)) + (s.suffix||'');
+      if (s.done){
+        if (s.doneAt == null) s.doneAt = time;
+        const k = REDUCED ? 1 : clamp((time - s.doneAt)/0.7);
+        const nResolve = Math.ceil(finalTxt.length * k);
+        txt = finalTxt.slice(0, nResolve) +
+          [...finalTxt.slice(nResolve)].map(ch => ch === ' ' ? ' ' : SCRCH[(Math.random()*SCRCH.length)|0]).join('');
+      } else {
+        s.doneAt = null;
+        const val = s.to * p;
+        txt = (s.prefix||'') + (s.decimals ? val.toFixed(1) : Math.round(val)) + (s.suffix||'');
+      }
+      const [x, y] = pos[i];
+      const pop = REDUCED ? 1 : easeOutBack(clamp(p*1.4));
+      ctx.save(); ctx.translate(x, y); ctx.scale(pop, pop);
+      px(ctx, txt, 3, 3, numSize, 'rgba(0,0,0,.5)');
+      px(ctx, txt, 0, 0, numSize, s.color);
+      term(ctx, s.label, 0, numSize*1.35, Math.min(w*0.028, 24), '#B9BDCB');
+      ctx.restore();
+    });
+  }
+  return { draw };
+})();
+
+/* ---- ch8: oak's lab (ambient; balls are DOM) ---- */
+SCENES.lab = (() => {
+  function draw(ctx, w, h, t, time){
+    const g = ctx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,'#171009'); g.addColorStop(0.7,'#221709'); g.addColorStop(1,'#171009');
+    ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+    /* window with night sky */
+    const wx = w*0.12, wy = h*0.14, ww = Math.min(w*0.16, 150), wh = ww*1.2;
+    rrect(ctx, wx, wy, ww, wh, 10);
+    ctx.fillStyle = '#0B0E1C'; ctx.fill();
+    ctx.lineWidth = 4; ctx.strokeStyle = '#3A2A1C'; ctx.stroke();
+    const rnd = mulberry32(4);
+    for (let i=0;i<14;i++){
+      ctx.globalAlpha = 0.4 + 0.6*Math.pow(Math.sin(time*(0.5+rnd())+i),2);
+      ctx.fillStyle = '#DCE4FF';
+      ctx.fillRect(wx + rnd()*ww*0.9, wy + rnd()*wh*0.9, 2, 2);
+    }
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = '#3A2A1C'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(wx+ww/2, wy); ctx.lineTo(wx+ww/2, wy+wh); ctx.stroke();
+    /* hanging lamp + light cone */
+    const lx = w*0.5, ly = h*0.10;
+    ctx.strokeStyle = '#3A2A1C'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, ly); ctx.stroke();
+    ctx.fillStyle = '#3A2A1C';
+    ctx.beginPath(); ctx.moveTo(lx-26, ly+16); ctx.lineTo(lx+26, ly+16); ctx.lineTo(lx, ly-6); ctx.fill();
+    const cone = ctx.createLinearGradient(0, ly, 0, h*0.75);
+    cone.addColorStop(0,'rgba(255,214,130,.16)'); cone.addColorStop(1,'rgba(255,214,130,0)');
+    ctx.fillStyle = cone;
+    ctx.beginPath(); ctx.moveTo(lx-26, ly+14); ctx.lineTo(lx+26, ly+14);
+    ctx.lineTo(w*0.72, h*0.78); ctx.lineTo(w*0.28, h*0.78); ctx.fill();
+    const lampPulse = REDUCED ? 0.9 : 0.85 + 0.15*Math.sin(time*2.4);
+    ctx.fillStyle = 'rgba(255,224,150,'+lampPulse+')';
+    ctx.beginPath(); ctx.arc(lx, ly+18, 8, 0, TAU); ctx.fill();
+    /* table */
+    const ty = h*0.70;
+    ctx.fillStyle = '#3A2A1C'; ctx.fillRect(0, ty, w, h-ty);
+    ctx.fillStyle = '#4A3624'; ctx.fillRect(0, ty, w, 12);
+    ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 2;
+    for (let x=0;x<w;x+=90){ ctx.beginPath(); ctx.moveTo(x, ty+12); ctx.lineTo(x+30, h); ctx.stroke(); }
+    /* shelf silhouette */
+    ctx.fillStyle = '#241809';
+    ctx.fillRect(w*0.68, h*0.30, w*0.24, 8);
+    ctx.fillRect(w*0.72, h*0.30-26, 14, 26);
+    ctx.fillRect(w*0.76, h*0.30-20, 14, 20);
+    ctx.fillRect(w*0.82, h*0.30-30, 14, 30);
+  }
+  return { draw };
+})();
+
+/* ============================================================
+   ENGINE
+   ============================================================ */
+const chapters = [];
+function setupScenes(){
+  $$('.hero, .chapter').forEach(sec => {
+    const sceneName = sec.dataset.scene;
+    if (!sceneName || !SCENES[sceneName]) return;
+    const canvas = sec.querySelector('canvas');
+    const ch = {
+      sec, canvas, scene: SCENES[sceneName],
+      ctx: canvas.getContext('2d'),
+      t: 0, active: false, w: 0, h: 0, isHero: sec.classList.contains('hero'),
+      steps: [...sec.querySelectorAll('.step, .sign')],
+    };
+    chapters.push(ch);
+  });
+}
+function sizeCanvas(ch){
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const r = ch.canvas.getBoundingClientRect();
+  ch.w = r.width; ch.h = r.height;
+  ch.canvas.width = Math.max(1, Math.round(r.width * dpr));
+  ch.canvas.height = Math.max(1, Math.round(r.height * dpr));
+  ch.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  if (ch.scene.resize) ch.scene.resize(ch.w, ch.h);
+}
+function chapterT(ch){
+  if (ch.isHero) return 0;
+  const r = ch.sec.getBoundingClientRect();
+  const total = r.height - window.innerHeight;
+  return total > 0 ? clamp(-r.top / total) : 0;
+}
+let lastTs = 0;
+const glitch = { on: false, t0: 0 };
+function renderFrame(time, dt){
+  if (window.__freeze) return;   /* quiesce for programmatic capture */
+  nowSec = time;
+  for (const ch of chapters){
+    if (!ch.active) continue;
+    const t = chapterT(ch);
+    ch.t = t;
+    ch.scene.draw(ch.ctx, ch.w, ch.h, t, REDUCED ? 0 : time, dt);
+    /* fade dialogue cards out as they slide under the fixed HUD (measure the
+       card itself, not the tall step wrapper, so centered cards never fade) */
+    const fadeY = 84;
+    for (const el of ch.steps){
+      const card = el.matches('.sign') ? el : (el.querySelector(':scope > .dlg, :scope > .battle') || el);
+      if (card.__entering) continue;
+      const top = card.getBoundingClientRect().top;
+      const o = top < fadeY ? clamp((top - 26)/(fadeY - 26)) : 1;
+      if (o !== card.__o){ card.style.opacity = o; card.__o = o; }
+    }
+  }
+  /* fx overlay: legacy particles + physics2D confetti */
+  if (fxParts.list.length || fx2.list.length){
+    fxCtx.clearRect(0,0,fxW,fxH);
+    stepParticles(fxParts, fxCtx, dt);
+    for (const q of fx2.list){
+      fxCtx.save(); fxCtx.translate(q.x, q.y); fxCtx.rotate((q.rotation||0)*Math.PI/180);
+      fxCtx.fillStyle = q.c; fxCtx.fillRect(-q.s/2, -q.s/2, q.s, q.s); fxCtx.restore();
+    }
+    if (!fxParts.list.length && !fx2.list.length) fxCtx.clearRect(0,0,fxW,fxH);
+  }
+  /* Konami-code MissingNo glitch */
+  if (glitch.on){
+    if (time - glitch.t0 > 2.3){ glitch.on = false; fxCtx.clearRect(0,0,fxW,fxH); }
+    else {
+      fxCtx.clearRect(0,0,fxW,fxH);
+      const cols = ['#EE1515','#FFCB05','#45C0DC','#FFFDF4','#17171F','#78C850'];
+      for (let i=0; i<26; i++){
+        fxCtx.globalAlpha = 0.2 + Math.random()*0.5;
+        fxCtx.fillStyle = cols[(Math.random()*cols.length)|0];
+        fxCtx.fillRect(Math.random()*fxW - 60, Math.random()*fxH, 40 + Math.random()*180, 3 + Math.random()*11);
+      }
+      fxCtx.globalAlpha = 1;
+      drawSprite(fxCtx, 'glitchGhost', fxW/2, fxH/2 - 30, Math.min(fxH*0.32, 190));
+      px(fxCtx, 'MISSINGNO', fxW/2 + 3, fxH/2 + 96 + 3, Math.min(fxW*0.04, 26), '#3B4CCA');
+      px(fxCtx, 'MISSINGNO', fxW/2, fxH/2 + 96, Math.min(fxW*0.04, 26), '#FFCB05');
+      term(fxCtx, '01 01 01 — some glitches are load-bearing', fxW/2, fxH/2 + 130, Math.min(fxW*0.026, 22), '#B9BDCB');
+    }
+  }
+}
+function startLoop(){
+  if (HAS_GSAP){
+    if (HAS_LENIS && !REDUCED){
+      lenis = new Lenis({ lerp: 0.11 });
+      lenis.on('scroll', ScrollTrigger.update);
+      G.ticker.add((t) => lenis.raf(t * 1000));
+      G.ticker.lagSmoothing(0);
+      document.documentElement.style.scrollBehavior = 'auto';
+    }
+    G.ticker.add((time, deltaMs) => { renderFrame(time, Math.min(0.05, (deltaMs || 16)/1000)); });
+  } else {
+    lastTs = 0;
+    const raf = (ts) => {
+      requestAnimationFrame(raf);
+      const dt = Math.min(0.05, (ts - lastTs)/1000 || 0.016);
+      lastTs = ts;
+      if (document.hidden) return;
+      renderFrame(ts/1000, dt);
+    };
+    requestAnimationFrame(raf);
+  }
+}
+
+/* scroll wiring: ScrollTrigger drives progress/activation/badges/themes/wipes
+   when the motion stack is present; IntersectionObservers are the fallback */
+function setupScroll(){
+  if (!(HAS_GSAP && !REDUCED)){ setupObservers(); return; }
+  chapters.forEach(ch => {
+    ScrollTrigger.create({ trigger: ch.sec, start: 'top 112%', end: 'bottom -12%',
+      onToggle: self => { ch.active = self.isActive; } });
+    const b = ch.sec.dataset.badge;
+    if (b != null) ScrollTrigger.create({ trigger: ch.sec, start: 'top 55%', once: true,
+      onEnter: () => awardBadge(+b) });
+    ScrollTrigger.create({ trigger: ch.sec, start: 'top 50%', end: 'bottom 50%',
+      onToggle: self => {
+        if (self.isActive){
+          /* organic scroll hands over via the background tint alone —
+             the iris wipe is reserved for deliberate warps (keys / press-start) */
+          setTheme(ch.sec.dataset.theme || '');
+        }
+        if (self.isActive && ch.sec.id === 'ch-lab' && !labNudged && !pickedStarter){
+          labNudged = true;
+          setTimeout(() => {
+            if (pickedStarter) return;
+            toast('OAK', 'Take your time. But your rival won’t wait forever.');
+            if (HAS_GSAP && !REDUCED) G.to('.ballbtn', { y: -9, duration: 0.16, yoyo: true, repeat: 3, stagger: 0.09, ease: 'power1.out' });
+          }, 9000);
+        }
+      } });
+    const sign = ch.sec.querySelector('.sign');
+    if (sign) ScrollTrigger.create({ trigger: sign, start: 'top 85%', once: true,
+      onEnter: () => { scrambleTo(sign.querySelector('b')); scrambleTo(sign.querySelector('span')); } });
+  });
+  $$('.step > .dlg, .step > .battle').forEach(card => {
+    ScrollTrigger.create({ trigger: card, start: 'top 78%', once: true, onEnter: () => presentCard(card) });
+  });
+}
+
+function setupMagnetic(){
+  if (!HAS_GSAP || REDUCED || !matchMedia('(pointer:fine)').matches) return;
+  $$('.ballbtn, .again').forEach(btn => {
+    btn.addEventListener('mouseenter', () => { G.to(btn, { scale: 1.06, duration: 0.3, ease: 'power2.out' }); Sound.hover(); });
+    btn.addEventListener('mousemove', (e) => {
+      const r = btn.getBoundingClientRect();
+      G.to(btn, { x: (e.clientX - (r.left + r.width/2))*0.22, y: (e.clientY - (r.top + r.height/2))*0.22, duration: 0.4, ease: 'power2.out' });
+    });
+    btn.addEventListener('mouseleave', () => G.to(btn, { x: 0, y: 0, scale: 1, duration: 0.6, ease: 'elastic.out(1, 0.5)' }));
+  });
+}
+
+let paintSoundBtn = () => {};
+function setupSoundBtn(){
+  const sBtn = document.getElementById('soundBtn');
+  if (!sBtn) return;
+  paintSoundBtn = () => {
+    sBtn.classList.toggle('muted', !Sound.on);
+    sBtn.setAttribute('aria-pressed', String(Sound.on));
+    if (Sound.on) sBtn.classList.remove('dot');   /* nudge done once sound is on */
+  };
+  paintSoundBtn();
+  if (Sound.on) Music.set(true);   /* one switch: sound on means music on too */
+  sBtn.addEventListener('click', () => {
+    const on = Sound.toggle();
+    Music.set(on);
+    paintSoundBtn();
+    if (on) Sound.pop();
+  });
+}
+
+/* fx overlay (confetti on starter pick) */
+const fxCanvas = $('#fx');
+const fxCtx = fxCanvas.getContext('2d');
+const fxParts = makeParticles();
+let fxW = 0, fxH = 0;
+function sizeFx(){
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  fxW = innerWidth; fxH = innerHeight;
+  fxCanvas.width = fxW*dpr; fxCanvas.height = fxH*dpr;
+  fxCtx.setTransform(dpr,0,0,dpr,0,0);
+}
+
+/* IO: activation + badges + page theme */
+function setupObservers(){
+  const act = new IntersectionObserver(entries => {
+    for (const e of entries){
+      const ch = chapters.find(c => c.sec === e.target);
+      if (ch) ch.active = e.isIntersecting;
+    }
+  }, { rootMargin:'12% 0px 12% 0px', threshold:0 });
+  chapters.forEach(ch => act.observe(ch.sec));
+
+  const theme = new IntersectionObserver(entries => {
+    for (const e of entries){
+      if (e.isIntersecting) setTheme(e.target.dataset.theme || '');
+    }
+  }, { rootMargin:'-40% 0px -40% 0px', threshold:0 });
+  $$('.hero, .chapter').forEach(s => theme.observe(s));
+
+  const badgeIO = new IntersectionObserver(entries => {
+    for (const e of entries){
+      if (!e.isIntersecting) continue;
+      const idx = e.target.dataset.badge;
+      if (idx == null) continue;
+      awardBadge(+idx);
+      badgeIO.unobserve(e.target);
+    }
+  }, { rootMargin:'-42% 0px -42% 0px', threshold:0 });
+  $$('.chapter[data-badge]').forEach(s => badgeIO.observe(s));
+}
+const awarded = new Set();
+let soundNudged = false, pickedStarter = null, labNudged = false, petCount = 0, ballToastAt = -9;
+function saveProgress(){
+  try{ localStorage.setItem('pj-progress', JSON.stringify({ badges: [...awarded], starter: pickedStarter })); }catch(e){}
+}
+function awardBadge(i){
+  if (awarded.has(i)) return;
+  awarded.add(i);
+  const el = $('.badge[data-badge="'+i+'"]');
+  if (el){
+    el.classList.add('earned','pop');
+    setTimeout(() => el.classList.remove('pop'), 600);
+    if (HAS_GSAP && !REDUCED){
+      G.fromTo(el, { filter: 'brightness(3) saturate(0)' }, { filter: 'brightness(1) saturate(1)', duration: 0.6, ease: 'power2.out' });
+    }
+  }
+  Sound.badge();
+  const remaining = 8 - awarded.size;
+  toast(BADGE_NAMES[i].toUpperCase() + ' BADGE GET!',
+    remaining ? `${BADGE_NAMES[i]} Badge earned! ${remaining} to go.` : 'All eight badges! Your case is full. Click it in the top right.',
+    { sound:false });
+  saveProgress();
+  if (awarded.size === 3 && !Sound.on && !soundNudged){
+    soundNudged = true;
+    const sBtn = document.getElementById('soundBtn');
+    if (sBtn) sBtn.classList.add('dot');
+    setTimeout(() => toast('♪ PSST — SOUND', 'This journey has chiptunes. Click the speaker (top right) to switch them on.'), 1500);
+  }
+}
+
+/* finale: choose your starter */
+const STARTER_TEXT = {
+  1:'You chose BULBASAUR! The seed on its back grows with you: patience, photosynthesis and a very strong opinion about vines. Somewhere, your rival is already complaining about the Charmander you left behind. Prof. Oak has recorded you in the HALL OF FAME. Your adventure continues. 1,025 species are waiting, and somewhere in there is the one you’ll never forget.',
+  4:'You chose CHARMANDER! Famous fact: if the flame on its tail goes out, it dies. Which is a lot of pressure for a lizard. Somewhere, your rival is already complaining about the Squirtle you left behind. Prof. Oak has recorded you in the HALL OF FAME. Your adventure continues. 1,025 species are waiting, and somewhere in there is the one you’ll never forget.',
+  7:'You chose SQUIRTLE! Small turtle, water cannon, zero regrets. Somewhere, your rival is already complaining about the Bulbasaur you left behind. Prof. Oak has recorded you in the HALL OF FAME. Your adventure continues. 1,025 species are waiting, and somewhere in there is the one you’ll never forget.'
+};
+function setupFinale(){
+  const msg = $('#finaleMsg'), msgText = $('#finaleText');
+  $$('.ballwrap').forEach(wrap => {
+    const btn = wrap.querySelector('.ballbtn');
+    const img = wrap.querySelector('img[data-art]');
+    const id = img.dataset.art;
+    img.src = ART + id + '.png';
+    img.onerror = () => { if (!img.dataset.retried){ img.dataset.retried = '1'; img.src = ART_R + id + '.png'; } };
+    img.alt = '';
+    btn.addEventListener('click', () => {
+      $$('.ballbtn').forEach(b => b.classList.remove('open'));
+      $$('.ballwrap').forEach(w2 => { w2.classList.remove('picked'); w2.classList.toggle('faded', w2 !== wrap); });
+      btn.classList.add('open');
+      wrap.classList.add('picked');
+      $('#labIntro').hidden = true;
+      msgText.textContent = STARTER_TEXT[id];
+      msg.hidden = false;
+      msg.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
+      /* tint + celebration: the ball flies to center stage and bursts open */
+      const tint = { 1:'#78C850', 4:'#F08030', 7:'#6890F0' }[id];
+      document.documentElement.style.setProperty('--yellow', tint);
+      pickedStarter = id;
+      saveProgress();
+      if (REDUCED) return;
+      Sound.pick();
+      if (!HAS_GSAP){
+        const r0 = btn.getBoundingClientRect();
+        burstParticles(fxParts, r0.left + r0.width/2, r0.top + r0.height/2, [tint, '#FFCB05', '#FFFDF4', '#17171F'], 80, 1.4);
+        return;
+      }
+      const r = btn.getBoundingClientRect();
+      const clone = btn.cloneNode(true);
+      clone.classList.remove('open');
+      clone.classList.add('ball-clone');
+      clone.style.left = r.left + 'px';
+      clone.style.top = r.top + 'px';
+      clone.setAttribute('aria-hidden', 'true');
+      clone.disabled = true;
+      document.body.appendChild(clone);
+      const dx = innerWidth/2 - (r.left + r.width/2);
+      const dy = innerHeight*0.24 - (r.top + r.height/2);
+      G.fromTo(clone, { x: 0, y: 0, scale: 1 }, {
+        x: dx, y: dy, scale: 1.55, duration: 0.7, ease: 'back.out(1.2)',
+        onStart(){ void clone.offsetWidth; clone.classList.add('open'); Sound.pop(); },
+        onComplete(){
+          burst2D(innerWidth/2, innerHeight*0.24, [tint, '#FFCB05', '#FFFDF4', '#17171F'], 90, 1.5);
+          G.to(clone, { opacity: 0, scale: 2.1, duration: 0.5, delay: 0.9, ease: 'power2.in', onComplete: () => clone.remove() });
+        }
+      });
+    });
+    /* hover preview */
+    btn.addEventListener('mouseenter', () => { if (!btn.classList.contains('open')) btn.classList.add('open'); });
+    btn.addEventListener('mouseleave', () => { if (!wrap.classList.contains('picked')) btn.classList.remove('open'); });
+  });
+}
+
+/* ---- interactions: petting, poking, flutes, konami, trainer card ---- */
+function petPikachu(){
+  petCount++;
+  Sound.cry();
+  const hero = SCENES.title.hero;
+  if (HAS_GSAP && !REDUCED) G.to(hero, { jump: -16, duration: 0.13, yoyo: true, repeat: 1, ease: 'power2.out' });
+  if (petCount === 3) toast('PIKACHU', 'Pikachu looks happy! (Keep going…)', { sound:false });
+  if (petCount === 8){
+    if (HAS_GSAP && !REDUCED){
+      const fl = document.getElementById('flash');
+      G.fromTo(fl, { opacity: 0 }, { opacity: 0.92, duration: 0.08, yoyo: true, repeat: 3, ease: 'steps(1)', onComplete(){ G.to(fl, { opacity: 0, duration: 0.25 }); } });
+      Sound.thunder();
+    }
+    toast('PIKACHU used THUNDERBOLT!', 'Critical hit on your heart. It’s super cute.', { sound:false });
+  }
+}
+function pokeBall(){
+  const hero = SCENES.title.hero;
+  if (HAS_GSAP && !REDUCED){
+    G.timeline().to(hero, { ballRot: -0.32, duration: 0.09 })
+      .to(hero, { ballRot: -0.02, duration: 0.09 })
+      .to(hero, { ballRot: -0.2, duration: 0.09 })
+      .to(hero, { ballRot: -0.12, duration: 0.12 });
+  }
+  if (nowSec - ballToastAt > 2.5){
+    ballToastAt = nowSec; Sound.poke();
+    toast('OAK', 'There’s a time and place for everything! But not now.', { sound:false });
+  }
+}
+function attachCanvasInteractions(){
+  const heroCh = chapters.find(c => c.isHero);
+  if (heroCh) heroCh.canvas.addEventListener('click', (e) => {
+    const r = heroCh.canvas.getBoundingClientRect();
+    const h = SCENES.title.hit(e.clientX - r.left, e.clientY - r.top, heroCh.w, heroCh.h);
+    if (h === 'pikachu') petPikachu();
+    else if (h === 'ball') pokeBall();
+  });
+  const goCh = chapters.find(c => c.sec.dataset.scene === 'go');
+  if (goCh) goCh.canvas.addEventListener('click', (e) => {
+    const r = goCh.canvas.getBoundingClientRect();
+    if (SCENES.go.hit(e.clientX - r.left, e.clientY - r.top) === 'snorlax'){
+      SCENES.go.poke();
+    }
+  });
+}
+
+/* trainer card — the completion payoff */
+let bootTime = performance.now();
+function tcOpen(){ const bd = document.getElementById('tcBackdrop'); return bd && !bd.hidden; }
+function openTC(){
+  const bd = document.getElementById('tcBackdrop');
+  $('#tcBadges').innerHTML = document.querySelector('.badgecase').innerHTML;
+  $('#tcBadges').querySelectorAll('.badge.pop').forEach(b => b.classList.remove('pop'));
+  $('#tcStarter').textContent = pickedStarter ? ({ 1:'BULBASAUR', 4:'CHARMANDER', 7:'SQUIRTLE' })[pickedStarter] : '—';
+  const secs = Math.floor((performance.now() - bootTime)/1000);
+  $('#tcTime').textContent = Math.floor(secs/60) + ':' + String(secs%60).padStart(2,'0');
+  bd.hidden = false;
+  $('#tcClose').focus();
+  requestAnimationFrame(() => bd.classList.add('open'));
+  Sound.pop();
+  if (Sound.on) Music.playFeature('theme-open');   /* the award-ceremony sting */
+}
+function closeTC(){
+  const bd = document.getElementById('tcBackdrop');
+  Sound.select();
+  Music.stopFeature(0.4);
+  bd.classList.remove('open');
+  setTimeout(() => { bd.hidden = true; }, 300);
+  const bc = document.getElementById('badgecase');
+  if (bc) bc.focus();
+}
+function setupTrainerCard(){
+  const bc = document.getElementById('badgecase');
+  const bd = document.getElementById('tcBackdrop');
+  if (!bc || !bd) return;
+  bc.addEventListener('click', () => {
+    if (awarded.size >= 8) openTC();
+    else {
+      Sound.error();
+      toast('BADGE CASE', `Earn all 8 badges first. ${8 - awarded.size} to go. Keep scrolling!`, { sound:false });
+    }
+  });
+  bc.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); bc.click(); } });
+  $('#tcClose').addEventListener('click', closeTC);
+  $('#tcNew').addEventListener('click', () => { Sound.select(); try{ localStorage.removeItem('pj-progress'); }catch(e){} history.scrollRestoration = 'manual'; location.reload(); });
+  bd.addEventListener('click', (e) => { if (e.target === bd) closeTC(); });
+  const link = document.getElementById('openTC');
+  if (link) link.addEventListener('click', () => openTC());
+}
+
+/* keyboard: konami code + arrow-key route switching */
+const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
+let kbuf = [];
+function setupKeys(){
+  addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && tcOpen()){ closeTC(); return; }
+    kbuf.push(e.code); if (kbuf.length > KONAMI.length) kbuf.shift();
+    if (kbuf.join(',') === KONAMI.join(',')){
+      kbuf = [];
+      glitch.on = true; glitch.t0 = nowSec;
+      Sound.glitch();
+      toast('MISSINGNO APPEARED!', '01 01 01: some glitches are load-bearing. This one is harmless. Probably.', { sound:false });
+      return;
+    }
+    if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && !e.altKey && !e.ctrlKey && !e.metaKey && !tcOpen()){
+      let idx = 0;
+      chapters.forEach((ch, i) => { if (ch.sec.getBoundingClientRect().top <= innerHeight*0.5) idx = i; });
+      const next = e.key === 'ArrowRight' ? Math.min(chapters.length-1, idx+1) : Math.max(0, idx-1);
+      if (next !== idx){
+        e.preventDefault();
+        /* deliberate route warp: close the Pokéball, jump, reopen */
+        Iris.fire(() => scrollToY(chapters[next].sec.offsetTop + 2, true));
+      }
+    }
+  });
+}
+
+/* boot */
+function boot(){
+  history.scrollRestoration = 'manual';
+  bootTime = performance.now();
+  /* welcome back FIRST — before any ScrollTrigger exists, so creation-time
+     callbacks for already-passed chapters can't re-award and wipe the save */
+  try {
+    const saved = JSON.parse(localStorage.getItem('pj-progress') || 'null');
+    if (saved && Array.isArray(saved.badges) && saved.badges.length){
+      saved.badges.forEach(i => {
+        awarded.add(i);
+        const el = $('.badge[data-badge="'+i+'"]');
+        if (el) el.classList.add('earned');
+      });
+      if (saved.starter){
+        pickedStarter = saved.starter;
+        document.documentElement.style.setProperty('--yellow', { 1:'#78C850', 4:'#F08030', 7:'#6890F0' }[saved.starter]);
+      }
+      setTimeout(() => toast('WELCOME BACK, TRAINER!',
+        `Your badge case still holds ${saved.badges.length} badge${saved.badges.length > 1 ? 's' : ''}. The journey picks up right where you left it.`), 1400);
+    }
+  } catch(e){}
+  preload();
+  setupScenes();
+  sizeFx();
+  Iris.init();
+  chapters.forEach(sizeCanvas);
+  setupScroll();
+  setupFinale();
+  setupMagnetic();
+  setupSoundBtn();
+  setupTrainerCard();
+  attachCanvasInteractions();
+  setupKeys();
+  startLoop();
+  /* first gesture unlocks WebAudio + starts route music (autoplay policy) */
+  const unlock = () => {
+    Sound.ensure();
+    Music.sync();
+    if (Sound.context && Sound.context.state === 'running'){
+      ['pointerdown','keydown','touchstart','wheel'].forEach(ev => removeEventListener(ev, unlock, true));
+    }
+  };
+  ['pointerdown','keydown','touchstart','wheel'].forEach(ev => addEventListener(ev, unlock, { capture:true, passive:true }));
+  const again = document.querySelector('.again');
+  if (again) again.addEventListener('click', (e) => {
+    e.preventDefault();
+    Sound.select();
+    if (HAS_GSAP && !REDUCED) Iris.fire(() => scrollToY(0, true));
+    else window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
+  });
+  /* the TV opening theme — credits button plays it over the chapter loop */
+  const themeBtn = document.getElementById('themeBtn');
+  if (themeBtn){
+    const resetThemeBtn = () => { themeBtn.textContent = '▶ PLAY THE OPENING THEME'; themeBtn.classList.remove('playing'); };
+    themeBtn.addEventListener('click', () => {
+      if (!Sound.on){
+        Sound.toggle();
+        Music.set(true);
+        paintSoundBtn();
+      }
+      if (Music.featuring){ Music.stopFeature(); resetThemeBtn(); return; }
+      Sound.select();
+      Music.playFeature('theme-full', resetThemeBtn);
+      themeBtn.textContent = '■ STOP THE OPENING THEME';
+      themeBtn.classList.add('playing');
+    });
+  }
+  /* idle-at-hero nudge */
+  setTimeout(() => { if (scrollY < 120) toast('OAK', 'Your journey is waiting. Scroll to begin. Eight routes ahead.'); }, 8000);
+  /* konami hint lives in the console */
+  try {
+    console.log('%cPOKéMON · THE JOURNEY', 'font:bold 18px monospace; color:#FFCB05; background:#0F1220; padding:4px 10px; border:2px solid #3B4CCA;');
+    console.log('%cYou found the debug Pokédex. Rumor: ↑ ↑ ↓ ↓ ← → ← → B A', 'color:#8FB6FF; font-family:monospace; font-size:12px;');
+  } catch(e){}
+  const redraw = () => chapters.forEach(ch => { if (ch.active) ch.scene.draw(ch.ctx, ch.w, ch.h, ch.t, 0, 0.016); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+    redraw();
+    if (HAS_GSAP) ScrollTrigger.refresh();
+    heroEntrance();
+  });
+  let rto;
+  addEventListener('resize', () => {
+    clearTimeout(rto);
+    rto = setTimeout(() => {
+      sizeFx(); Iris.size();
+      chapters.forEach(ch => { sizeCanvas(ch); if (ch.active) ch.scene.draw(ch.ctx, ch.w, ch.h, chapterT(ch), 0, 0.016); });
+    }, 150);
+  });
+  /* reduced motion: draw every scene once at its final-ish state for static readers */
+  if (REDUCED){
+    chapters.forEach(ch => ch.scene.draw(ch.ctx, ch.w, ch.h, ch.isHero ? 0 : 1, 0, 0.016));
+  }
+}
+boot();
+</script>
+</body>
+</html>
