@@ -21,6 +21,7 @@
 ## Work Guidance
 
 - Keep `pokedex.js` dual-target on every change: browser global `window.Dex` plus Node exports.
+- Changing the detail-record shape means bumping `CACHE_KEY` in pokedex.js AND adding the old key to the NEW JOURNEY reset list in index.html — two separate hardcoded lists; update both.
 - Never modify vendored `*.min.js`; update by replacing the whole file from upstream.
 - New dex/device logic that needs Node tests goes here (not inline in index.html).
 
