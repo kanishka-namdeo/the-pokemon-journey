@@ -52,8 +52,15 @@ From **"Theme Song [8-bit]"** on OpenGameArt.
   - `theme-full.wav` ← `Theme Song 8-bit V1 _looping.wav` (the full 74 s
     theme — plays from the credits button)
 
+## Pokémon cries (`cries/`)
+
+The 1025 species cries in `cries/` are fetched from PokéAPI by
+`data/generate-dex-details.mjs` (`npm run sync:dex`) and played by the Pokédex
+device's CRY button. They are Nintendo IP, bundled here as dataset copies for
+the offline dex rather than redistributable originals.
+
 ## Deliberately *not* used
 
-Actual Pokémon cries, the Poké Flute theme, and series music are Nintendo IP and
-are not redistributable — those moments use this site's own Web Audio synthesized
+The Poké Flute theme and other series music are Nintendo IP and are not
+redistributable — those moments use this site's own Web Audio synthesized
 chiptunes instead (`Sound` object in `index.html`).

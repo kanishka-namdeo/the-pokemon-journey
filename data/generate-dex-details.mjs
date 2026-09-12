@@ -4,7 +4,8 @@
 //   data/details/{id}.json      detail record (same shape buildRecord produces)
 //   sprites/dex/front/{id}.png  grid sprite
 //   sprites/dex/art/{id}.webp   official artwork, downscaled to 384px
-//   audio/cries/{id}.ogg        cry (null in the record if the species has none)
+//   audio/cries/{id}.ogg|mp3    cry, extension follows the real container
+//                               (null in the record if the species has none)
 //
 // Run:  npm run sync:dex                            # fetch whatever is missing
 //       node data/generate-dex-details.mjs --force  # refetch everything
@@ -12,9 +13,9 @@
 // After a new generation lands, regenerate dex-list.json first
 // (data/generate-dex-list.mjs), then run this script.
 import { createRequire } from 'node:module';
-import { writeFileSync, existsSync, mkdirSync, statSync } from 'node:fs';
+import { writeFileSync, existsSync, mkdirSync, statSync, rmSync } from 'node:fs';
 import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
@@ -68,6 +69,24 @@ const saveBuf = async (url, path) => {
   return statSync(path).size;
 };
 
+/* Most cries are Ogg Vorbis, but PokéAPI ships a few as raw MP3 bytes (25, 808,
+   809). Files are named by their real container so every browser decodes them:
+   Safari rejects Ogg entirely, and an .ogg name on MP3 data breaks those users. */
+const CRY_EXTS = ['.ogg', '.mp3'];
+function findCry(id) {
+  for (const ext of CRY_EXTS) {
+    const p = join(DIR.cries, id + ext);
+    if (existsSync(p)) return p;
+  }
+  return null;
+}
+function cryExt(buf) {
+  if (buf.length >= 4 && buf[0] === 0x4f && buf[1] === 0x67 && buf[2] === 0x67 && buf[3] === 0x53) return '.ogg'; // OggS
+  if (buf.length >= 3 && buf[0] === 0x49 && buf[1] === 0x44 && buf[2] === 0x33) return '.mp3'; // ID3
+  if (buf.length >= 2 && buf[0] === 0xff && (buf[1] & 0xe0) === 0xe0) return '.mp3'; // MPEG frame sync
+  return '.ogg';
+}
+
 /* Run `fn` over `items` with `n` workers. */
 async function pool(n, items, fn) {
   let i = 0;
@@ -101,12 +120,21 @@ await pool(8, ids, async (id) => {
   const pDetails = join(DIR.details, id + '.json');
   const pFront = join(DIR.front, id + '.png');
   const pArt = join(DIR.art, id + '.webp');
-  const pCry = join(DIR.cries, id + '.ogg');
+  let cryFile = findCry(id);
   try {
     const haveDetails = existsSync(pDetails);
     const haveAssets = existsSync(pFront) && existsSync(pArt);
-    const cryWaived = !existsSync(pCry) && haveDetails && JSON.parse(readFileSync(pDetails, 'utf8')).cry === null;
-    if (!FORCE && haveDetails && haveAssets && (existsSync(pCry) || cryWaived)) { skipped++; return; }
+    const cryWaived = !cryFile && haveDetails && JSON.parse(readFileSync(pDetails, 'utf8')).cry === null;
+    if (!FORCE && haveDetails && haveAssets && (cryFile || cryWaived)) {
+      /* Records embed the cry path; heal it when the file's codec-accurate
+         name differs (e.g. after a rename or an upstream codec change). */
+      if (cryFile) {
+        const rec = JSON.parse(readFileSync(pDetails, 'utf8'));
+        const want = 'audio/cries/' + basename(cryFile);
+        if (rec.cry !== want) { rec.cry = want; writeFileSync(pDetails, JSON.stringify(rec)); }
+      }
+      skipped++; return;
+    }
 
     const [pokemon, species] = await Promise.all([
       fetchJson(`${API}/pokemon/${id}`),
@@ -130,8 +158,18 @@ await pool(8, ids, async (id) => {
           .toFile(pArt);
       }
       if (pokemon.cries && pokemon.cries.latest) {
-        if (FORCE || !existsSync(pCry)) await saveBuf(pokemon.cries.latest, pCry);
-        record.cry = 'audio/cries/' + id + '.ogg';
+        if (FORCE || !cryFile) {
+          const r = await fetchRetry(pokemon.cries.latest);
+          const buf = Buffer.from(await r.arrayBuffer());
+          const ext = cryExt(buf);
+          writeFileSync(join(DIR.cries, id + ext), buf);
+          for (const e of CRY_EXTS) {
+            const old = join(DIR.cries, id + e);
+            if (e !== ext && existsSync(old)) rmSync(old);
+          }
+          cryFile = join(DIR.cries, id + ext);
+        }
+        record.cry = 'audio/cries/' + basename(cryFile);
       } else {
         record.cry = null;
       }

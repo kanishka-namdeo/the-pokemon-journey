@@ -886,6 +886,7 @@ const Sound = (() => {
     wipe:'audio/sfx/wipe.wav',     zap:'audio/sfx/zap.wav',       pet:'audio/sfx/pet.wav',
     select:'audio/sfx/select.wav', coin:'audio/sfx/coin.wav',     error:'audio/sfx/error.wav',
     poke:'audio/sfx/poke.wav',
+    pikachu:'audio/cries/25.mp3', /* real bundled cry (PokéAPI ships Pikachu's as MP3); the synth chirp is the load-failure fallback */
   };
   /* sampled cue with synth fallback; slight pitch jitter keeps repeats organic.
      vol is element volume (0..1); jitter detunes via playbackRate. */
@@ -929,7 +930,7 @@ const Sound = (() => {
     pick(vol=0.65){ cue('pick', () => seq([[392,0],[523,0.1],[659,0.2],[784,0.3,0.2],[1046,0.42,0.3]]), vol); },
     hover(){ blip(1250,0.03,'square',0.05); },
     wipe(vol=0.5){ cue('wipe', () => { blip(196,0.16,'triangle',0.09); blip(294,0.12,'triangle',0.07,0.12); }, vol, 0.05); },
-    cry(vol=0.5){ cue('pet', () => { sweep(1500,650,0.12); sweep(1500,650,0.1,'square',0.08,0.15); }, vol, 0.08); },
+    cry(vol=0.5){ cue('pikachu', () => { sweep(1500,650,0.12); sweep(1500,650,0.1,'square',0.08,0.15); }, vol, 0.05); },
     thunder(vol=0.6){ cue('zap', () => { sweep(2400,120,0.4,'sawtooth',0.14); blip(90,0.35,'square',0.12); }, vol, 0.04); },
     flute(){ seq([[659,0,.3],[784,.32,.3],[988,.64,.3],[1046,.96,.44],[988,1.44,.3],[784,1.76,.3],[659,2.08,.55]],'triangle',0.13); },
     glitch(){ seq([[311,0,.09],[233,.09,.09],[175,.18,.09],[117,.27,.14]]); },
