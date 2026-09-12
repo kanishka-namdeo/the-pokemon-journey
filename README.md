@@ -34,7 +34,9 @@ Scroll to travel eight routes through thirty years of Pokémon. Chapter music cr
 7. **INDIGO PLATEAU** · HALL OF FAME · THE RECORD
 8. **OAK’S LAB** · PALLET TOWN · YOUR TURN
 
-Along the way: a Pokédex moment, the Hall of Fame record still counting, and a finale at Oak's Lab where three Poké Balls wait on the table. Bulbasaur, Charmander, or Squirtle. You may choose only one.
+- A national Pokédex device: browse all 1025 species, search/filter/sort, view stats, evolution, moves, type matchups, hear cries, and mark species seen/caught (data via PokéAPI).
+
+Along the way: a Pokédex moment, the Hall of Fame record still counting, and a finale at Oak’s Lab where three Poké Balls wait on the table. Bulbasaur, Charmander, or Squirtle. You may choose only one.
 
 ## Tech
 
