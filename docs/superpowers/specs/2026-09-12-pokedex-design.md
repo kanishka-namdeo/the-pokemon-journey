@@ -1,7 +1,7 @@
 # Pokédex Feature — Design Spec
 
 Date: 2026-09-12 (feasibility pass same day: live API probes, CDN checks, measured list size)
-Status: Approved in brainstorming; feasibility-verified; pending implementation plan
+Status: Implemented and shipped to main (see addenda for post-launch deltas)
 Scope: Architectural (new subsystem added to an existing single-file narrative site)
 
 ## 1. Goal
@@ -251,3 +251,30 @@ and make refreshes an explicit maintainer action.
   files; `--force` refetches; `--ids=` refreshes a subset.
 - IP posture supersedes §8: nothing is hotlinked; sprites, artwork and cries are
   redistributed in-repo from PokéAPI's data (same sources, attribution unchanged).
+
+## Addendum — device physicality, detail nav, abilities (2026-09-13)
+
+Post-launch polish batch (index.html + lib/pokedex.js) that extends §6:
+
+- **Physical control deck:** the shell gains a D-pad that walks the grid with the
+  same semantics as the arrow keys (column count cached from a ResizeObserver),
+  A confirms the current card, B steps back (clear selection → close). Decorative
+  screws and speaker grill; controls compact on mobile.
+- **Detail navigation:** PREV/NEXT buttons and a "n OF m" position readout walk the
+  current filtered view; hidden when the viewed id sits off-view (evo jump).
+  ArrowLeft/Right inside the detail pane does the same. Nav-driven opens focus the
+  nav (`fromNav`); the pane scrolls back to top on every render, including errors.
+- **Abilities section:** the record's ability data (name, hidden flag, English short
+  effect) is now rendered; it existed in the record from the start but had no UI.
+- **Evolution conditions:** `evoCondition` covers the rare trigger fields — beauty,
+  affection, relative physical stats, known move type, gender, party species/type,
+  trade species, overworld rain, turn upside down.
+- **State feedback:** left screen gains explicit LOADING DATA… (`dex-loading`) and
+  NO POKéMON FOUND + CLEAR FILTERS (`dex-noresults`) states; a failed detail fetch
+  gets an inline RECONNECT retry; the CRT scanlines now cover the right screen too
+  (disabled under prefers-reduced-motion).
+- **Moves header** reads "FIRST n OF m" when the level-up table is truncated.
+- **Footer** gains a GitHub star call-to-action (site-side only; attribution
+  surfaces unchanged).
+- Verified: 19 Node tests, 12 probe checks (incl. `detail_nav_abilities_and_controls`,
+  `mobile_layout`), full `capture.py` suite clean.
