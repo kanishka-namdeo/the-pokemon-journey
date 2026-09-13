@@ -102,7 +102,12 @@ canvas{display:block}
   padding:0 clamp(12px, 3vw, 28px);
   background:linear-gradient(rgba(10,12,24,.88), rgba(10,12,24,.55) 80%, transparent);
   pointer-events:none;
+  transition:opacity .45s;
 }
+/* the credits are the one place content comes to rest under the HUD: the journey
+   bows out while they're on screen (scroll back up and it returns) */
+body.at-credits .hud{opacity:0}
+body.at-credits .hud > *{pointer-events:none}
 .hud .brand{display:flex; align-items:center; gap:10px; pointer-events:auto}
 .hud .brand svg{width:22px; height:22px}
 .hud .brand b{font-family:var(--px); font-size:9px; color:var(--yellow); letter-spacing:1px; text-shadow:2px 2px 0 rgba(0,0,0,.6)}
@@ -163,16 +168,25 @@ canvas{display:block}
 @media (max-width:760px){
   /* .finale-prefixed to out-rank the base finale rules later in the sheet */
   .chapter.finale .step{min-height:45svh}
-  .finale .balls{gap:10px}
-  .finale .ballwrap{width:106px}
+  .finale .balls{gap:8px}
+  .finale .ballwrap{width:102px}
+  /* pixel-font labels are square-width: CHARMANDER at 10px is 100px wide and
+     collides with its neighbour in a 102px column */
+  .finale .ballwrap .bname{font-size:7.5px}
   .finale .ballbtn{width:72px; height:72px}
   .finale .ballbtn .mon img{width:52px; height:52px}
-  .finale .ballwrap.picked .ballbtn .mon{transform:translateY(-88%) scale(1.45)}
+  .finale .ballwrap.picked .ballbtn .mon{transform:translateY(-76%) scale(1.3)}
   /* radial-art chapters: ring lives in the top half, dialogue docks at the
      bottom (like the games' text boxes); the chip legend is redundant there */
   #ch-types .step, #ch-eevee .step{align-items:flex-end}
   #ch-types .step > .dlg, #ch-eevee .step > .dlg{position:sticky; bottom:5svh}
   #ch-types .typechips{display:none}
+}
+@media (max-width:370px){
+  /* three 102px balls overflow a 360px viewport minus gutters: shrink to keep one row */
+  .finale .ballwrap{width:88px}
+  .finale .ballbtn{width:62px; height:62px}
+  .finale .ballbtn .mon img{width:46px; height:46px}
 }
 
 .sign{
@@ -311,6 +325,14 @@ canvas{display:block}
 
 /* ---- toasts (nudges & discoveries) ---- */
 .toasts{position:fixed; right:16px; bottom:16px; z-index:80; display:flex; flex-direction:column; gap:10px; pointer-events:none; max-width:min(320px, calc(100vw - 32px))}
+@media (max-width:760px){
+  /* phones: story panels dock low, so toasts drop from under the HUD instead of covering copy.
+     Compact + short-lived: the top strip is still scroll territory, so minimize the visit. */
+  .toasts{top:calc(var(--hud-h) + 8px); bottom:auto; left:12px; right:12px; max-width:none}
+  .toast{padding:8px 11px 9px; font-size:12.5px; line-height:1.4}
+  .toast b{font-size:8px; margin-bottom:3px}
+  .toast .tbtn{padding:6px 8px; font-size:7.5px}
+}
 .toast{
   background:var(--paper); color:#22222A;
   border:3px solid #17171F; border-radius:10px;
@@ -509,6 +531,9 @@ canvas{display:block}
   .dex-row select{padding:4px 6px}
   .dex-row button{padding:4px 8px}
   .dex-detail-top{flex-direction:column}
+  .dex-right{padding:12px}
+  .dex-moves{font-size:.85rem}
+  .dex-moves td,.dex-moves th{padding:2px 4px}
   .dex-controls{padding:8px 16px 10px; gap:10px}
   /* the 3x3 D-pad costs ~100px of the stacked layout: one 30px arrow row instead */
   .dex-dpad{grid-template-columns:repeat(4,30px); grid-template-rows:30px}
@@ -893,7 +918,7 @@ canvas{display:block}
   <p class="thanks">THANKS FOR PLAYING!</p>
   <p>Eight routes. Eight badges. Your case is full. <button class="linklike" id="openTC">Check your Trainer Card.</button></p>
   <p>All Pokémon data, sprites and cries come from <a href="https://pokeapi.co" rel="noopener">PokéAPI</a>, bundled with the site. If the sprites didn’t load, you met MissingNo., a legendary glitch in its own right.</p>
-  <p>Sound effects and chiptune loops come from the CC0 packs by <a href="https://opengameart.org/content/512-sound-effects-8-bit-style" rel="noopener">Juhani Junkala</a>. Flip the speaker (top right) for the full Game Boy feel.</p>
+  <p>Sound effects and chiptune loops come from the CC0 packs by <a href="https://opengameart.org/content/512-sound-effects-8-bit-style" rel="noopener">Juhani Junkala</a>. Flip the speaker in the top bar for the full Game Boy feel.</p>
   <p>Like any good adaptation, the journey has a TV opening. It plays when your Trainer Card appears — or on demand:</p>
   <p><button class="themebtn" id="themeBtn">▶ PLAY THE OPENING THEME</button></p>
   <p>GSAP, Lenis, and type from <a href="https://fonts.google.com" rel="noopener">Google Fonts</a> (Press Start 2P, VT323, Nunito, all SIL OFL) keep the whole thing moving. See the README for full license details.</p>
@@ -1233,11 +1258,15 @@ function toast(title, body, opts={}){
     });
     t.appendChild(row);
   }
+  /* one toast per title: a re-fired nudge replaces its older twin */
+  [...box.children].forEach(x => { if (x.dataset.title === title) x.remove(); });
+  t.dataset.title = title;
   box.appendChild(t);
-  while (box.children.length > 3) box.firstElementChild.remove();
+  const narrow = matchMedia('(max-width:760px)').matches;
+  while (box.children.length > (narrow ? 2 : 3)) box.firstElementChild.remove();
   requestAnimationFrame(() => t.classList.add('show'));
   const dismiss = () => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); };
-  setTimeout(dismiss, opts.ttl || 4800);
+  setTimeout(dismiss, opts.ttl || (narrow ? 2400 : 4800));
   return { el: t, dismiss };
 }
 
@@ -2668,6 +2697,17 @@ function setupObservers(){
   }, { rootMargin:'-42% 0px -42% 0px', threshold:0 });
   $$('.chapter[data-badge]').forEach(s => badgeIO.observe(s));
 }
+
+/* credits bow-out: see the .at-credits rule on .hud. Runs on both boot paths —
+   setupObservers() is the fallback (no GSAP / reduced motion), setupScroll() the
+   ScrollTrigger one — so this lives outside them. */
+function setupCreditsFade(){
+  const creditsEl = document.querySelector('.credits');
+  if (!creditsEl) return;
+  new IntersectionObserver(entries => {
+    for (const e of entries) document.body.classList.toggle('at-credits', e.isIntersecting);
+  }, { rootMargin: '-85% 0px 0px 0px', threshold: 0 }).observe(creditsEl);
+}
 const awarded = new Set();
 let soundNudged = false, pickedStarter = null, labNudged = false, petCount = 0, ballToastAt = -9;
 function saveProgress(){
@@ -2687,14 +2727,14 @@ function awardBadge(i){
   Sound.badge();
   const remaining = 8 - awarded.size;
   toast(BADGE_NAMES[i].toUpperCase() + ' BADGE GET!',
-    remaining ? `${BADGE_NAMES[i]} Badge earned! ${remaining} to go.` : 'All eight badges! Your case is full. Click it in the top right.',
+    remaining ? `${BADGE_NAMES[i]} Badge earned! ${remaining} to go.` : 'All eight badges! Your case is full. Open it from the top bar.',
     { sound:false });
   saveProgress();
   if (awarded.size === 3 && !Sound.on && !soundNudged){
     soundNudged = true;
     const sBtn = document.getElementById('soundBtn');
     if (sBtn) sBtn.classList.add('dot');
-    setTimeout(() => toast('♪ PSST — SOUND', 'This journey has chiptunes. Click the speaker (top right) to switch them on.'), 1500);
+    setTimeout(() => toast('♪ PSST — SOUND', 'This journey has chiptunes. Use the speaker in the top bar to switch them on.'), 1500);
   }
 }
 
@@ -2721,8 +2761,18 @@ function setupFinale(){
       $('#labIntro').hidden = true;
       msgText.textContent = STARTER_TEXT[id];
       msg.hidden = false;
-      /* center the whole step so the released mon stays clear of the HUD on small screens */
-      (msg.closest('.step') || msg).scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
+      /* place the step: center it, but on phones clamp so the released sprite
+         (it rises ~66px above the ball) still clears the 58px HUD */
+      const stepEl = msg.closest('.step') || msg;
+      if (REDUCED || innerWidth > 760){
+        stepEl.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
+      } else {
+        const sr = stepEl.getBoundingClientRect();
+        const centered = scrollY + sr.top + sr.height/2 - innerHeight/2;
+        const centeredBtnTop = btn.getBoundingClientRect().top + scrollY - centered;
+        const minTop = 58 + 14 + 66;
+        scrollToY(Math.max(0, centeredBtnTop < minTop ? centered - (minTop - centeredBtnTop) : centered));
+      }
       /* tint + celebration: the ball flies to center stage and bursts open */
       const tint = { 1:'#78C850', 4:'#F08030', 7:'#6890F0' }[id];
       document.documentElement.style.setProperty('--yellow', tint);
@@ -2918,6 +2968,7 @@ function boot(){
   Iris.init();
   chapters.forEach(sizeCanvas);
   setupScroll();
+  setupCreditsFade();
   setupFinale();
   setupMagnetic();
   setupSoundBtn();
