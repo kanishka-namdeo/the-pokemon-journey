@@ -278,3 +278,20 @@ Post-launch polish batch (index.html + lib/pokedex.js) that extends §6:
   surfaces unchanged).
 - Verified: 19 Node tests, 12 probe checks (incl. `detail_nav_abilities_and_controls`,
   `mobile_layout`), full `capture.py` suite clean.
+
+## Addendum — mobile one-screen mode, wheel fix, CTA (2026-09-13)
+
+- **Mobile one-screen mode (max-width:760px):** the device grows to `92svh` and
+  shows one screen at a time. pokedex.js toggles `.dex-detail-open` on `#dexDevice`
+  while a Pokémon is selected; CSS hides `.dex-left` and shows `#dexDetail`
+  full-device (B / Escape still step back). No-selection mobile view is pure
+  browse list; the "SELECT A POKéMON" hint is desktop-only. Desktop layout
+  (side-by-side screens) is unchanged.
+- **Mouse wheel inside the device:** Lenis `stop()` still preventDefaults wheel
+  events, which starved the native scrollers. `#dexGrid` and `#dexDetail` carry
+  `data-lenis-prevent` so wheel/touch pass through while the page stays locked.
+- **Dex beat CTA:** the OPEN THE POKéDEX button (`.dexcta`) is styled as the
+  Pokédex face plate — red shell, blue lens, ink double ring; replaces the
+  previously unstyled default button.
+- Verified: 22 Node tests, 12 probe checks (incl. `mobile_layout`), wheel probe
+  plus desktop/mobile stills under shots/.

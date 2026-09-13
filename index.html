@@ -492,8 +492,13 @@ canvas{display:block}
 .hudbtn{background:none; border:none; cursor:pointer; padding:4px; display:inline-flex}
 .hudbtn svg{display:block}
 @media (max-width:760px){
-  .dex-device{height:min(600px, 85vh)}
-  .dex-screens{grid-template-columns:1fr; grid-template-rows:minmax(0,1fr) minmax(0,1.2fr); overflow:hidden}
+  /* one screen at a time: the browse list fills the device until a Pokémon is
+     picked, then .dex-detail-open (toggled by pokedex.js) swaps in the detail */
+  .dex-device{height:min(92vh, 800px); height:92svh}
+  .dex-screens{grid-template-columns:1fr; grid-template-rows:minmax(0,1fr); overflow:hidden}
+  .dex-right{display:none}
+  .dex-device.dex-detail-open .dex-left{display:none}
+  .dex-device.dex-detail-open .dex-right{display:flex}
   .dex-left{overflow:hidden; padding:8px; gap:6px}
   .dex-grid{grid-template-columns:repeat(auto-fill, minmax(72px,1fr)); gap:5px}
   .dex-card{padding:4px 3px 3px}
@@ -527,6 +532,26 @@ canvas{display:block}
 .dex-beat{position:relative; z-index:2; opacity:0; transform:translateY(14px); transition:opacity .6s, transform .6s; pointer-events:none}
 .dex-beat.show{opacity:1; transform:none; pointer-events:auto}
 @media (prefers-reduced-motion: reduce){ .dex-beat{transition:none} }
+/* OPEN THE POKéDEX CTA — the Pokédex face plate as a button: red shell, blue lens, ink ring matching .dlg */
+.dexcta{
+  display:inline-flex; align-items:center; gap:11px;
+  margin-top:14px;
+  font-family:var(--px); font-size:10px; letter-spacing:1px;
+  color:var(--paper); background:var(--red);
+  border:3px solid #17171F; border-radius:8px;
+  padding:13px 20px 13px 15px;
+  cursor:pointer;
+  box-shadow:0 0 0 3px var(--red), 0 0 0 6px #17171F, 0 12px 26px rgba(0,0,0,.4);
+  transition:background .15s, transform .15s, box-shadow .15s;
+}
+.dexcta .lens{
+  width:16px; height:16px; border-radius:50%; flex:none;
+  border:2px solid #17171F;
+  background:radial-gradient(circle at 35% 30%, #D8F4FF 0 20%, #7FD1F5 48%, #1E7FB8 100%);
+}
+.dexcta:hover{background:#FF4040; transform:translateY(-2px)}
+.dexcta:active{transform:translateY(1px); box-shadow:0 0 0 3px var(--red), 0 0 0 6px #17171F, 0 4px 10px rgba(0,0,0,.4)}
+.dexcta:focus-visible{outline:3px dashed var(--blue); outline-offset:6px}
 .tc-dexcounts{font-family:var(--term); font-size:1.05rem; color:#7C6A4A; margin-top:4px}
 /* ---------- /POKéDEX DEVICE ---------- */
 </style>
@@ -698,7 +723,7 @@ canvas{display:block}
   <div class="dlg dex-beat" id="dexBeat">
     <span class="speaker">OAK</span>
     <p>"On the desk there is my invention, POKéDEX! It automatically records data on Pokémon you've seen or caught!"</p>
-    <button class="btn" id="dexBeatBtn">OPEN THE POKéDEX</button>
+    <button class="dexcta" id="dexBeatBtn"><span class="lens" aria-hidden="true"></span>OPEN THE POKéDEX</button>
   </div>
 </section>
 
@@ -922,14 +947,14 @@ canvas{display:block}
           </select>
           <button id="dexSort" aria-label="Change sort order" title="Cycle sort order">#</button>
         </div>
-        <ul class="dex-grid" id="dexGrid" role="listbox" aria-label="Pokémon"><li id="dexSentinel" aria-hidden="true"></li></ul>
+        <ul class="dex-grid" id="dexGrid" role="listbox" aria-label="Pokémon" data-lenis-prevent><li id="dexSentinel" aria-hidden="true"></li></ul>
         <p class="dex-hint dex-loadhint">LOADING DATA…</p>
         <div class="dex-empty">
           <p>NO POKéMON FOUND.</p>
           <button id="dexClear" aria-label="Clear search and filters">CLEAR FILTERS</button>
         </div>
       </section>
-      <section class="dex-right dex-crt" id="dexDetail" aria-label="Pokémon details">
+      <section class="dex-right dex-crt" id="dexDetail" aria-label="Pokémon details" data-lenis-prevent>
         <p class="dex-hint">SELECT A POKéMON TO VIEW ITS DATA.</p>
       </section>
     </div>
