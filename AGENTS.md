@@ -110,4 +110,5 @@ Root-owned (governed here, no child doc needed):
 - assets/ — og-image.png social preview referenced by index.html meta tags; fonts/ holds self-hosted OFL woff2 copies of the Google Fonts families (@font-face lives in index.html — the site makes no external font requests, keeping the offline guarantee)
 - package.json — scripts are the workflow entry points (sync:dex)
 - README.md, LICENSE, robots.txt — repo meta
+- sitemap.xml, llms.txt — search/AI discoverability files; they and index.html's canonical/og tags must all name the same canonical URL (https://the-pokemon-journey.vercel.app/)
 - shots/, _dev/tmp — throwaway output, gitignored, no rules

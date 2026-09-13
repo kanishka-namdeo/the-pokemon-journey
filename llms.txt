@@ -1,0 +1,10 @@
+# POKéMON — The Journey
+
+A fan-made, single-page, scroll-driven tribute to thirty years of Pokémon, published at https://the-pokemon-journey.vercel.app/
+
+All story content is static HTML in index.html and readable without JavaScript. JavaScript powers the animated canvas scenes and the interactive national Pokédex device (all 1,025 species, bundled in data/ and sprites/, originally sourced from PokéAPI).
+
+- Eight chapters: Satoshi Tajiri's origin (Machida, Tokyo, 1983), the 1996 launch of Red and Green, the anime and Pikachu, the growing Pokédex (151 to 1,025 species), the 18-type battle matrix, Eevee's evolutions, Pokémon GO, and the franchise's records ($130 billion, 515M+ games).
+- Ends with a starter choice (Bulbasaur, Charmander or Squirtle) and a browsable national Pokédex.
+- Author: kanishka-namdeo, https://github.com/kanishka-namdeo — source: https://github.com/kanishka-namdeo/the-pokemon-journey
+- Unaffiliated fan tribute. POKéMON and all character names are trademarks of Nintendo, Creatures Inc. and GAME FREAK inc. Data and sprites from PokéAPI; audio from CC0 packs by Juhani Junkala.

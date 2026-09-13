@@ -8,13 +8,13 @@
 <meta name="theme-color" content="#17171F">
 <meta name="robots" content="index, follow">
 <meta name="author" content="kanishka-namdeo">
-<link rel="canonical" href="https://kanishka-namdeo.github.io/the-pokemon-journey/">
+<link rel="canonical" href="https://the-pokemon-journey.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="POKéMON — The Journey">
 <meta property="og:title" content="POKéMON — The Journey · A Scrollytelling Tribute">
 <meta property="og:description" content="Thirty years of Pokémon, told one route at a time. From a bug collector's dream in 1980s Tokyo to 1,025 species and $130 billion. Choose your starter at the end.">
-<meta property="og:url" content="https://kanishka-namdeo.github.io/the-pokemon-journey/">
-<meta property="og:image" content="https://kanishka-namdeo.github.io/the-pokemon-journey/assets/og-image.png">
+<meta property="og:url" content="https://the-pokemon-journey.vercel.app/">
+<meta property="og:image" content="https://the-pokemon-journey.vercel.app/assets/og-image.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1440">
 <meta property="og:image:height" content="900">
@@ -23,8 +23,43 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="POKéMON — The Journey · A Scrollytelling Tribute">
 <meta name="twitter:description" content="Thirty years of Pokémon, told one route at a time. From a bug collector's dream in 1980s Tokyo to 1,025 species and $130 billion. Choose your starter at the end.">
-<meta name="twitter:image" content="https://kanishka-namdeo.github.io/the-pokemon-journey/assets/og-image.png">
+<meta name="twitter:image" content="https://the-pokemon-journey.vercel.app/assets/og-image.png">
 <meta name="twitter:image:alt" content="Pixel-art POKéMON logo over a giant Poké Ball on a starry night sky, with Professor Oak's opening dialogue box.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://the-pokemon-journey.vercel.app/#website",
+      "url": "https://the-pokemon-journey.vercel.app/",
+      "name": "POKéMON — The Journey",
+      "description": "Thirty years of Pokémon, told one route at a time. From a bug collector's dream in 1980s Tokyo to 1,025 species and $130 billion. Choose your starter at the end.",
+      "inLanguage": "en",
+      "image": "https://the-pokemon-journey.vercel.app/assets/og-image.png",
+      "author": { "@id": "https://the-pokemon-journey.vercel.app/#author" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://the-pokemon-journey.vercel.app/#author",
+      "name": "kanishka-namdeo",
+      "url": "https://github.com/kanishka-namdeo"
+    },
+    {
+      "@type": "CreativeWork",
+      "@id": "https://the-pokemon-journey.vercel.app/#journey",
+      "name": "POKéMON — The Journey · A Scrollytelling Tribute",
+      "headline": "Thirty years of Pokémon, told one route at a time",
+      "description": "A fan-made, scroll-driven retelling of thirty years of Pokémon history across eight chapters: Tajiri's beetle fields in 1980s Tokyo, the 1996 launch of Red and Green, Pikachu and the anime, the growing Pokédex from 151 to 1,025 species, the 18-type battle matrix, Eevee's evolutions, Pokémon GO, and the franchise's records, ending with a starter choice and a browsable national Pokédex.",
+      "url": "https://the-pokemon-journey.vercel.app/",
+      "image": "https://the-pokemon-journey.vercel.app/assets/og-image.png",
+      "inLanguage": "en",
+      "keywords": "Pokémon history, scrollytelling, Satoshi Tajiri, Game Freak, Pokédex, Pikachu, Pokémon GO, Eevee, Pokémon types",
+      "author": { "@id": "https://the-pokemon-journey.vercel.app/#author" }
+    }
+  ]
+}
+</script>
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="%23fff" stroke="%2317171F" stroke-width="6"/><path d="M4 50a46 46 0 0 1 92 0z" fill="%23EE1515"/><rect x="4" y="44" width="92" height="12" fill="%2317171F"/><circle cx="50" cy="50" r="14" fill="%23fff" stroke="%2317171F" stroke-width="6"/></svg>'>
 <style>
 /* ============================= fonts (self-hosted, OFL) ============================= */
@@ -94,6 +129,8 @@ body[data-theme="lab"]{background:#171009}
 ::selection{background:var(--yellow); color:#17171F}
 :focus-visible{outline:3px dashed var(--yellow); outline-offset:3px; border-radius:4px}
 canvas{display:block}
+/* screen-reader-only: real headings live in the route signs without changing the visuals */
+.sr{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0}
 
 /* ============================= HUD ============================= */
 .hud{
@@ -197,8 +234,8 @@ body.at-credits .hud > *{pointer-events:none}
   padding:12px 18px; margin-bottom:4vh; margin-left:2px;
   font-family:var(--px); line-height:1.9;
 }
-.sign b{display:block; font-size:clamp(11px,1.8vw,14px); font-weight:400; color:#FFE9A8}
-.sign span{font-size:clamp(7px,1.2vw,8px); opacity:.9; letter-spacing:1px}
+.sign h2{display:block; font-size:clamp(11px,1.8vw,14px); font-weight:400; color:#FFE9A8}
+.sign > span{font-size:clamp(7px,1.2vw,8px); opacity:.9; letter-spacing:1px}
 @media (max-width:760px){ .sign{align-self:center} }
 
 /* chapters whose canvas art owns the right side: keep all text left */
@@ -668,7 +705,7 @@ body.at-credits .hud > *{pointer-events:none}
 <section class="chapter" id="ch-origin" data-scene="dmg" data-theme="dmg" data-badge="0">
   <div class="fig"><canvas aria-hidden="true"></canvas></div>
   <div class="steps">
-    <div class="sign"><b>ROUTE 1</b><span>MACHIDA, TOKYO · 1983</span></div>
+    <div class="sign"><h2><span class="sn">ROUTE 1</span><span class="sr"> · The origin: Dr. Bug, Game Freak and the birth of Pokémon</span></h2><span>MACHIDA, TOKYO · 1983</span></div>
     <div class="step">
       <div class="dlg">
         <p>Before the games, there was a boy with a net. Machida, 1983. The fields where Satoshi Tajiri had collected beetles so obsessively that his friends called him <strong>Dr. Bug</strong> were being bulldozed into shopping malls.</p>
@@ -698,7 +735,7 @@ body.at-credits .hud > *{pointer-events:none}
 <section class="chapter" id="ch-hype" data-scene="catch" data-theme="catch" data-badge="1">
   <div class="fig"><canvas aria-hidden="true"></canvas></div>
   <div class="steps">
-    <div class="sign"><b>ROUTE 2</b><span>THE WORLD · 1996–1999</span></div>
+    <div class="sign"><h2><span class="sn">ROUTE 2</span><span class="sr"> · The phenomenon: Pikachu, the anime and Gotta catch ’em all</span></h2><span>THE WORLD · 1996–1999</span></div>
     <div class="step">
       <div class="battle">
         <p class="callout">A wild <span>PHENOMENON</span> appeared!</p>
@@ -724,7 +761,7 @@ body.at-credits .hud > *{pointer-events:none}
 <section class="chapter" id="ch-dex" data-scene="dex" data-theme="dex" data-badge="2">
   <div class="fig"><canvas aria-hidden="true"></canvas></div>
   <div class="steps">
-    <div class="sign"><b>ROUTE 3</b><span>NINE REGIONS · 1996–2022</span></div>
+    <div class="sign"><h2><span class="sn">ROUTE 3</span><span class="sr"> · The Pokédex grows: from 151 to 1,025 Pokémon across nine regions</span></h2><span>NINE REGIONS · 1996–2022</span></div>
     <div class="step">
       <div class="dlg">
         <p>Every new generation opened a new region: Kanto, Johto, Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea. Each stocked with new creatures to find, trade and battle.</p>
@@ -756,7 +793,7 @@ body.at-credits .hud > *{pointer-events:none}
 <section class="chapter side-left" id="ch-types" data-scene="types" data-theme="types" data-badge="3">
   <div class="fig"><canvas aria-hidden="true"></canvas></div>
   <div class="steps">
-    <div class="sign"><b>ROUTE 4</b><span>18 TYPES · SUPER EFFECTIVE</span></div>
+    <div class="sign"><h2><span class="sn">ROUTE 4</span><span class="sr"> · The 18 types: how super-effective decides every battle</span></h2><span>18 TYPES · SUPER EFFECTIVE</span></div>
     <div class="step">
       <div class="dlg">
         <p>Every Pokémon has a <strong>type</strong>, and types decide everything. Fire burns Grass. Water douses Fire. Grass drinks Water. What began as rock-paper-scissors is now an eighteen-way matrix, balanced and patched for thirty years.</p>
@@ -784,7 +821,7 @@ body.at-credits .hud > *{pointer-events:none}
 <section class="chapter side-left" id="ch-eevee" data-scene="eevee" data-theme="eevee" data-badge="4">
   <div class="fig"><canvas aria-hidden="true"></canvas></div>
   <div class="steps">
-    <div class="sign"><b>ROUTE 5</b><span>EEVEE · 8 DESTINIES</span></div>
+    <div class="sign"><h2><span class="sn">ROUTE 5</span><span class="sr"> · Evolution: Eevee and its eight destinies</span></h2><span>EEVEE · 8 DESTINIES</span></div>
     <div class="step">
       <div class="dlg">
         <span class="dex-flavor">“Its genetic code is irregular. It may mutate if it is exposed to radiation from element Stones.”</span>
@@ -810,7 +847,7 @@ body.at-credits .hud > *{pointer-events:none}
 <section class="chapter" id="ch-go" data-scene="go" data-theme="go" data-badge="5">
   <div class="fig"><canvas aria-hidden="true"></canvas></div>
   <div class="steps">
-    <div class="sign"><b>ROUTE 6</b><span>THE REAL WORLD · JULY 6, 2016</span></div>
+    <div class="sign"><h2><span class="sn">ROUTE 6</span><span class="sr"> · Pokémon GO: the game that left the screen</span></h2><span>THE REAL WORLD · JULY 6, 2016</span></div>
     <div class="step">
       <div class="dlg">
         <p>On <strong>July 6, 2016</strong>, the game left the screen. Pokémon GO put the Pokédex in your pocket and the wild in your neighborhood. <strong>75 million people</strong> downloaded it in the first week alone.</p>
@@ -835,7 +872,7 @@ body.at-credits .hud > *{pointer-events:none}
 <section class="chapter side-left" id="ch-hof" data-scene="hof" data-theme="hof" data-badge="6">
   <div class="fig"><canvas aria-hidden="true"></canvas></div>
   <div class="steps">
-    <div class="sign"><b>INDIGO PLATEAU</b><span>HALL OF FAME · THE RECORD</span></div>
+    <div class="sign"><h2><span class="sn">INDIGO PLATEAU</span><span class="sr"> · Hall of Fame: thirty years of records</span></h2><span>HALL OF FAME · THE RECORD</span></div>
     <div class="step">
       <div class="dlg">
         <p>In the games, the <strong>Hall of Fame</strong> is where your journey is recorded forever.</p>
@@ -862,7 +899,7 @@ body.at-credits .hud > *{pointer-events:none}
 <section class="chapter finale" id="ch-lab" data-scene="lab" data-theme="lab" data-badge="7">
   <div class="fig"><canvas aria-hidden="true"></canvas></div>
   <div class="steps">
-    <div class="sign"><b>OAK’S LAB</b><span>PALLET TOWN · YOUR TURN</span></div>
+    <div class="sign"><h2><span class="sn">OAK’S LAB</span><span class="sr"> · Choose your starter Pokémon</span></h2><span>PALLET TOWN · YOUR TURN</span></div>
     <div class="step">
       <div class="dlg" id="labIntro" style="max-width:40rem">
         <span class="speaker">OAK</span>
@@ -2619,7 +2656,7 @@ function setupScroll(){
       } });
     const sign = ch.sec.querySelector('.sign');
     if (sign) ScrollTrigger.create({ trigger: sign, start: 'top 85%', once: true,
-      onEnter: () => { scrambleTo(sign.querySelector('b')); scrambleTo(sign.querySelector('span')); } });
+      onEnter: () => { scrambleTo(sign.querySelector('.sn')); scrambleTo(sign.querySelector(':scope > span')); } });
   });
   $$('.step > .dlg, .step > .battle').forEach(card => {
     ScrollTrigger.create({ trigger: card, start: 'top 78%', once: true, onEnter: () => presentCard(card) });
