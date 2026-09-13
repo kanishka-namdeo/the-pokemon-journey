@@ -12,12 +12,12 @@
 ## Local Contracts
 
 - `dex/front/{id}.png` and `dex/art/{id}.webp` come from PokeAPI via sync:dex; artwork is downscaled to 384px WebP with sharp. Never hand-edit or rename.
-- Curated filenames are species/item ids: `art/25.png`, `pix/25.png`, `items/poke-ball.png`.
+- Curated filenames are species/item ids; `art/` ships as WebP (`art/25.webp`), `pix/`, `pix-y/`, and `items/` stay PNG (`pix/25.png`, `items/poke-ball.png`).
 - Consumers: index.html uses `art/` for route backgrounds, `pix/` and `pix-y/` for encounters, `items/` for icons; the dex device uses `dex/` via lib/pokedex.js.
 
 ## Work Guidance
 
-- Add featured art or pixel sprites as id-named PNGs in the right folder, styled consistently with existing neighbors.
+- Add featured art as id-named WebP in `art/`, pixel sprites and item icons as id-named PNG in their folder, styled consistently with existing neighbors.
 - Curated sprites from sources other than PokeAPI must be credited in README "Credits & licenses".
 - Corrupt or missing dex sprites: regenerate with `npm run sync:dex` (the same run refreshes ../data/ — see ../data/AGENTS.md).
 

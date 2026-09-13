@@ -107,7 +107,7 @@ Root-owned (governed here, no child doc needed):
 
 - index.html — the entire site (CSS, canvas scenes, boot) lives inline
 - docs/ — superpowers specs and plans; docs/superpowers/specs/2026-09-12-pokedex-design.md is the active Pokedex design contract (read before changing lib/pokedex.js); plans/ is archival
-- assets/ — og-image.png social preview referenced by index.html meta tags
+- assets/ — og-image.png social preview referenced by index.html meta tags; fonts/ holds self-hosted OFL woff2 copies of the Google Fonts families (@font-face lives in index.html — the site makes no external font requests, keeping the offline guarantee)
 - package.json — scripts are the workflow entry points (sync:dex)
 - README.md, LICENSE, robots.txt — repo meta
 - shots/, _dev/tmp — throwaway output, gitignored, no rules

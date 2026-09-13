@@ -15,8 +15,8 @@
 - Licensing hard rule: only CC0 (or equivalently licensed) audio may be added. Nintendo series music is not redistributable; 8-bit covers of real songs are unlicensed derivatives and must never ship. Moments that need series music use the site's own Web Audio synthesis instead.
 - `cries/*.ogg` are Nintendo IP bundled as dataset copies for the offline dex — not redistributable originals. Never add Nintendo-sourced audio by hand.
 - Every curated file must appear in `ATTRIBUTION.md` with source URL and license.
-- `music/` and `sfx/` WAVs are 22.05 kHz 16-bit mono; resample before committing: `node _dev/resample.js in.wav out.wav`.
-- Naming: `sfx/` lowercase action (`select.wav`, `hover.wav`); `music/` by context (`title.wav`, `route.wav`, `dex.wav`, `finale.wav`, `theme-open.wav`, `theme-full.wav`); `cries/` as `{species_id}.ogg|.mp3` — extension follows the real container (PokéAPI ships a few cries, e.g. 25/808/809, as MP3 bytes; Safari rejects Ogg, so misnamed files break there).
+- `sfx/` WAVs are 22.05 kHz 16-bit mono; resample before committing: `node _dev/resample.js in.wav out.wav`. `music/` tracks ship as OGG Vorbis q5 (transcode from the resampled WAV with ffmpeg-static) to keep the 14.5 MB-of-WAV problem out of the tree.
+- Naming: `sfx/` lowercase action (`select.wav`, `hover.wav`); `music/` by context (`title.ogg`, `route.ogg`, `dex.ogg`, `finale.ogg`, `theme-open.ogg`, `theme-full.ogg`); `cries/` as `{species_id}.ogg|.mp3` — extension follows the real container (PokéAPI ships a few cries, e.g. 25/808/809, as MP3 bytes; Safari rejects Ogg, so misnamed files break there).
 
 ## Work Guidance
 
@@ -26,7 +26,7 @@
 ## Verification
 
 - `ATTRIBUTION.md` lists every non-cry file with source and license.
-- New WAVs went through `_dev/resample.js` (22.05 kHz mono).
+- New SFX WAVs went through `_dev/resample.js` (22.05 kHz mono); new music ships as OGG Vorbis.
 - Sound toggle in the browser plays SFX and music; muted-by-default persists via localStorage `pj-sound`.
 
 ## Child DOX Index

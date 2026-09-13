@@ -26,10 +26,32 @@
 <meta name="twitter:image" content="https://kanishka-namdeo.github.io/the-pokemon-journey/assets/og-image.png">
 <meta name="twitter:image:alt" content="Pixel-art POKéMON logo over a giant Poké Ball on a starry night sky, with Professor Oak's opening dialogue box.">
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="%23fff" stroke="%2317171F" stroke-width="6"/><path d="M4 50a46 46 0 0 1 92 0z" fill="%23EE1515"/><rect x="4" y="44" width="92" height="12" fill="%2317171F"/><circle cx="50" cy="50" r="14" fill="%23fff" stroke="%2317171F" stroke-width="6"/></svg>'>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
+/* ============================= fonts (self-hosted, OFL) ============================= */
+@font-face{
+  font-family:'Press Start 2P';
+  font-style:normal; font-weight:400; font-display:swap;
+  src:url('assets/fonts/press-start-2p-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:'VT323';
+  font-style:normal; font-weight:400; font-display:swap;
+  src:url('assets/fonts/vt323-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:'Nunito';
+  font-style:normal; font-weight:400 800; font-display:swap;
+  src:url('assets/fonts/nunito-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:'Nunito';
+  font-style:italic; font-weight:400; font-display:swap;
+  src:url('assets/fonts/nunito-latin-italic.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
 /* ============================= tokens ============================= */
 :root{
   --ink:#0F1220;            /* deep indigo night — page base */
@@ -929,13 +951,13 @@ canvas{display:block}
   </div>
 </div>
 
-<script src="lib/gsap.min.js"></script>
-<script src="lib/ScrollTrigger.min.js"></script>
-<script src="lib/SplitText.min.js"></script>
-<script src="lib/ScrambleTextPlugin.min.js"></script>
-<script src="lib/Physics2DPlugin.min.js"></script>
-<script src="lib/MotionPathPlugin.min.js"></script>
-<script src="lib/lenis.min.js"></script>
+<script defer src="lib/gsap.min.js"></script>
+<script defer src="lib/ScrollTrigger.min.js"></script>
+<script defer src="lib/SplitText.min.js"></script>
+<script defer src="lib/ScrambleTextPlugin.min.js"></script>
+<script defer src="lib/Physics2DPlugin.min.js"></script>
+<script defer src="lib/MotionPathPlugin.min.js"></script>
+<script defer src="lib/lenis.min.js"></script>
 <script>
 'use strict';
 /* ============================================================
@@ -954,14 +976,12 @@ const TAU = Math.PI*2;
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ============================================================
-   MOTION STACK — GSAP + Lenis, vendored in lib/.
-   Everything here is an enhancement; the site degrades to the
-   hand-rolled engine below if any library fails to load.
+   MOTION STACK — GSAP + Lenis, vendored in lib/. The lib scripts
+   are deferred, so library detection waits for boot(). Everything
+   here is an enhancement; the site degrades to the hand-rolled
+   engine below if any library fails to load.
    ============================================================ */
-const HAS_GSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
-const G = HAS_GSAP ? window.gsap : null;
-if (HAS_GSAP) G.registerPlugin(window.ScrollTrigger, window.SplitText, window.ScrambleTextPlugin, window.Physics2DPlugin, window.MotionPathPlugin);
-const HAS_LENIS = HAS_GSAP && typeof window.Lenis !== 'undefined';
+let HAS_GSAP = false, G = null, HAS_LENIS = false;
 let lenis = null;
 
 /* 8-bit sound — synthesized chiptune core + CC0 sampled cues (audio/, Juhani
@@ -1029,7 +1049,7 @@ const Sound = (() => {
     if (warmed) return;
     warmed = true;
     Object.values(SFX_SRC).forEach(src => { const a = new Audio(src); a.preload = 'auto'; a.load(); });
-    ['title','route','dex','finale','theme-open','theme-full'].forEach(n => { const a = new Audio('audio/music/'+n+'.wav'); a.preload = 'auto'; a.load(); });
+    ['title','route','dex','finale','theme-open','theme-full'].forEach(n => { const a = new Audio('audio/music/'+n+'.ogg'); a.preload = 'auto'; a.load(); });
   }
   return {
     get on(){ return on; },
@@ -1090,7 +1110,7 @@ const Music = (() => {
     if (current && current.name === name) return;
     const old = current; current = null;
     if (old) retire(old, 1.1);
-    const el = new Audio('audio/music/' + name + '.wav');
+    const el = new Audio('audio/music/' + name + '.ogg');
     el.setAttribute('aria-hidden', 'true');
     el.style.display = 'none';
     document.body.appendChild(el);
@@ -1118,7 +1138,7 @@ const Music = (() => {
     _stopFeature(0.4, false);
     const old = current;
     if (old) fadeTo(old, 0, 0.5, () => old.el.pause());
-    const el = new Audio('audio/music/' + name + '.wav');
+    const el = new Audio('audio/music/' + name + '.ogg');
     el.setAttribute('aria-hidden', 'true');
     el.style.display = 'none';
     document.body.appendChild(el);
@@ -1429,8 +1449,8 @@ function preload(){
   sprite('pixRattataY', PIXY+'19.png', PIX_RY+'19.png', true);
   sprite('pixSnorlaxY', PIXY+'143.png', PIX_RY+'143.png', true);
   sprite('ball', ITEM+'poke-ball.png', ITEM_R+'poke-ball.png');
-  [1,4,7,133,134,135,136,196,197,470,471,700].forEach(id => sprite('art'+id, ART+id+'.png', ART_R+id+'.png'));
-  GEN.forEach(g => sprite('art'+g.mon, ART+g.mon+'.png', ART_R+g.mon+'.png'));
+  [1,4,7,133,134,135,136,196,197,470,471,700].forEach(id => sprite('art'+id, ART+id+'.webp', ART_R+id+'.png'));
+  GEN.forEach(g => sprite('art'+g.mon, ART+g.mon+'.webp', ART_R+g.mon+'.png'));
 }
 /* draw sprite centered at (cx,cy); pixel sprites render chunky at integer scale */
 function drawSprite(ctx, key, cx, cy, heightPx, opts={}){
@@ -2436,20 +2456,33 @@ const glitch = { on: false, t0: 0 };
 function renderFrame(time, dt){
   if (window.__freeze) return;   /* quiesce for programmatic capture */
   nowSec = time;
+  /* idle early-out: no active chapter, no particles, no glitch → free frame */
+  let anyActive = false;
+  for (const ch of chapters){ if (ch.active){ anyActive = true; break; } }
+  if (!anyActive && !fxParts.list.length && !fx2.list.length && !glitch.on) return;
+  /* pass 1 — batch every layout read (chapter progress + card tops) */
+  const fades = [];
   for (const ch of chapters){
     if (!ch.active) continue;
-    const t = chapterT(ch);
-    ch.t = t;
-    ch.scene.draw(ch.ctx, ch.w, ch.h, t, REDUCED ? 0 : time, dt);
-    /* fade dialogue cards out as they slide under the fixed HUD (measure the
-       card itself, not the tall step wrapper, so centered cards never fade) */
+    ch.t = chapterT(ch);
     const fadeY = 84;
+    const tops = [];
     for (const el of ch.steps){
       const card = el.matches('.sign') ? el : (el.querySelector(':scope > .dlg, :scope > .battle') || el);
-      if (card.__entering) continue;
+      if (card.__entering){ tops.push(null); continue; }
       const top = card.getBoundingClientRect().top;
-      const o = top < fadeY ? clamp((top - 26)/(fadeY - 26)) : 1;
-      if (o !== card.__o){ card.style.opacity = o; card.__o = o; }
+      tops.push(top < fadeY ? clamp((top - 26)/(fadeY - 26)) : 1);
+    }
+    fades.push([ch, tops]);
+  }
+  /* pass 2 — writes: canvas draws + card opacity */
+  for (const [ch, tops] of fades){
+    ch.scene.draw(ch.ctx, ch.w, ch.h, ch.t, REDUCED ? 0 : time, dt);
+    for (let i = 0; i < ch.steps.length; i++){
+      const el = ch.steps[i];
+      const card = el.matches('.sign') ? el : (el.querySelector(':scope > .dlg, :scope > .battle') || el);
+      const o = tops[i];
+      if (o !== null && o !== card.__o){ card.style.opacity = o; card.__o = o; }
     }
   }
   /* fx overlay: legacy particles + physics2D confetti */
@@ -2652,7 +2685,7 @@ function setupFinale(){
     const btn = wrap.querySelector('.ballbtn');
     const img = wrap.querySelector('img[data-art]');
     const id = img.dataset.art;
-    img.src = ART + id + '.png';
+    img.src = ART + id + '.webp';
     img.onerror = () => { if (!img.dataset.retried){ img.dataset.retried = '1'; img.src = ART_R + id + '.png'; } };
     img.alt = '';
     btn.addEventListener('click', () => {
@@ -2822,6 +2855,11 @@ function setupKeys(){
 
 /* boot */
 function boot(){
+  /* deferred lib scripts have finished by now (DOMContentLoaded) — detect them */
+  HAS_GSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+  G = HAS_GSAP ? window.gsap : null;
+  if (HAS_GSAP) G.registerPlugin(window.ScrollTrigger, window.SplitText, window.ScrambleTextPlugin, window.Physics2DPlugin, window.MotionPathPlugin);
+  HAS_LENIS = HAS_GSAP && typeof window.Lenis !== 'undefined';
   history.scrollRestoration = 'manual';
   bootTime = performance.now();
   /* welcome back FIRST — before any ScrollTrigger exists, so creation-time
@@ -2921,10 +2959,13 @@ function boot(){
     chapters.forEach(ch => ch.scene.draw(ch.ctx, ch.w, ch.h, ch.isHero ? 0 : 1, 0, 0.016));
   }
 }
-boot();
+/* lib scripts are deferred; wait for them before touching GSAP/Lenis globals */
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+else boot();
 </script>
-<script src="lib/pokedex.js"></script>
+<script defer src="lib/pokedex.js"></script>
 <script>
+function initDex(){
   Dex.init({
     Sound: Sound,
     TYPES: TYPES.map(t => ({ name: t[0].toLowerCase(), color: t[1] })),
@@ -2950,6 +2991,9 @@ boot();
     } else show();
   })();
   document.getElementById('dexBeatBtn').addEventListener('click', () => { Sound.select(); Dex.open(); });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initDex);
+else initDex();
 </script>
 </body>
 </html>

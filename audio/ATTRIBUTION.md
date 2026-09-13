@@ -30,26 +30,27 @@ From the **"Retro Game Music Pack" (5 Action Chiptunes)** by **Juhani Junkala**.
 - Source: https://opengameart.org/content/5-chiptunes-action
 - License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
 - The originals are 44.1 kHz stereo WAVs; these copies were downsampled to
-  22.05 kHz mono (FIR low-pass + decimate) to keep the repository lean —
-  see `_dev/resample.js`.
+  22.05 kHz mono (FIR low-pass + decimate, see `_dev/resample.js`) and
+  transcoded to OGG Vorbis q5 to keep the repository lean — the CC0 license
+  is unaffected by either step.
 - Files used (renamed from the pack):
-  - `title.wav` ← `Juhani Junkala [Retro Game Music Pack] Title Screen.wav`
-  - `route.wav` ← `Juhani Junkala [Retro Game Music Pack] Level 1.wav`
-  - `dex.wav` ← `Juhani Junkala [Retro Game Music Pack] Level 2.wav`
-  - `finale.wav` ← `Juhani Junkala [Retro Game Music Pack] Level 3.wav`
+  - `title.ogg` ← `Juhani Junkala [Retro Game Music Pack] Title Screen.wav`
+  - `route.ogg` ← `Juhani Junkala [Retro Game Music Pack] Level 1.wav`
+  - `dex.ogg` ← `Juhani Junkala [Retro Game Music Pack] Level 2.wav`
+  - `finale.ogg` ← `Juhani Junkala [Retro Game Music Pack] Level 3.wav`
 
-## Theme song — `audio/music/theme-open.wav`, `audio/music/theme-full.wav`
+## Theme song — `audio/music/theme-open.ogg`, `audio/music/theme-full.ogg`
 
 From **"Theme Song [8-bit]"** on OpenGameArt.
 
 - Source: https://opengameart.org/content/theme-song-8-bit
 - License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
-- The originals are 44.1 kHz stereo WAVs, downsampled to 22.05 kHz mono
-  like the tracks above.
+- The originals are 44.1 kHz stereo WAVs, downsampled to 22.05 kHz mono and
+  transcoded to OGG Vorbis like the tracks above.
 - Files used (renamed from the pack):
-  - `theme-open.wav` ← `Theme Song 8-bit V1 _opening.wav` (the 15 s TV-intro
+  - `theme-open.ogg` ← `Theme Song 8-bit V1 _opening.wav` (the 15 s TV-intro
     sting — plays when the Trainer Card appears)
-  - `theme-full.wav` ← `Theme Song 8-bit V1 _looping.wav` (the full 74 s
+  - `theme-full.ogg` ← `Theme Song 8-bit V1 _looping.wav` (the full 74 s
     theme — plays from the credits button)
 
 ## Pokémon cries (`cries/`)

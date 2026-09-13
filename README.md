@@ -45,7 +45,7 @@ Along the way: a Pokédex moment, the Hall of Fame record still counting, and a 
 - One `index.html`: markup, styles, and vanilla JS in a single file.
 - GSAP (ScrollTrigger, SplitText, ScrambleTextPlugin, Physics2DPlugin, MotionPathPlugin) and Lenis, vendored in `lib/`.
 - Web Audio API for the chapter music loops and one-shot SFX.
-- Type set in Press Start 2P, VT323, and Nunito from Google Fonts.
+- Type set in Press Start 2P, VT323, and Nunito, self-hosted as woff2 in `assets/fonts/`.
 - No build step and no runtime network calls for Pokémon data: everything the site shows is bundled in the repo.
 - To refresh that data, run `npm run sync:dex` (fetches any missing species from PokéAPI), `node data/generate-dex-details.mjs --force` (refetch all), or `--ids=25,152` for specific species.
 
@@ -58,7 +58,7 @@ Along the way: a Pokédex moment, the Hall of Fame record still counting, and a 
 | `data/` | Bundled Pokédex data: `dex-list.json`, `moves.json`, `details/{id}.json`, and the sync scripts |
 | `sprites/` | PokéAPI artwork: `art/`, `pix/`, `pix-y/`, `items/` for the journey, `dex/` for all 1025 species |
 | `audio/` | `music/`, `sfx/`, `cries/`, and `ATTRIBUTION.md` |
-| `assets/` | Social preview image |
+| `assets/` | Social preview image, self-hosted fonts (`fonts/`) |
 
 ## Credits & licenses
 
@@ -70,6 +70,6 @@ Along the way: a Pokédex moment, the Hall of Fame record still counting, and a 
   - Music: https://opengameart.org/content/5-chiptunes-action
   - Theme song: https://opengameart.org/content/theme-song-8-bit
 - Pokémon data, sprites, artwork and cries via [PokéAPI](https://pokeapi.co), synced into this repo.
-- Fonts from [Google Fonts](https://fonts.google.com), under the SIL Open Font License.
+- Fonts from [Google Fonts](https://fonts.google.com), under the SIL Open Font License; bundled in `assets/fonts/` as self-hosted woff2 copies.
 
 This is a fan-made tribute, built for the love of the game. POKéMON and all character names are trademarks of Nintendo, Creatures Inc. and GAME FREAK inc.
