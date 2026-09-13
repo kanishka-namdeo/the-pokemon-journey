@@ -107,8 +107,16 @@
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
-  .badge.earned.pop{animation:none}
+  /* !important: this block sits early in the sheet — later same-specificity
+     animation rules would otherwise override it (the badge pop wasn't actually
+     suppressed before this) */
+  .badge.earned.pop{animation:none !important}
   .tc-backdrop,.trainercard{transition:none}
+  .hud .brand:hover svg,.hud .brand:focus-visible svg,
+  #routesBtn:hover svg,#routesBtn:focus-visible svg,#routesBtn:hover .mapdot,
+  #dexBtn:hover .dexpupil,
+  .soundbtn:hover:not(.muted) .wave,.soundbtn.muted:hover .slash,
+  .badgecase:hover .badge.earned,.badgecase:focus-visible .badge.earned{animation:none !important}
 }
 body{
   background:var(--ink);
@@ -145,7 +153,12 @@ canvas{display:block}
    bows out while they're on screen (scroll back up and it returns) */
 body.at-credits .hud{opacity:0}
 body.at-credits .hud > *{pointer-events:none}
-.hud .brand{display:flex; align-items:center; gap:10px; pointer-events:auto}
+.hud .brand{display:flex; align-items:center; gap:10px; pointer-events:auto;
+  background:none; border:0; padding:0; cursor:pointer; font:inherit;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.hud .brand:hover,.hud .brand:focus-visible{transform:translateY(-2px)}
+/* the capture wiggle — three snaps, the franchise's most recognizable tell */
+.hud .brand:hover svg,.hud .brand:focus-visible svg{animation:ballwiggle .5s steps(1,end); transform-origin:center}
 .hud .brand svg{width:22px; height:22px}
 .hud .brand b{font-family:var(--px); font-size:9px; color:var(--yellow); letter-spacing:1px; text-shadow:2px 2px 0 rgba(0,0,0,.6)}
 .badgecase{display:flex; gap:7px; align-items:center; pointer-events:auto}
@@ -349,9 +362,9 @@ body.at-credits .hud > *{pointer-events:none}
   position:relative;
   width:36px; height:34px; display:flex; align-items:center; justify-content:center;
   background:rgba(10,12,24,.72); color:#B9BDCB; border:2px solid #3A4460; border-radius:8px;
-  cursor:pointer; padding:0; transition:color .25s, border-color .25s;
+  cursor:pointer; padding:0; transition:color .25s, border-color .25s, transform .25s cubic-bezier(.34,1.56,.64,1);
 }
-.soundbtn:hover{color:var(--yellow); border-color:var(--yellow)}
+.soundbtn:hover{color:var(--yellow); border-color:var(--yellow); transform:translateY(-2px)}
 .soundbtn:focus-visible{outline:2px dashed var(--yellow); outline-offset:2px}
 .soundbtn svg{width:20px; height:20px}
 .soundbtn.muted .wave{display:none}
@@ -584,8 +597,37 @@ body.at-credits .hud > *{pointer-events:none}
 .dex-moves td,.dex-moves th{border-bottom:1px solid #2A2F4A; padding:3px 6px; text-align:left}
 .dex-moves th{color:#6E7BAE; font-weight:normal}
 .dex-movesnote{color:#6E7BAE; font-size:.95rem; margin:6px 0 0}
-.hudbtn{background:none; border:none; cursor:pointer; padding:4px; display:inline-flex}
+.hudbtn{background:none; border:none; cursor:pointer; padding:4px; display:inline-flex;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.hudbtn:hover,.hudbtn:focus-visible{transform:translateY(-2px)}
 .hudbtn svg{display:block}
+/* HUD nudges — one-shot on hover-in, snapped with steps() like GB menu selections.
+   Silent by design: the site beeps on select, never on look. */
+@keyframes hudwiggle{0%,100%{transform:rotate(0)} 25%{transform:rotate(-6deg)} 55%{transform:rotate(5deg)} 80%{transform:rotate(-3deg)}}
+@keyframes hudpulse{0%,100%{transform:scale(1)} 40%{transform:scale(1.5)}}
+@keyframes hudwave{0%,100%{opacity:1} 35%{opacity:.1} 70%{opacity:.85}}
+@keyframes hudslash{from{stroke-dashoffset:1} to{stroke-dashoffset:0}}
+@keyframes ballwiggle{0%,100%{transform:rotate(0)} 15%{transform:rotate(-12deg)} 35%{transform:rotate(11deg)} 55%{transform:rotate(-7deg)} 75%{transform:rotate(4deg)}}
+/* route map: the map unpacks, the marker blips once */
+#routesBtn:hover svg,#routesBtn:focus-visible svg{animation:hudwiggle .3s steps(2,end)}
+#routesBtn:hover .mapdot,#routesBtn:focus-visible .mapdot{animation:hudpulse .3s steps(2,end); transform-box:fill-box; transform-origin:center}
+/* pokédex: the lens ticks once, like a scan */
+#dexBtn:hover .dexpupil,#dexBtn:focus-visible .dexpupil{animation:hudpulse .3s steps(2,end); transform-box:fill-box; transform-origin:center}
+/* sound: waves ripple when on, the slash re-draws when muted */
+.soundbtn:hover:not(.muted) .wave:nth-of-type(2){animation:hudwave .28s steps(2,end)}
+.soundbtn:hover:not(.muted) .wave:nth-of-type(3){animation:hudwave .28s steps(2,end) .07s}
+.soundbtn.muted:hover .slash{stroke-dasharray:1; animation:hudslash .3s steps(4,end)}
+/* badge case: earned badges do the award-ceremony pop as a staggered wave
+   (longhands, so the per-child animation-delay below isn't reset by a shorthand) */
+.badgecase:hover .badge.earned,.badgecase:focus-visible .badge.earned{
+  animation-name:badgepop; animation-duration:.45s; animation-timing-function:cubic-bezier(.34,1.56,.64,1)}
+.badgecase .badge:nth-child(2){animation-delay:.045s}
+.badgecase .badge:nth-child(3){animation-delay:.09s}
+.badgecase .badge:nth-child(4){animation-delay:.135s}
+.badgecase .badge:nth-child(5){animation-delay:.18s}
+.badgecase .badge:nth-child(6){animation-delay:.225s}
+.badgecase .badge:nth-child(7){animation-delay:.27s}
+.badgecase .badge:nth-child(8){animation-delay:.315s}
 @media (max-width:760px){
   /* one screen at a time: the browse list fills the device until a Pokémon is
      picked, then .dex-detail-open (toggled by pokedex.js) swaps in the detail */
@@ -684,16 +726,16 @@ body.at-credits .hud > *{pointer-events:none}
 
 <!-- ================= HUD ================= -->
 <header class="hud">
-  <div class="brand">
+  <button class="brand" id="brandBall" aria-label="Back to the title screen" title="Back to the title screen">
     <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fff" stroke="#17171F" stroke-width="6"/><path d="M4 50a46 46 0 0 1 92 0z" fill="#EE1515"/><rect x="4" y="44" width="92" height="12" fill="#17171F"/><circle cx="50" cy="50" r="14" fill="#fff" stroke="#17171F" stroke-width="6"/></svg>
     <b>POKéMON · THE JOURNEY</b>
-  </div>
+  </button>
   <div class="hud-right">
     <button class="hudbtn" id="routesBtn" aria-label="Route map — jump between chapters" title="Route map" aria-haspopup="dialog" aria-expanded="false">
       <svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true">
         <path d="M1 3.2 7 1l8 2.2L21 1v13.8L15 17l-8-2.2L1 17z" fill="#FFCB05" stroke="#17171F" stroke-width="1.6" stroke-linejoin="round"/>
         <path d="M7 1v13.8M15 3.2V17" stroke="#17171F" stroke-width="1.1" opacity=".5"/>
-        <circle cx="11" cy="9" r="2.4" fill="#EE1515" stroke="#17171F" stroke-width="1.2"/>
+        <circle cx="11" cy="9" r="2.4" class="mapdot" fill="#EE1515" stroke="#17171F" stroke-width="1.2"/>
       </svg>
     </button>
     <button class="soundbtn muted" id="soundBtn" aria-label="Toggle sound" aria-pressed="false" title="Sound">
@@ -701,7 +743,7 @@ body.at-credits .hud > *{pointer-events:none}
         <path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/>
         <path class="wave" d="M16.5 9.5c1.4 1.4 1.4 3.6 0 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
         <path class="wave" d="M19 7.5c2.4 2.4 2.4 6.6 0 9" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path class="slash" d="M16.5 9.5l5 5M21.5 9.5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path class="slash" pathLength="1" d="M16.5 9.5l5 5M21.5 9.5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </button>
     <nav class="badgecase" id="badgecase" tabindex="0" role="button" aria-label="Badge case — press to view your Trainer Card" title="Your badge case">
@@ -718,7 +760,7 @@ body.at-credits .hud > *{pointer-events:none}
   <svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true">
     <rect x="1" y="1" width="20" height="16" rx="4" fill="#EE1515" stroke="#7C0A0A" stroke-width="1.5"/>
     <circle cx="8" cy="9" r="4.2" fill="#FFFDF4" stroke="#0F1220" stroke-width="1.2"/>
-    <circle cx="8" cy="9" r="1.6" fill="#0F1220"/>
+    <circle cx="8" cy="9" r="1.6" class="dexpupil" fill="#0F1220"/>
     <rect x="14.5" y="5" width="4.5" height="8" rx="1" fill="#FFCB05"/>
   </svg>
 </button>
@@ -3177,6 +3219,13 @@ function boot(){
   const again = document.querySelector('.again');
   if (again) again.addEventListener('click', (e) => {
     e.preventDefault();
+    Sound.select();
+    if (HAS_GSAP && !REDUCED) Iris.fire(() => scrollToY(0, true));
+    else window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
+  });
+  /* the brand pokéball is the visible "press START to return" — same warp as the credits link */
+  const brandBall = document.getElementById('brandBall');
+  if (brandBall) brandBall.addEventListener('click', () => {
     Sound.select();
     if (HAS_GSAP && !REDUCED) Iris.fire(() => scrollToY(0, true));
     else window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
