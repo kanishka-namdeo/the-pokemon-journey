@@ -255,6 +255,17 @@ body.at-credits .hud > *{pointer-events:none}
 .chapter.side-left .step, .chapter.side-left .step:nth-child(even){justify-content:flex-start}
 .chapter.side-left .step > *{max-width:30rem}
 
+/* ultrawide containment — beyond 1920px the composition stays in a centered band,
+   the canvas still fills the screen so background atmosphere reaches the edges */
+@media (min-width:1920px){
+  .steps{max-width:1920px; margin-left:auto; margin-right:auto; padding-left:64px; padding-right:64px}
+  /* text columns stay near the art, not at the far walls */
+  .step:nth-child(odd){justify-content:flex-start}
+  .step:nth-child(even){justify-content:flex-end}
+  .chapter.side-left .step, .chapter.side-left .step:nth-child(even){justify-content:flex-start}
+  .chapter.finale .step:nth-child(odd), .chapter.finale .step:nth-child(even){justify-content:center}
+}
+
 .dlg p + p{margin-top:.7em}
 .dlg .dex-flavor{font-family:var(--term); font-size:1.25em; color:#3A3A46; border-left:3px solid #C9C2AC; padding-left:12px; margin:.6em 0}
 .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
@@ -800,7 +811,7 @@ body.at-credits .hud > *{pointer-events:none}
     </div>
     <div class="step">
       <div class="dlg">
-        <p>He hand-printed a fanzine called <strong>Game Freak</strong>. Its illustrator, Ken Sugimori, joined him. In 1989 the fanzine became a studio, and in 1990 Tajiri pitched Nintendo a game about <em>trading</em> creatures, the way he’d traded beetles with his friends as a kid.</p>
+        <p>He hand-printed a fanzine called <strong>Game Freak</strong>. Its illustrator, Ken Sugimori, joined him. In 1989 the fanzine became a studio, and in 1990 Tajiri pitched Nintendo a game about <em>trading</em> creatures, the way he'd traded beetles with his friends as a kid.</p>
         <p>Two Game Boys, one link cable, two versions of the same world. You had to talk to another player to complete your own game.</p>
         <div class="chips"><span class="chip">GAME FREAK, EST. 1989</span><span class="chip"><b>LINK CABLE</b> = THE BIG IDEA</span></div>
       </div>
@@ -820,16 +831,16 @@ body.at-credits .hud > *{pointer-events:none}
 <section class="chapter" id="ch-hype" data-scene="catch" data-theme="catch" data-badge="1">
   <div class="fig"><canvas aria-hidden="true"></canvas></div>
   <div class="steps">
-    <div class="sign"><h2><span class="sn">ROUTE 2</span><span class="sr"> · The phenomenon: Pikachu, the anime and Gotta catch ’em all</span></h2><span>THE WORLD · 1996–1999</span></div>
+    <div class="sign"><h2><span class="sn">ROUTE 2</span><span class="sr"> · The phenomenon: Pikachu, the anime and Gotta catch 'em all</span></h2><span>THE WORLD · 1996–1999</span></div>
     <div class="step">
       <div class="battle">
         <p class="callout">A wild <span>PHENOMENON</span> appeared!</p>
-        <p>Red and Green sold out fast. In April 1997 came the anime, starring Ash Ketchum and a stubborn yellow mouse designed by Atsuko Nishida. <strong>Pikachu</strong> became the franchise’s face: a yellow silhouette a child can draw from memory.</p>
+        <p>Red and Green sold out fast. In April 1997 came the anime, starring Ash Ketchum and a stubborn yellow mouse designed by Atsuko Nishida. <strong>Pikachu</strong> became the franchise's face: a yellow silhouette a child can draw from memory.</p>
       </div>
     </div>
     <div class="step">
       <div class="dlg">
-        <p>The trading card game hit Japan in October 1996 and America in January 1999. Schoolyards turned into trading floors. And for the English dub, a producer named Norman J. Grossfeld wrote four words that outlived the cartoon and became a global catchphrase: <strong>“Gotta catch ’em all!”</strong></p>
+        <p>The trading card game hit Japan in October 1996 and America in January 1999. Schoolyards turned into trading floors. And for the English dub, a producer named Norman J. Grossfeld wrote four words that outlived the cartoon and became a global catchphrase: <strong>"Gotta catch 'em all!"</strong></p>
       </div>
     </div>
     <div class="step">
@@ -850,7 +861,7 @@ body.at-credits .hud > *{pointer-events:none}
     <div class="step">
       <div class="dlg">
         <p>Every new generation opened a new region: Kanto, Johto, Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea. Each stocked with new creatures to find, trade and battle.</p>
-        <p>The <strong>Pokédex</strong>, the in-game encyclopedia, became the franchise’s heartbeat. The number only ever goes up.</p>
+        <p>The <strong>Pokédex</strong>, the in-game encyclopedia, became the franchise's heartbeat. The number only ever goes up.</p>
       </div>
     </div>
     <div class="step">
@@ -862,7 +873,7 @@ body.at-credits .hud > *{pointer-events:none}
     <div class="step">
       <div class="dlg">
         <p>Today the Pokédex holds <strong>1,025 Pokémon</strong>, from Bulbasaur (#0001) to Pecharunt (#1025). The count has held steady since 2023.</p>
-        <p>Somewhere in there is your favorite. <span style="font-family:var(--term); font-size:1.15em">(It’s Gengar. It’s always Gengar.)</span></p>
+        <p>Somewhere in there is your favorite. <span style="font-family:var(--term); font-size:1.15em">(It's Gengar. It's always Gengar.)</span></p>
         <span class="arrow" aria-hidden="true"></span>
       </div>
     </div>
@@ -886,7 +897,7 @@ body.at-credits .hud > *{pointer-events:none}
     </div>
     <div class="step">
       <div class="dlg">
-        <p>Trainers don’t memorize stats. They memorize <em>relationships</em>. One super-effective hit doubles your damage. One careless switch-in ends a run.</p>
+        <p>Trainers don't memorize stats. They memorize <em>relationships</em>. One super-effective hit doubles your damage. One careless switch-in ends a run.</p>
         <p>The wheel turns as you scroll. Watch the triangle in the middle: every edge is a lesson every ten-year-old learned the hard way.</p>
         <div class="typechips" aria-label="The 18 Pokémon types">
           <span class="typechip" style="background:#A8A878">NORMAL</span><span class="typechip" style="background:#F08030">FIRE</span><span class="typechip" style="background:#6890F0">WATER</span><span class="typechip" style="background:#F8D030">ELECTRIC</span><span class="typechip" style="background:#78C850">GRASS</span><span class="typechip" style="background:#98D8D8">ICE</span><span class="typechip" style="background:#C03028">FIGHTING</span><span class="typechip" style="background:#A040A0">POISON</span><span class="typechip" style="background:#E0C068">GROUND</span><span class="typechip" style="background:#A890F0">FLYING</span><span class="typechip" style="background:#F85888">PSYCHIC</span><span class="typechip" style="background:#A8B820">BUG</span><span class="typechip" style="background:#B8A038">ROCK</span><span class="typechip" style="background:#705898">GHOST</span><span class="typechip" style="background:#7038F8">DRAGON</span><span class="typechip" style="background:#705848">DARK</span><span class="typechip" style="background:#B8B8D0">STEEL</span><span class="typechip" style="background:#EE99AC">FAIRY</span>
@@ -909,8 +920,8 @@ body.at-credits .hud > *{pointer-events:none}
     <div class="sign"><h2><span class="sn">ROUTE 5</span><span class="sr"> · Evolution: Eevee and its eight destinies</span></h2><span>EEVEE · 8 DESTINIES</span></div>
     <div class="step">
       <div class="dlg">
-        <span class="dex-flavor">“Its genetic code is irregular. It may mutate if it is exposed to radiation from element Stones.”</span>
-        <p style="margin-top:.8em">— the original Red and Blue Pokédex, on <strong>Eevee</strong>. Eevee is the franchise’s idea of pure potential: one Pokémon, eight possible destinies.</p>
+        <span class="dex-flavor">"Its genetic code is irregular. It may mutate if it is exposed to radiation from element Stones."</span>
+        <p style="margin-top:.8em">— the original Red and Blue Pokédex, on <strong>Eevee</strong>. Eevee is the franchise's idea of pure potential: one Pokémon, eight possible destinies.</p>
       </div>
     </div>
     <div class="step">
@@ -940,7 +951,7 @@ body.at-credits .hud > *{pointer-events:none}
     </div>
     <div class="step">
       <div class="dlg">
-        <p>Parks filled at midnight. At the July 2016 peak, <strong>45 million people played every day</strong>. Strangers compared catches outside PokéStops, and a Snorlax nap could block a city street. For one summer, the biggest crowd in gaming wasn’t in a stadium. It was outside. The link cable was gone. The whole street was the cable now.</p>
+        <p>Parks filled at midnight. At the July 2016 peak, <strong>45 million people played every day</strong>. Strangers compared catches outside PokéStops, and a Snorlax nap could block a city street. For one summer, the biggest crowd in gaming wasn't in a stadium. It was outside. The link cable was gone. The whole street was the cable now.</p>
       </div>
     </div>
     <div class="step">
@@ -966,7 +977,7 @@ body.at-credits .hud > *{pointer-events:none}
     </div>
     <div class="step">
       <div class="dlg">
-        <p>More than <strong>515 million games</strong> shipped. More than <strong>85 billion trading cards</strong> printed. That’s about ten for every person alive.</p>
+        <p>More than <strong>515 million games</strong> shipped. More than <strong>85 billion trading cards</strong> printed. That's about ten for every person alive.</p>
         <p>And in February 2026, a single Pikachu Illustrator card sold at auction for <strong>$16.5 million</strong>. The most expensive trading card ever sold.</p>
       </div>
     </div>
@@ -984,11 +995,11 @@ body.at-credits .hud > *{pointer-events:none}
 <section class="chapter finale" id="ch-lab" data-scene="lab" data-theme="lab" data-badge="7">
   <div class="fig"><canvas aria-hidden="true"></canvas></div>
   <div class="steps">
-    <div class="sign"><h2><span class="sn">OAK’S LAB</span><span class="sr"> · Choose your starter Pokémon</span></h2><span>PALLET TOWN · YOUR TURN</span></div>
+    <div class="sign"><h2><span class="sn">OAK'S LAB</span><span class="sr"> · Choose your starter Pokémon</span></h2><span>PALLET TOWN · YOUR TURN</span></div>
     <div class="step">
       <div class="dlg" id="labIntro" style="max-width:40rem">
         <span class="speaker">OAK</span>
-        <p>“Your very own POKéMON legend is about to unfold! A world of dreams and adventures with POKéMON awaits! Let’s go!”</p>
+        <p>"Your very own POKéMON legend is about to unfold! A world of dreams and adventures with POKéMON awaits! Let's go!"</p>
         <p style="margin-top:.8em">Three Poké Balls are waiting on the table. You may choose only one. Choose well.</p>
       </div>
     </div>
@@ -1039,7 +1050,7 @@ body.at-credits .hud > *{pointer-events:none}
 <footer class="credits">
   <p class="thanks">THANKS FOR PLAYING!</p>
   <p>Eight routes. Eight badges. Your case is full. <button class="linklike" id="openTC">Check your Trainer Card.</button></p>
-  <p>All Pokémon data, sprites and cries come from <a href="https://pokeapi.co" rel="noopener">PokéAPI</a>, bundled with the site. If the sprites didn’t load, you met MissingNo., a legendary glitch in its own right.</p>
+  <p>All Pokémon data, sprites and cries come from <a href="https://pokeapi.co" rel="noopener">PokéAPI</a>, bundled with the site. If the sprites didn't load, you met MissingNo., a legendary glitch in its own right.</p>
   <p>Sound effects and chiptune loops come from the CC0 packs by <a href="https://opengameart.org/content/512-sound-effects-8-bit-style" rel="noopener">Juhani Junkala</a>. Flip the speaker in the top bar for the full Game Boy feel.</p>
   <p>Like any good adaptation, the journey has a TV opening. It plays when your Trainer Card appears — or on demand:</p>
   <p><button class="themebtn" id="themeBtn">▶ PLAY THE OPENING THEME</button></p>
@@ -1060,7 +1071,7 @@ body.at-credits .hud > *{pointer-events:none}
   <div class="trainercard" role="dialog" aria-modal="true" aria-label="Trainer Card">
     <div class="tc-title">TRAINER CARD</div>
     <div class="tc-row"><span>TRAINER</span><b>YOU</b></div>
-    <div class="tc-row"><span>MONEY</span><b>₽ ∞ (IT’S A WEBSITE)</b></div>
+    <div class="tc-row"><span>MONEY</span><b>₽ ∞ (IT'S A WEBSITE)</b></div>
     <div class="tc-row"><span>POKéDEX</span><b>1025</b></div>
     <div class="tc-dexcounts" id="tcDexCounts">SEEN 0 · CAUGHT 0</div>
     <div class="tc-row"><span>PLAY TIME</span><b id="tcTime">0:00</b></div>
@@ -1488,7 +1499,7 @@ function presentCard(card){
   card.__entering = true;
   G.fromTo(card, { y: 34, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: 'power3.out', onComplete(){ card.__entering = false; } });
   const flavor = card.querySelector('.dex-flavor');
-  if (flavor) scrambleTo(flavor, 'POKeMON„“0123456789', 1.3);
+  if (flavor) scrambleTo(flavor, 'POKeMON„"0123456789', 1.3);
   const ps = [...card.querySelectorAll(':scope > p')];
   let totalChars = 0;
   ps.forEach((p2, i) => {
@@ -1789,6 +1800,10 @@ SCENES.title = (() => {
       else { ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, TAU); ctx.fill(); }
     }
     ctx.globalAlpha = 1;
+    /* ultrawide containment: art composition stays in a centered 1920px band */
+    const MAX_LAYOUT_W = 1920;
+    const layoutW = Math.min(w, MAX_LAYOUT_W);
+    const layoutOffX = (w - layoutW) / 2;
     /* giant pokéball, bobbing */
     const R = Math.min(w,h)*0.24*hero.ballScale;
     const cx = w*0.5, cy = h*0.52 + (REDUCED?0:Math.sin(time*0.9)*7);
@@ -1806,7 +1821,7 @@ SCENES.title = (() => {
       ctx.beginPath(); ctx.moveTo(x, gy); ctx.lineTo(x+9, gy-9); ctx.lineTo(x+18, gy); ctx.fill();
     }
     const walk = REDUCED ? 0 : Math.sin(time*0.45);
-    const pxX = w*0.16 + walk * w*0.035 + hero.pxIn;
+    const pxX = layoutOffX + layoutW*0.16 + walk * layoutW*0.035 + hero.pxIn;
     const pkKey = (!REDUCED && Math.floor(time*2.2)%2 && SPRITES.pixPikachuY && SPRITES.pixPikachuY.ok) ? 'pixPikachuY' : 'pixPikachu';
     drawSprite(ctx, pkKey, pxX, gy-4+hero.jump, Math.min(h*0.14, 92), {pixel:true, flip: walk<0});
   }
@@ -1815,8 +1830,11 @@ SCENES.title = (() => {
     const R = Math.min(w,h)*0.24*hero.ballScale;
     const cx = w*0.5, cy = h*0.52 + (REDUCED?0:Math.sin(nowSec*0.9)*7);
     if (Math.hypot(x-cx, y-cy) <= R*1.02) return 'ball';
+    const MAX_LAYOUT_W = 1920;
+    const layoutW = Math.min(w, MAX_LAYOUT_W);
+    const layoutOffX = (w - layoutW) / 2;
     const walk = REDUCED ? 0 : Math.sin(nowSec*0.45);
-    const pxX = w*0.16 + walk*w*0.035 + hero.pxIn;
+    const pxX = layoutOffX + layoutW*0.16 + walk*layoutW*0.035 + hero.pxIn;
     const size = Math.min(h*0.14, 92);
     if (Math.abs(x-pxX) <= size*0.6 && Math.abs(y-(h*0.90-4+hero.jump-size*0.45)) <= size*0.62) return 'pikachu';
     return null;
@@ -1855,10 +1873,14 @@ SCENES.dmg = (() => {
     ctx.strokeStyle = 'rgba(155,188,15,0.05)'; ctx.lineWidth = 1;
     for (let x=0;x<w;x+=32){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
     for (let y=0;y<h;y+=32){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+    /* ultrawide containment: art composition stays in a centered 1920px band */
+    const MAX_LAYOUT_W = 1920;
+    const layoutW = Math.min(w, MAX_LAYOUT_W);
+    const layoutOffX = (w - layoutW) / 2;
     const s = Math.min(w,h)*0.13;
     /* two game boys + link cable (left-of-center so the right-side card keeps clear) */
     const gy = h*0.40;
-    const lx = w*0.43 - s*1.15, rx = w*0.43 + s*1.15;
+    const lx = layoutOffX + layoutW*0.43 - s*1.15, rx = layoutOffX + layoutW*0.43 + s*1.15;
     drawGameBoy(ctx, lx, gy, s, false);
     drawGameBoy(ctx, rx, gy, s, true);
     /* cable */
@@ -1884,8 +1906,8 @@ SCENES.dmg = (() => {
     const gfA = phase(t, 0.02, 0.10) * (1 - phase(t, 0.32, 0.46));
     if (gfA > 0){
       const flick = REDUCED ? 1 : (0.75 + 0.25*Math.sin(time*18));
-      px(ctx, 'GAME FREAK', w*0.5, h*0.16, Math.min(w*0.026, 15), '#9BBC0F', 'center', gfA*flick);
-      term(ctx, 'presents a bug collector’s dream', w*0.5, h*0.16 + Math.min(w*0.026,15)*2.2, Math.min(w*0.02, 17), '#8BAC0F', 'center', gfA);
+      px(ctx, 'GAME FREAK', w*0.5, h*0.16, Math.min(layoutW*0.026, 15), '#9BBC0F', 'center', gfA*flick);
+      term(ctx, 'presents a bug collector\'s dream', w*0.5, h*0.16 + Math.min(layoutW*0.026,15)*2.2, Math.min(layoutW*0.02, 17), '#8BAC0F', 'center', gfA);
     }
     /* ground: grass turning to pavement */
     const gyy = h*0.86;
@@ -1906,11 +1928,11 @@ SCENES.dmg = (() => {
     }
     /* bug morphing into a pixel creature (Caterpie) */
     const walkT = ease(phase(t, 0.03, 0.85));
-    const bugX = lerp(w*0.12, w*0.88, walkT);
+    const bugX = lerp(layoutOffX + layoutW*0.12, layoutOffX + layoutW*0.88, walkT);
     const bugY = gyy - Math.min(h*0.085, 60);
     const morph = phase(t, 0.55, 0.68);
     if (morph < 1){
-      const bs = Math.min(w*0.042, 40);
+      const bs = Math.min(layoutW*0.042, 40);
       ctx.save(); ctx.globalAlpha = 1-morph;
       ctx.fillStyle = '#9BBC0F';
       ctx.beginPath(); ctx.ellipse(bugX, bugY, bs*0.95, bs*0.55, 0, 0, TAU); ctx.fill();
@@ -1961,18 +1983,22 @@ SCENES.catch = (() => {
   }
   let lastTime = 0;
   function groundY(w,h){ return h*0.82; }
-  function target(w,h){ return { x:w*0.62, y:groundY(w,h)-Math.min(h*0.05,34) }; }
+  function target(w,h,layoutW,layoutOffX){ return { x:layoutOffX + layoutW*0.62, y:groundY(w,h)-Math.min(h*0.05,34) }; }
   function draw(ctx, w, h, t, time, dt){
     lastTime = time;
     ctx.save();
     if (fx.shake > 0.3){ ctx.translate((Math.random()-0.5)*fx.shake, (Math.random()-0.5)*fx.shake); fx.shake *= 0.86; }
     if (t < 0.7) fx.gotcha = false;
+    /* ultrawide containment: art composition stays in a centered 1920px band */
+    const MAX_LAYOUT_W = 1920;
+    const layoutW = Math.min(w, MAX_LAYOUT_W);
+    const layoutOffX = (w - layoutW) / 2;
     /* dusk field */
     const g = ctx.createLinearGradient(0,0,0,h);
     g.addColorStop(0,'#0C1622'); g.addColorStop(0.6,'#12283A'); g.addColorStop(1,'#0E1F2C');
     ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
     /* moon + glow + stars */
-    const mR = Math.min(w,h)*0.055, mx = w*0.82, my2 = h*0.16;
+    const mR = Math.min(w,h)*0.055, mx = layoutOffX + layoutW*0.82, my2 = h*0.16;
     const mglow = ctx.createRadialGradient(mx, my2, mR*0.4, mx, my2, mR*2.6);
     mglow.addColorStop(0,'rgba(232,237,247,.32)'); mglow.addColorStop(1,'rgba(232,237,247,0)');
     ctx.fillStyle = mglow; ctx.beginPath(); ctx.arc(mx, my2, mR*2.6, 0, TAU); ctx.fill();
@@ -2004,7 +2030,7 @@ SCENES.catch = (() => {
     }
     grassRow(gy+26, Math.min(h*0.11,74), '#0E3350', 3);
     grassRow(gy+8,  Math.min(h*0.14,96), '#0A2540', 11);
-    const tgt = target(w,h);
+    const tgt = target(w,h,layoutW,layoutOffX);
     /* wild rattata */
     const suck = phase(t, 0.44, 0.52);
     if (suck < 1){
@@ -2021,7 +2047,7 @@ SCENES.catch = (() => {
     }
     /* ball throw arc */
     const throwP = phase(t, 0.18, 0.44);
-    const from = { x:w*0.30, y:h*0.96 };
+    const from = { x:layoutOffX + layoutW*0.30, y:h*0.96 };
     const wobbleP = phase(t, 0.52, 0.80);
     const clickP = phase(t, 0.80, 0.88);
     if (throwP > 0){
@@ -2100,8 +2126,8 @@ SCENES.catch = (() => {
           if (!fx.gotcha){ fx.gotcha = true; fx.shake = 9; catchBurst(w*0.5, h*0.30); Sound.gotcha(); }
           const sc = easeOutBack(gotchaA);
           ctx.save(); ctx.translate(w*0.5, h*0.30); ctx.scale(sc, sc);
-          px(ctx, 'GOTCHA!', 5, 5, Math.min(w*0.055, 40), '#3B4CCA');
-          px(ctx, 'GOTCHA!', 0, 0, Math.min(w*0.055, 40), '#FFCB05');
+          px(ctx, 'GOTCHA!', 5, 5, Math.min(layoutW*0.055, 40), '#3B4CCA');
+          px(ctx, 'GOTCHA!', 0, 0, Math.min(layoutW*0.055, 40), '#FFCB05');
           ctx.restore();
         }
       }
@@ -2131,9 +2157,13 @@ SCENES.dex = (() => {
       ctx.fillStyle = '#DCE4FF'; ctx.fillRect(s.x, s.y, s.r, s.r);
     }
     ctx.globalAlpha = 1;
+    /* ultrawide containment: art composition stays in a centered 1920px band */
+    const MAX_LAYOUT_W = 1920;
+    const layoutW = Math.min(w, MAX_LAYOUT_W);
+    const layoutOffX = (w - layoutW) / 2;
     const narrow = w < 760;
     const R = narrow ? Math.min(w,h)*0.21 : Math.min(w,h)*0.30;
-    const cx = narrow ? w*0.5 : w*0.27;
+    const cx = narrow ? w*0.5 : layoutOffX + layoutW*0.27;
     const cy = narrow ? h*0.30 : h*0.48;
     const fillT = ease(phase(t, 0.05, 0.92));
     /* ghost ball anatomy + fill */
@@ -2170,22 +2200,22 @@ SCENES.dex = (() => {
        covers them (boxes pass through the band just below the number) */
     const val = Math.round(TOTAL*fillT);
     const numStr = val.toLocaleString('en-US');
-    const numX = narrow ? w*0.5 : w*0.68;
+    const numX = narrow ? w*0.5 : layoutOffX + layoutW*0.68;
     const numY = narrow ? h*0.60 : h*0.28;
-    const numSize = narrow ? Math.min(w*0.085, 44) : Math.min(w*0.062, 52);
+    const numSize = narrow ? Math.min(w*0.085, 44) : Math.min(layoutW*0.062, 52);
     px(ctx, numStr, numX+4, numY+4, numSize, '#3B4CCA');
     px(ctx, numStr, numX, numY, numSize, '#FFCB05');
     if (fillT > 0.01){
       const gi = Math.max(0, GEN.findIndex(g => val <= g.cumStart + g.count));
       const g = GEN[gi === -1 ? GEN.length-1 : gi];
-      term(ctx, 'GEN '+g.n+' · '+g.region+' · '+g.year, numX, numY - numSize*1.42, Math.min(w*0.03, 26), g.color);
-      term(ctx, 'SPECIES REGISTERED', numX, numY - numSize*0.78, Math.min(w*0.028, 24), '#B9BDCB');
+      term(ctx, 'GEN '+g.n+' · '+g.region+' · '+g.year, numX, numY - numSize*1.42, Math.min(layoutW*0.03, 26), g.color);
+      term(ctx, 'SPECIES REGISTERED', numX, numY - numSize*0.78, Math.min(layoutW*0.028, 24), '#B9BDCB');
     }
     /* mascots row */
     const mY = narrow ? h*0.86 : h*0.74;
-    const mSize = narrow ? Math.min(w*0.09, 44) : Math.min(w*0.052, 52);
-    const startX = narrow ? w*0.18 : w*0.50;
-    const gapX = narrow ? w*0.16 : Math.min(w*0.058, 62);
+    const mSize = narrow ? Math.min(w*0.09, 44) : Math.min(layoutW*0.052, 52);
+    const startX = narrow ? w*0.18 : layoutOffX + layoutW*0.50;
+    const gapX = narrow ? w*0.16 : Math.min(layoutW*0.058, 62);
     GEN.forEach((g, i) => {
       const appeared = fillT >= (g.cumStart + 1)/TOTAL;
       if (!appeared) return;
@@ -2196,7 +2226,7 @@ SCENES.dex = (() => {
       const pop = REDUCED ? 1 : easeOutBack(since);
       ctx.globalAlpha = Math.min(1, since*1.6);
       drawSprite(ctx, 'art'+g.mon, gx, gy2 - (pop-1)*mSize*0.5, mSize*pop);
-      term(ctx, String(g.year), gx, gy2 + mSize*0.85, Math.min(w*0.022, 18), '#B9BDCB');
+      term(ctx, String(g.year), gx, gy2 + mSize*0.85, Math.min(layoutW*0.022, 18), '#B9BDCB');
       ctx.globalAlpha = 1;
     });
   }
@@ -2216,20 +2246,24 @@ SCENES.types = (() => {
     const vign = ctx.createRadialGradient(w/2, h*0.46, Math.min(w,h)*0.1, w/2, h*0.46, Math.max(w,h)*0.75);
     vign.addColorStop(0,'rgba(90,70,180,.12)'); vign.addColorStop(1,'rgba(0,0,0,.28)');
     ctx.fillStyle = vign; ctx.fillRect(0,0,w,h);
+    /* ultrawide containment: art composition stays in a centered 1920px band */
+    const MAX_LAYOUT_W = 1920;
+    const layoutW = Math.min(w, MAX_LAYOUT_W);
+    const layoutOffX = (w - layoutW) / 2;
     const narrow = w < 700;
     const m = Math.min(w,h);
-    let cx = narrow ? w*0.5 : w*0.62, cy = narrow ? h*0.26 : h*0.46;
+    let cx = narrow ? w*0.5 : layoutOffX + layoutW*0.62, cy = narrow ? h*0.26 : h*0.46;
     let Rx = m*0.385, Ry = m*(narrow?0.26:0.315);
     if (!narrow){
       /* this chapter keeps its text column on the left (side-left): keep the
          wheel clear of the 32.5rem dialogue measure instead of letting the
          left chips slide half-hidden behind a dialogue box */
-      const textEdge = clamp(w*0.05, 16, 64) + 520;
+      const textEdge = clamp(layoutOffX + layoutW*0.05, 16, 64) + 520;
       const cwMax = clamp(m*0.115, 56, 92)/2;
-      const room = (w - 22 - textEdge)/2 - cwMax;
+      const room = (layoutW - 22 - (textEdge - layoutOffX))/2 - cwMax;
       if (Rx > room){ Ry *= room/Rx; Rx = room; }
       cx = Math.max(cx, textEdge + 10 + Rx + cwMax);
-      cx = Math.min(cx, w - 12 - Rx - cwMax);
+      cx = Math.min(cx, layoutOffX + layoutW - 12 - Rx - cwMax);
     }
     const rot = REDUCED ? 0 : (time*0.04 + t*TAU*0.7);
     /* 18 chips equally spaced BY ARC LENGTH along the ellipse, so chips never
@@ -2316,8 +2350,12 @@ SCENES.types = (() => {
 SCENES.eevee = (() => {
   function draw(ctx, w, h, t, time){
     ctx.fillStyle = '#171009'; ctx.fillRect(0,0,w,h);
+    /* ultrawide containment: art composition stays in a centered 1920px band */
+    const MAX_LAYOUT_W = 1920;
+    const layoutW = Math.min(w, MAX_LAYOUT_W);
+    const layoutOffX = (w - layoutW) / 2;
     const narrow = w < 700;
-    const ccx = narrow ? w*0.5 : w*0.63;
+    const ccx = narrow ? w*0.5 : layoutOffX + layoutW*0.63;
     const glow = ctx.createRadialGradient(ccx, h*0.48, 10, ccx, h*0.48, Math.min(w,h)*0.55);
     glow.addColorStop(0,'rgba(222,164,86,.10)'); glow.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle = glow; ctx.fillRect(0,0,w,h);
@@ -2506,7 +2544,7 @@ SCENES.hof = (() => {
     const g = ctx.createLinearGradient(0,0,0,h);
     g.addColorStop(0,'#190C13'); g.addColorStop(1,'#0F1220');
     ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
-    /* rainbow staircase */
+    /* rainbow staircase — spans full width, looks great at ultrawide */
     const colors = ['#EE1515','#F08030','#FFCB05','#78C850','#6890F0','#9D5CE0'];
     colors.forEach((c, i) => {
       ctx.globalAlpha = 0.10 + 0.02*Math.sin(time+i);
@@ -2530,12 +2568,15 @@ SCENES.hof = (() => {
       }
       ctx.globalAlpha = 1;
     }
-    /* 4 counters */
+    /* 4 counters — ultrawide containment: stay in a centered 1920px band */
+    const MAX_LAYOUT_W = 1920;
+    const layoutW = Math.min(w, MAX_LAYOUT_W);
+    const layoutOffX = (w - layoutW) / 2;
     const narrow = w < 760;
     const pos = narrow
       ? [[w*0.5, h*0.20],[w*0.5, h*0.40],[w*0.5, h*0.60],[w*0.5, h*0.80]]
-      : [[w*0.52, h*0.32],[w*0.80, h*0.32],[w*0.52, h*0.70],[w*0.80, h*0.70]];
-    const numSize = narrow ? Math.min(w*0.11, 54) : Math.min(w*0.055, 48);
+      : [[layoutOffX + layoutW*0.52, h*0.32],[layoutOffX + layoutW*0.80, h*0.32],[layoutOffX + layoutW*0.52, h*0.70],[layoutOffX + layoutW*0.80, h*0.70]];
+    const numSize = narrow ? Math.min(w*0.11, 54) : Math.min(layoutW*0.055, 48);
     const SCRCH = '0123456789MB$+';
     stats.forEach((s, i) => {
       const p = easeOut(phase(t, 0.06 + i*0.16, 0.24 + i*0.16));
@@ -2560,7 +2601,7 @@ SCENES.hof = (() => {
       ctx.save(); ctx.translate(x, y); ctx.scale(pop, pop);
       px(ctx, txt, 3, 3, numSize, 'rgba(0,0,0,.5)');
       px(ctx, txt, 0, 0, numSize, s.color);
-      term(ctx, s.label, 0, numSize*1.35, Math.min(w*0.028, 24), '#B9BDCB');
+      term(ctx, s.label, 0, numSize*1.35, Math.min(layoutW*0.028, 24), '#B9BDCB');
       ctx.restore();
     });
   }
@@ -2573,8 +2614,12 @@ SCENES.lab = (() => {
     const g = ctx.createLinearGradient(0,0,0,h);
     g.addColorStop(0,'#171009'); g.addColorStop(0.7,'#221709'); g.addColorStop(1,'#171009');
     ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+    /* ultrawide containment: art composition stays in a centered 1920px band */
+    const MAX_LAYOUT_W = 1920;
+    const layoutW = Math.min(w, MAX_LAYOUT_W);
+    const layoutOffX = (w - layoutW) / 2;
     /* window with night sky */
-    const wx = w*0.12, wy = h*0.14, ww = Math.min(w*0.16, 150), wh = ww*1.2;
+    const wx = layoutOffX + layoutW*0.12, wy = h*0.14, ww = Math.min(layoutW*0.16, 150), wh = ww*1.2;
     rrect(ctx, wx, wy, ww, wh, 10);
     ctx.fillStyle = '#0B0E1C'; ctx.fill();
     ctx.lineWidth = 4; ctx.strokeStyle = '#3A2A1C'; ctx.stroke();
@@ -2597,7 +2642,7 @@ SCENES.lab = (() => {
     cone.addColorStop(0,'rgba(255,214,130,.16)'); cone.addColorStop(1,'rgba(255,214,130,0)');
     ctx.fillStyle = cone;
     ctx.beginPath(); ctx.moveTo(lx-26, ly+14); ctx.lineTo(lx+26, ly+14);
-    ctx.lineTo(w*0.72, h*0.78); ctx.lineTo(w*0.28, h*0.78); ctx.fill();
+    ctx.lineTo(layoutOffX + layoutW*0.72, h*0.78); ctx.lineTo(layoutOffX + layoutW*0.28, h*0.78); ctx.fill();
     const lampPulse = REDUCED ? 0.9 : 0.85 + 0.15*Math.sin(time*2.4);
     ctx.fillStyle = 'rgba(255,224,150,'+lampPulse+')';
     ctx.beginPath(); ctx.arc(lx, ly+18, 8, 0, TAU); ctx.fill();
@@ -2609,10 +2654,10 @@ SCENES.lab = (() => {
     for (let x=0;x<w;x+=90){ ctx.beginPath(); ctx.moveTo(x, ty+12); ctx.lineTo(x+30, h); ctx.stroke(); }
     /* shelf silhouette */
     ctx.fillStyle = '#241809';
-    ctx.fillRect(w*0.68, h*0.30, w*0.24, 8);
-    ctx.fillRect(w*0.72, h*0.30-26, 14, 26);
-    ctx.fillRect(w*0.76, h*0.30-20, 14, 20);
-    ctx.fillRect(w*0.82, h*0.30-30, 14, 30);
+    ctx.fillRect(layoutOffX + layoutW*0.68, h*0.30, layoutW*0.24, 8);
+    ctx.fillRect(layoutOffX + layoutW*0.72, h*0.30-26, 14, 26);
+    ctx.fillRect(layoutOffX + layoutW*0.76, h*0.30-20, 14, 20);
+    ctx.fillRect(layoutOffX + layoutW*0.82, h*0.30-30, 14, 30);
   }
   return { draw };
 })();
@@ -2757,7 +2802,7 @@ function setupScroll(){
           labNudged = true;
           setTimeout(() => {
             if (pickedStarter) return;
-            toast('OAK', 'Take your time. But your rival won’t wait forever.');
+            toast('OAK', "Take your time. But your rival won't wait forever.");
             if (HAS_GSAP && !REDUCED) G.to('.ballbtn', { y: -9, duration: 0.16, yoyo: true, repeat: 3, stagger: 0.09, ease: 'power1.out' });
           }, 9000);
         }
@@ -2885,9 +2930,9 @@ function awardBadge(i){
 
 /* finale: choose your starter */
 const STARTER_TEXT = {
-  1:'You chose BULBASAUR! The seed on its back grows with you: patience, photosynthesis and a very strong opinion about vines. Somewhere, your rival is already complaining about the Charmander you left behind. Prof. Oak has recorded you in the HALL OF FAME. Your adventure continues. 1,025 species are waiting, and somewhere in there is the one you’ll never forget.',
-  4:'You chose CHARMANDER! Famous fact: if the flame on its tail goes out, it dies. Which is a lot of pressure for a lizard. Somewhere, your rival is already complaining about the Squirtle you left behind. Prof. Oak has recorded you in the HALL OF FAME. Your adventure continues. 1,025 species are waiting, and somewhere in there is the one you’ll never forget.',
-  7:'You chose SQUIRTLE! Small turtle, water cannon, zero regrets. Somewhere, your rival is already complaining about the Bulbasaur you left behind. Prof. Oak has recorded you in the HALL OF FAME. Your adventure continues. 1,025 species are waiting, and somewhere in there is the one you’ll never forget.'
+  1:"You chose BULBASAUR! The seed on its back grows with you: patience, photosynthesis and a very strong opinion about vines. Somewhere, your rival is already complaining about the Charmander you left behind. Prof. Oak has recorded you in the HALL OF FAME. Your adventure continues. 1,025 species are waiting, and somewhere in there is the one you'll never forget.",
+  4:"You chose CHARMANDER! Famous fact: if the flame on its tail goes out, it dies. Which is a lot of pressure for a lizard. Somewhere, your rival is already complaining about the Squirtle you left behind. Prof. Oak has recorded you in the HALL OF FAME. Your adventure continues. 1,025 species are waiting, and somewhere in there is the one you'll never forget.",
+  7:"You chose SQUIRTLE! Small turtle, water cannon, zero regrets. Somewhere, your rival is already complaining about the Bulbasaur you left behind. Prof. Oak has recorded you in the HALL OF FAME. Your adventure continues. 1,025 species are waiting, and somewhere in there is the one you'll never forget."
 };
 function setupFinale(){
   const msg = $('#finaleMsg'), msgText = $('#finaleText');
@@ -2969,7 +3014,7 @@ function petPikachu(){
       G.fromTo(fl, { opacity: 0 }, { opacity: 0.92, duration: 0.08, yoyo: true, repeat: 3, ease: 'steps(1)', onComplete(){ G.to(fl, { opacity: 0, duration: 0.25 }); } });
       Sound.thunder();
     }
-    toast('PIKACHU used THUNDERBOLT!', 'Critical hit on your heart. It’s super cute.', { sound:false });
+    toast('PIKACHU used THUNDERBOLT!', "Critical hit on your heart. It's super cute.", { sound:false });
   }
 }
 function pokeBall(){
@@ -2982,7 +3027,7 @@ function pokeBall(){
   }
   if (nowSec - ballToastAt > 2.5){
     ballToastAt = nowSec; Sound.poke();
-    toast('OAK', 'There’s a time and place for everything! But not now.', { sound:false });
+    toast('OAK', "There's a time and place for everything! But not now.", { sound:false });
   }
 }
 function attachCanvasInteractions(){
