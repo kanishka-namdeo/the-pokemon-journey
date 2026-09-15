@@ -7,6 +7,7 @@ shots/
 .DS_Store
 Thumbs.db
 desktop.ini
+nul
 
 # Logs and dependencies
 *.log

@@ -94,10 +94,9 @@
   --paper:#FFFDF4;          /* dialogue-box white */
   --paper-dim:#EFE9D8;
   --red:#EE1515;            /* Poké Ball */
-  --yellow:#FFCB05;         /* Pikachu */
+  --red-deep:#D50F12;       /* CTA face; paper text passes AA */
+  --accent:#FFCB05;         /* Pikachu; the starter pick rewrites this at runtime */
   --blue:#3B4CCA;           /* logo blue */
-  --green:#78C850;
-  --dmg0:#9BBC0F; --dmg1:#8BAC0F; --dmg2:#306230; --dmg3:#0F380F;
   --px:"Press Start 2P", monospace;
   --body:"Nunito", "Segoe UI", sans-serif;
   --term:"VT323", monospace;
@@ -134,8 +133,8 @@ body[data-theme="eevee"]{background:#171009}
 body[data-theme="hof"]{background:#190C13}
 body[data-theme="lab"]{background:#171009}
 
-::selection{background:var(--yellow); color:#17171F}
-:focus-visible{outline:3px dashed var(--yellow); outline-offset:3px; border-radius:4px}
+::selection{background:var(--accent); color:#17171F}
+:focus-visible{outline:3px dashed var(--accent); outline-offset:3px; border-radius:4px}
 canvas{display:block}
 /* screen-reader-only: real headings live in the route signs without changing the visuals */
 .sr{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0}
@@ -160,7 +159,7 @@ body.at-credits .hud > *{pointer-events:none}
 /* the capture wiggle — three snaps, the franchise's most recognizable tell */
 .hud .brand:hover svg,.hud .brand:focus-visible svg{animation:ballwiggle .5s steps(1,end); transform-origin:center}
 .hud .brand svg{width:22px; height:22px}
-.hud .brand b{font-family:var(--px); font-size:9px; color:var(--yellow); letter-spacing:1px; text-shadow:2px 2px 0 rgba(0,0,0,.6)}
+.hud .brand b{font-family:var(--px); font-size:9px; color:var(--accent); letter-spacing:1px; text-shadow:2px 2px 0 rgba(0,0,0,.6)}
 .badgecase{display:flex; gap:7px; align-items:center; pointer-events:auto}
 .badge{width:24px; height:24px; opacity:.28; filter:grayscale(1) brightness(1.4); transition:all .35s cubic-bezier(.34,1.56,.64,1)}
 .badge.earned{opacity:1; filter:none; transform:scale(1.18)}
@@ -177,12 +176,12 @@ body.at-credits .hud > *{pointer-events:none}
 .hero h1{
   font-family:var(--px); font-weight:400;
   font-size:clamp(38px, 10.5vw, 104px);
-  color:var(--yellow);
+  color:var(--accent);
   text-shadow:0.07em 0.07em 0 var(--blue), 0.14em 0.14em 0 rgba(0,0,0,.45);
   line-height:1.1;
 }
 .hero .sub{font-size:clamp(15px, 2vw, 19px); font-weight:600; color:var(--paper-dim); max-width:34rem; text-shadow:0 2px 12px rgba(8,10,20,.9), 0 0 4px rgba(8,10,20,.7)}
-.hero .sub em{font-style:normal; color:var(--yellow)}
+.hero .sub em{font-style:normal; color:var(--accent)}
 
 /* dialogue box — the games' text box */
 .dlg{
@@ -270,7 +269,7 @@ body.at-credits .hud > *{pointer-events:none}
 .dlg .dex-flavor{font-family:var(--term); font-size:1.25em; color:#3A3A46; border-left:3px solid #C9C2AC; padding-left:12px; margin:.6em 0}
 .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
 .chip{font-family:var(--px); font-size:8px; letter-spacing:1px; color:var(--paper-dim); border:2px solid #3A4460; background:rgba(10,12,24,.72); border-radius:6px; padding:7px 9px}
-.chip b{color:var(--yellow); font-weight:400}
+.chip b{color:var(--accent); font-weight:400}
 
 .battle{
   background:var(--paper); color:#22222A;
@@ -313,7 +312,7 @@ body.at-credits .hud > *{pointer-events:none}
   background:#fff; border:4px solid #17171F; z-index:3;
   transition:background .3s;
 }
-.ballbtn:hover .btn{background:var(--yellow)}
+.ballbtn:hover .btn{background:var(--accent)}
 .ballbtn .mon{
   position:absolute; inset:0; z-index:1; pointer-events:none;
   display:flex; align-items:center; justify-content:center;
@@ -340,29 +339,29 @@ body.at-credits .hud > *{pointer-events:none}
 .ballwrap .btype{font-family:var(--px); font-size:7px; padding:5px 7px 4px; border-radius:5px; border:2px solid rgba(0,0,0,.55); text-shadow:1px 1px 0 rgba(255,255,255,.25)}
 .ballwrap{opacity:.96}
 .ballwrap.faded{opacity:.32; filter:grayscale(.9); pointer-events:none}
-.ballwrap.picked .bname{color:var(--yellow)}
+.ballwrap.picked .bname{color:var(--accent)}
 
 .finale-msg{max-width:36rem; margin:0 auto 4vh}
 .finale-msg[hidden]{display:none}
 
 /* ============================= credits / footer ============================= */
 .credits{position:relative; z-index:2; text-align:center; padding:12vh 20px 9vh; background:rgba(8,9,18,.72); border-top:3px solid #17171F}
-.credits .thanks{font-family:var(--px); font-size:clamp(13px,2.4vw,18px); color:var(--yellow); margin-bottom:26px; text-shadow:3px 3px 0 rgba(0,0,0,.5)}
+.credits .thanks{font-family:var(--px); font-size:clamp(13px,2.4vw,18px); color:var(--accent); margin-bottom:26px; text-shadow:3px 3px 0 rgba(0,0,0,.5)}
 .credits p{font-size:14px; color:#B9BDCB; max-width:44rem; margin:0 auto 8px}
 .credits a{color:#8FB6FF}
-.again{display:inline-block; margin-top:26px; font-family:var(--px); font-size:9px; color:var(--ink); background:var(--yellow); border:3px solid #17171F; border-radius:8px; box-shadow:0 0 0 3px var(--yellow), 0 0 0 6px #17171F; padding:12px 18px; cursor:pointer; text-decoration:none}
+.again{display:inline-block; margin-top:26px; font-family:var(--px); font-size:9px; color:var(--ink); background:var(--accent); border:3px solid #17171F; border-radius:8px; box-shadow:0 0 0 3px var(--accent), 0 0 0 6px #17171F; padding:12px 18px; cursor:pointer; text-decoration:none}
 .again:hover{background:#FFE066}
-.themebtn{display:inline-block; margin-top:4px; font-family:var(--px); font-size:9px; color:var(--paper); background:var(--red); border:3px solid #17171F; border-radius:8px; box-shadow:0 0 0 3px var(--red), 0 0 0 6px #17171F; padding:12px 18px; cursor:pointer; text-decoration:none}
-.themebtn:hover{background:#FF4040}
-.themebtn.playing{background:#17171F; color:var(--yellow); box-shadow:0 0 0 3px #17171F, 0 0 0 6px var(--red)}
+.themebtn{display:inline-block; margin-top:4px; font-family:var(--px); font-size:9px; color:var(--paper); background:var(--red-deep); border:3px solid #17171F; border-radius:8px; box-shadow:0 0 0 3px var(--red-deep), 0 0 0 6px #17171F; padding:12px 18px; cursor:pointer; text-decoration:none}
+.themebtn:hover{background:#E0181A}
+.themebtn.playing{background:#17171F; color:var(--accent); box-shadow:0 0 0 3px #17171F, 0 0 0 6px var(--red-deep)}
 .themebtn.playing:hover{background:#26263a}
-.starbtn{display:inline-flex; align-items:center; gap:9px; margin-top:4px; font-family:var(--px); font-size:9px; color:var(--paper); background:var(--ink-2); border:3px solid #17171F; border-radius:8px; box-shadow:0 0 0 3px var(--ink-2), 0 0 0 6px var(--yellow); padding:12px 18px; cursor:pointer; text-decoration:none}
+.starbtn{display:inline-flex; align-items:center; gap:9px; margin-top:4px; font-family:var(--px); font-size:9px; color:var(--paper); background:var(--ink-2); border:3px solid #17171F; border-radius:8px; box-shadow:0 0 0 3px var(--ink-2), 0 0 0 6px var(--accent); padding:12px 18px; cursor:pointer; text-decoration:none}
 .starbtn:hover{background:#232840}
-.starbtn svg{width:13px; height:13px; fill:var(--yellow); filter:drop-shadow(1px 1px 0 rgba(0,0,0,.6))}
+.starbtn svg{width:13px; height:13px; fill:var(--accent); filter:drop-shadow(1px 1px 0 rgba(0,0,0,.6))}
 
 #fx{position:fixed; inset:0; z-index:60; pointer-events:none}
 #wipe{position:fixed; inset:0; z-index:45; pointer-events:none}
-.progressbar{position:fixed; top:0; left:0; right:0; height:3px; background:var(--yellow); transform-origin:0 50%; transform:scaleX(0); transform:scaleX(var(--pg,0)); z-index:55; pointer-events:none}
+.progressbar{position:fixed; top:0; left:0; right:0; height:3px; background:var(--accent); transform-origin:0 50%; transform:scaleX(0); transform:scaleX(var(--pg,0)); z-index:55; pointer-events:none}
 @supports (animation-timeline: scroll()){
   .progressbar{animation: pgrow linear both; animation-timeline: scroll();}
   @keyframes pgrow{ from{transform:scaleX(0)} to{transform:scaleX(1)} }
@@ -375,12 +374,12 @@ body.at-credits .hud > *{pointer-events:none}
   background:rgba(10,12,24,.72); color:#B9BDCB; border:2px solid #3A4460; border-radius:8px;
   cursor:pointer; padding:0; transition:color .25s, border-color .25s, transform .25s cubic-bezier(.34,1.56,.64,1);
 }
-.soundbtn:hover{color:var(--yellow); border-color:var(--yellow); transform:translateY(-2px)}
-.soundbtn:focus-visible{outline:2px dashed var(--yellow); outline-offset:2px}
+.soundbtn:hover{color:var(--accent); border-color:var(--accent); transform:translateY(-2px)}
+.soundbtn:focus-visible{outline:2px dashed var(--accent); outline-offset:2px}
 .soundbtn svg{width:20px; height:20px}
 .soundbtn.muted .wave{display:none}
 .soundbtn:not(.muted) .slash{display:none}
-.soundbtn:not(.muted){color:var(--yellow); border-color:var(--yellow)}
+.soundbtn:not(.muted){color:var(--accent); border-color:var(--accent)}
 .ball-clone{position:fixed; z-index:70; pointer-events:none; margin:0}
 .ball-clone .mon{display:none} /* the real partner stands on its ball; the flying clone is just the ball */
 
@@ -404,7 +403,7 @@ body.at-credits .hud > *{pointer-events:none}
 .toast.show{transform:none; opacity:1}
 .toast b{color:#8A1A1A; display:block; font-family:var(--px); font-size:8.5px; margin-bottom:5px}
 .toast .trow{display:flex; gap:8px; margin-top:9px}
-.toast .tbtn{font-family:var(--px); font-size:8px; background:#17171F; color:var(--yellow); border:0; border-radius:7px; padding:8px 10px; cursor:pointer; pointer-events:auto}
+.toast .tbtn{font-family:var(--px); font-size:8px; background:#17171F; color:var(--accent); border:0; border-radius:7px; padding:8px 10px; cursor:pointer; pointer-events:auto}
 
 /* ---- trainer card ---- */
 .tc-backdrop{position:fixed; inset:0; z-index:85; background:rgba(8,9,18,.72); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .3s; padding:18px}
@@ -538,8 +537,9 @@ body.at-credits .hud > *{pointer-events:none}
 #dexSearch:focus{border-color:#FFCB05}
 .dex-types{display:flex; flex-wrap:wrap; gap:5px}
 .dex-typechip{font-size:.85rem; padding:2px 7px; border-radius:4px; cursor:pointer; color:#0F1220;
-  border:2px solid transparent; opacity:.55}
-.dex-typechip.on{opacity:1; border-color:#FFFDF4}
+  border:2px solid transparent; background:color-mix(in srgb, var(--tc,#888) 85%, #060913)}
+@supports not (color: color-mix(in srgb, red, blue)){ .dex-typechip{background:var(--tc,#888)} }
+.dex-typechip.on{background:var(--tc,#888); border-color:#FFFDF4}
 .dex-row{display:flex; gap:8px}
 .dex-row select{flex:1; background:#060913; color:#D7E4FF; border:2px solid #2A2F4A; border-radius:6px;
   font-family:var(--term); font-size:1rem; padding:6px}
@@ -553,7 +553,7 @@ body.at-credits .hud > *{pointer-events:none}
 .dex-card.seen .dex-marks::before{content:'◐'; color:#7FD1FF; position:absolute; top:2px; left:5px; font-size:.8rem}
 .dex-card.caught .dex-marks::before{content:'●'; color:#FFCB05; position:absolute; top:2px; left:5px; font-size:.8rem}
 .dex-card img{image-rendering:pixelated; width:64px; height:64px; object-fit:contain}
-.dex-card .dex-no{display:block; font-size:.85rem; color:#6E7BAE}
+.dex-card .dex-no{display:block; font-size:.85rem; color:#8494C0}
 .dex-card .dex-name{display:block; text-transform:uppercase; font-size:1rem; color:#D7E4FF}
 .dex-card img.is-glitch{filter:hue-rotate(40deg) contrast(1.4); opacity:.7}
 #dexSentinel{grid-column:1/-1; height:2px}
@@ -561,18 +561,18 @@ body.at-credits .hud > *{pointer-events:none}
 .dex-loadhint{display:none}
 .dex-loading .dex-loadhint{display:block}
 .dex-loading #dexGrid,.dex-loading #dexSentinel{display:none}
-.dex-empty{display:none; margin:auto; text-align:center; color:#6E7BAE; font-family:var(--px); font-size:.6rem; line-height:2; padding:20px}
+.dex-empty{display:none; margin:auto; text-align:center; color:#8494C0; font-family:var(--px); font-size:.6rem; line-height:2; padding:20px}
 .dex-noresults .dex-empty{display:block}
 .dex-noresults #dexGrid,.dex-noresults #dexSentinel{display:none}
 .dex-empty button{display:block; margin:14px auto 0; background:#7C0A0A; color:#FFFDF4;
   border:2px solid #FFFDF4; border-radius:6px; font-family:var(--px); font-size:.6rem; padding:8px 12px; cursor:pointer}
-.dex-hint,.dex-signal{margin:auto; text-align:center; color:#6E7BAE; font-size:1.15rem; padding:20px}
+.dex-hint,.dex-signal{margin:auto; text-align:center; color:#8494C0; font-size:1.15rem; padding:20px}
 .dex-signal{color:#FF9D9D; font-family:var(--px); font-size:.6rem; line-height:2}
 .dex-signal button{display:block; margin:14px auto 0; background:#7C0A0A; color:#FFFDF4;
   border:2px solid #FFFDF4; border-radius:6px; font-family:var(--px); font-size:.6rem; padding:8px 12px; cursor:pointer}
 .dex-detail-top{display:flex; gap:16px; align-items:flex-start}
 .dex-nav{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px}
-.dex-navpos{color:#6E7BAE; font-size:1rem}
+.dex-navpos{color:#8494C0; font-size:1rem}
 .dex-navbtn{background:#060913; border:2px solid #2A2F4A; color:#FFCB05; border-radius:6px;
   font-family:var(--px); font-size:.55rem; padding:6px 10px; cursor:pointer}
 .dex-navbtn:hover:not([disabled]){border-color:#FFCB05}
@@ -581,7 +581,7 @@ body.at-credits .hud > *{pointer-events:none}
 .dex-ability{display:grid; grid-template-columns:auto auto 1fr; gap:8px; align-items:baseline; font-size:1rem}
 .dex-ability .dex-abname{color:#FFFDF4; text-transform:uppercase}
 .dex-ability .dex-abhidden{font-family:var(--px); font-size:.5rem; color:#7FD1FF; border:1px solid #2A2F4A; border-radius:4px; padding:2px 4px}
-.dex-ability .dex-abeff{color:#6E7BAE}
+.dex-ability .dex-abeff{color:#8494C0}
 .dex-art{width:180px; height:180px; object-fit:contain; background:#060913; border:2px solid #2A2F4A; border-radius:10px; flex:none}
 .dex-art.is-glitch{image-rendering:pixelated; filter:hue-rotate(40deg) contrast(1.4)}
 .dex-idname h3{font-family:var(--px); color:#FFFDF4; font-size:.95rem; margin:0 0 4px}
@@ -603,11 +603,11 @@ body.at-credits .hud > *{pointer-events:none}
 .dex-evo{display:flex; gap:8px; flex-wrap:wrap}
 .dex-evo .ev{background:#060913; border:2px solid #2A2F4A; border-radius:6px; padding:6px 8px;
   font-size:.95rem; cursor:pointer; text-align:center; color:#D7E4FF; text-transform:uppercase}
-.dex-evo .ev .cond{display:block; color:#6E7BAE; font-size:.85rem}
+.dex-evo .ev .cond{display:block; color:#8494C0; font-size:.85rem}
 .dex-moves{width:100%; border-collapse:collapse; font-size:.95rem}
 .dex-moves td,.dex-moves th{border-bottom:1px solid #2A2F4A; padding:3px 6px; text-align:left}
-.dex-moves th{color:#6E7BAE; font-weight:normal}
-.dex-movesnote{color:#6E7BAE; font-size:.95rem; margin:6px 0 0}
+.dex-moves th{color:#8494C0; font-weight:normal}
+.dex-movesnote{color:#8494C0; font-size:.95rem; margin:6px 0 0}
 .hudbtn{background:none; border:none; cursor:pointer; padding:4px; display:inline-flex;
   transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
 .hudbtn:hover,.hudbtn:focus-visible{transform:translateY(-2px)}
@@ -688,11 +688,11 @@ body.at-credits .hud > *{pointer-events:none}
   display:inline-flex; align-items:center; gap:11px;
   margin-top:14px;
   font-family:var(--px); font-size:10px; letter-spacing:1px;
-  color:var(--paper); background:var(--red);
+  color:var(--paper); background:var(--red-deep);
   border:3px solid #17171F; border-radius:8px;
   padding:13px 20px 13px 15px;
   cursor:pointer;
-  box-shadow:0 0 0 3px var(--red), 0 0 0 6px #17171F, 0 12px 26px rgba(0,0,0,.4);
+  box-shadow:0 0 0 3px var(--red-deep), 0 0 0 6px #17171F, 0 12px 26px rgba(0,0,0,.4);
   transition:background .15s, transform .15s, box-shadow .15s;
 }
 .dexcta .lens{
@@ -700,9 +700,9 @@ body.at-credits .hud > *{pointer-events:none}
   border:2px solid #17171F;
   background:radial-gradient(circle at 35% 30%, #D8F4FF 0 20%, #7FD1F5 48%, #1E7FB8 100%);
 }
-.dexcta:hover{background:#FF4040; transform:translateY(-2px)}
-.dexcta:active{transform:translateY(1px); box-shadow:0 0 0 3px var(--red), 0 0 0 6px #17171F, 0 4px 10px rgba(0,0,0,.4)}
-.dexcta:focus-visible{outline:3px dashed var(--blue); outline-offset:6px}
+.dexcta:hover{background:#E0181A; transform:translateY(-2px)}
+.dexcta:active{transform:translateY(1px); box-shadow:0 0 0 3px var(--red-deep), 0 0 0 6px #17171F, 0 4px 10px rgba(0,0,0,.4)}
+.dexcta:focus-visible{outline:3px dashed #5566E8; outline-offset:6px}
 .tc-dexcounts{font-family:var(--term); font-size:1.05rem; color:#7C6A4A; margin-top:4px}
 /* ---------- /POKéDEX DEVICE ---------- */
 </style>
@@ -900,7 +900,7 @@ body.at-credits .hud > *{pointer-events:none}
         <p>Trainers don't memorize stats. They memorize <em>relationships</em>. One super-effective hit doubles your damage. One careless switch-in ends a run.</p>
         <p>The wheel turns as you scroll. Watch the triangle in the middle: every edge is a lesson every ten-year-old learned the hard way.</p>
         <div class="typechips" aria-label="The 18 Pokémon types">
-          <span class="typechip" style="background:#A8A878">NORMAL</span><span class="typechip" style="background:#F08030">FIRE</span><span class="typechip" style="background:#6890F0">WATER</span><span class="typechip" style="background:#F8D030">ELECTRIC</span><span class="typechip" style="background:#78C850">GRASS</span><span class="typechip" style="background:#98D8D8">ICE</span><span class="typechip" style="background:#C03028">FIGHTING</span><span class="typechip" style="background:#A040A0">POISON</span><span class="typechip" style="background:#E0C068">GROUND</span><span class="typechip" style="background:#A890F0">FLYING</span><span class="typechip" style="background:#F85888">PSYCHIC</span><span class="typechip" style="background:#A8B820">BUG</span><span class="typechip" style="background:#B8A038">ROCK</span><span class="typechip" style="background:#705898">GHOST</span><span class="typechip" style="background:#7038F8">DRAGON</span><span class="typechip" style="background:#705848">DARK</span><span class="typechip" style="background:#B8B8D0">STEEL</span><span class="typechip" style="background:#EE99AC">FAIRY</span>
+          <span class="typechip" style="background:#A8A878">NORMAL</span><span class="typechip" style="background:#F08030">FIRE</span><span class="typechip" style="background:#6890F0">WATER</span><span class="typechip" style="background:#F8D030">ELECTRIC</span><span class="typechip" style="background:#78C850">GRASS</span><span class="typechip" style="background:#98D8D8">ICE</span><span class="typechip" style="background:#C03028;color:#F4F6FA">FIGHTING</span><span class="typechip" style="background:#A040A0;color:#F4F6FA">POISON</span><span class="typechip" style="background:#C0A868">GROUND</span><span class="typechip" style="background:#A890F0">FLYING</span><span class="typechip" style="background:#F85888">PSYCHIC</span><span class="typechip" style="background:#A8B820">BUG</span><span class="typechip" style="background:#B8A038">ROCK</span><span class="typechip" style="background:#705898;color:#F4F6FA">GHOST</span><span class="typechip" style="background:#7038F8;color:#F4F6FA">DRAGON</span><span class="typechip" style="background:#705848;color:#F4F6FA">DARK</span><span class="typechip" style="background:#B8A0C8">STEEL</span><span class="typechip" style="background:#EE99AC">FAIRY</span>
         </div>
       </div>
     </div>
@@ -1563,11 +1563,11 @@ const TOTAL = 1025;
 const TYPES = [
   ['NORMAL','#A8A878'],['FIRE','#F08030'],['WATER','#6890F0'],['ELECTRIC','#F8D030'],
   ['GRASS','#78C850'],['ICE','#98D8D8'],['FIGHTING','#C03028'],['POISON','#A040A0'],
-  ['GROUND','#E0C068'],['FLYING','#A890F0'],['PSYCHIC','#F85888'],['BUG','#A8B820'],
+  ['GROUND','#C0A868'],['FLYING','#A890F0'],['PSYCHIC','#F85888'],['BUG','#A8B820'],
   ['ROCK','#B8A038'],['GHOST','#705898'],['DRAGON','#7038F8'],['DARK','#705848'],
-  ['STEEL','#B8B8D0'],['FAIRY','#EE99AC']
+  ['STEEL','#B8A0C8'],['FAIRY','#EE99AC']
 ];
-const LIGHT_TYPES = new Set(['NORMAL','ELECTRIC','ICE','GROUND','BUG','STEEL','FAIRY']);
+const DARK_TEXT = new Set(['NORMAL','FIRE','WATER','ELECTRIC','GRASS','ICE','GROUND','FLYING','PSYCHIC','BUG','ROCK','STEEL','FAIRY']); /* dark label ink on the 13 light-to-mid types, near-white on the 5 dark ones */
 
 const EEVEES = [
   {id:134, name:'VAPOREON', type:'WATER',   color:'#6890F0', how:'Water Stone'},
@@ -2239,7 +2239,7 @@ SCENES.types = (() => {
     rrect(ctx, x-wd/2, y-ht/2, wd, ht, ht*0.3);
     ctx.fillStyle = color; ctx.fill();
     ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.stroke();
-    px(ctx, label, x, y+0.5, Math.max(7, ht*0.34), light ? '#1D232E' : '#F4F6FA');
+    px(ctx, label, x, y+0.5, Math.max(7, ht*0.34), light ? '#0A0C16' : '#F4F6FA');
   }
   function draw(ctx, w, h, t, time){
     ctx.fillStyle = '#120E22'; ctx.fillRect(0,0,w,h);
@@ -2293,7 +2293,7 @@ SCENES.types = (() => {
       const pt = pointAt((i/N + rot/TAU) * total);
       const x = cx + pt.x, y = cy + pt.y;
       ctx.globalAlpha = 0.88;
-      chip(ctx, x, y, cw, ch2, narrow ? '' : name, color, LIGHT_TYPES.has(name));
+      chip(ctx, x, y, cw, ch2, narrow ? '' : name, color, DARK_TEXT.has(name));
       ctx.globalAlpha = 1;
     });
     /* centre triangle: fire / grass / water cycle */
@@ -2325,7 +2325,7 @@ SCENES.types = (() => {
       const bw = clamp(m*0.10, 48, 76), bh = clamp(m*0.04, 18, 26);
       ctx.save();
       ctx.shadowColor = 'rgba(0,0,0,.45)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
-      chip(ctx, n.x, n.y, bw, bh, n.name, n.color, LIGHT_TYPES.has(n.name));
+      chip(ctx, n.x, n.y, bw, bh, n.name, n.color, DARK_TEXT.has(n.name));
       ctx.restore();
     });
     /* super effective flash — shown only while the left-hand card is up,
@@ -2965,7 +2965,7 @@ function setupFinale(){
       }
       /* tint + celebration: the ball flies to center stage and bursts open */
       const tint = { 1:'#78C850', 4:'#F08030', 7:'#6890F0' }[id];
-      document.documentElement.style.setProperty('--yellow', tint);
+      document.documentElement.style.setProperty('--accent', tint);
       pickedStarter = id;
       saveProgress();
       if (REDUCED) return;
@@ -3224,7 +3224,7 @@ function boot(){
       });
       if (saved.starter){
         pickedStarter = saved.starter;
-        document.documentElement.style.setProperty('--yellow', { 1:'#78C850', 4:'#F08030', 7:'#6890F0' }[saved.starter]);
+        document.documentElement.style.setProperty('--accent', { 1:'#78C850', 4:'#F08030', 7:'#6890F0' }[saved.starter]);
         /* the saved partner is out of its ball: mark it picked so it stands on the opened ball */
         const sw = document.querySelector('.ballwrap[data-starter="'+saved.starter+'"]');
         if (sw){
@@ -3327,7 +3327,7 @@ else boot();
 function initDex(){
   Dex.init({
     Sound: Sound,
-    TYPES: TYPES.map(t => ({ name: t[0].toLowerCase(), color: t[1] })),
+    TYPES: TYPES.map(t => ({ name: t[0].toLowerCase(), color: t[1], text: DARK_TEXT.has(t[0]) ? '#0F1220' : '#F4F6FA' })),
     scrollLock: {
       lock() { if (typeof lenis !== 'undefined' && lenis) lenis.stop(); document.documentElement.style.overflow = 'hidden'; },
       unlock() { if (typeof lenis !== 'undefined' && lenis) lenis.start(); document.documentElement.style.overflow = ''; }
